@@ -6,7 +6,7 @@
 ![Latest Supported Foundry Version](https://img.shields.io/endpoint?url=https://foundryshields.com/version?url=https://github.com/itamarcu/pf2e-extempore-effects/raw/master/module.json)
 
 FoundryVTT module for the PF2e system, which allows creating temporary Effects from chat messages, to easily mark tokens
-as affected by a spell/action/item that doesn't normally have embedded effects
+as affected by a spell/action/item that doesn't normally have embedded effects.
 
 To install, browse for it in the module browser,
 or [directly copy the manifest link for the latest release](https://github.com/itamarcu/pf2e-extempore-effects/releases/latest/download/module.json)
