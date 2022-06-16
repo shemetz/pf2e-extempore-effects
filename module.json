@@ -1,0 +1,31 @@
+{
+  "name": "pf2e-extempore-effects",
+  "title": "pf2E Extempore Effects",
+  "description": "Allows creating temporary Effects from chat messages, to easily mark tokens as affected by a spell/action/item that don't normally have embedded effects.",
+  "version": "1.0.0",
+  "minimumCoreVersion": "9",
+  "compatibleCoreVersion": "9",
+  "esmodules": [
+    "scripts/pf2e-extempore-effects.js"
+  ],
+  "url": "https://github.com/itamarcu/pf2e-extempore-effects",
+  "manifest": "https://github.com/itamarcu/pf2e-extempore-effects/raw/master/module.json",
+  "download": "https://github.com/itamarcu/pf2e-extempore-effects/archive/master.zip",
+  "readme": "https://github.com/itamarcu/pf2e-extempore-effects/blob/master/Readme.md",
+  "changelog": "https://github.com/itamarcu/pf2e-extempore-effects/blob/master/Changelog.md",
+  "license": "https://github.com/itamarcu/pf2e-extempore-effects/blob/master/License.txt",
+  "bugs": "https://github.com/itamarcu/pf2e-extempore-effects/issues",
+  "system": [
+    "pf2e"
+  ],
+  "authors": [
+    {
+      "name": "shem",
+      "email": "itamarcu+foundry@gmail.com",
+      "discord": "shem#0226",
+      "reddit": "u/Shemetz"
+    }
+  ],
+  "manifestPlusVersion": "1.2.0",
+  "media": []
+}
