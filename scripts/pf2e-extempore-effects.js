@@ -40,17 +40,16 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         if (item === null) {
           return ui.notifications.warn(`Item not found in PF2e message.`)
         }
-        const effect = createEffect(item)
         const shiftPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT)
-        if (shiftPressed) {
-          await displayDialogToMaybeChangeEffect(effect)
-          if (!effect) return
-        }
+        const effect = createEffect(item)
         const tokens = canvas.tokens.controlled
         if (tokens.length === 0) {
           ui.notifications.warn(`You need to have token(s) selected to apply the effect.`)
         } else for (const token of tokens) {
-          await token.actor.createEmbeddedDocuments('Item', [effect])
+          const effectItems = await token.actor.createEmbeddedDocuments('Item', [effect])
+          if (shiftPressed) {
+            effectItems[0].sheet.render(true)
+          }
         }
       }
     },
@@ -111,8 +110,8 @@ function fromUuidNonAsync (uuid) {
   return doc || null
 }
 
-const getDuration = (item) => {
-  const itemDuration = item.data.data.duration ? item.data.data.duration.value : ''
+const getDuration = (durationText, descriptionText) => {
+  const itemDuration = durationText || ''
   let durationValue, durationUnit, durationSustained
   if (itemDuration.toLowerCase() === 'sustained') {
     // "Sustained"
@@ -146,8 +145,12 @@ const getDuration = (item) => {
     if (!durationUnit.endsWith('s')) durationUnit += 's'  // e.g. "minutes"
     durationSustained = false
   } else if (itemDuration === '') {
-    const description = item.data.data.description.value
-    if (description.includes('for 1 round') && !description.includes(' rounds')) {
+    if (descriptionText.includes('<strong>Maximum Duration</strong>')) {
+      // an affliction with maximum duration will have that duration set (recursive call!)
+      const maxDurationText = descriptionText.match(/<strong>Maximum Duration<\/strong>(.*?)</)[1].trim()
+      return getDuration(maxDurationText, descriptionText)
+    }
+    if (descriptionText.includes('for 1 round') && !descriptionText.includes(' rounds')) {
       durationValue = 1
       durationUnit = 'round'
     } else {
@@ -202,7 +205,9 @@ const getImage = (item) => {
 }
 
 const createEffect = (item) => {
-  const { durationValue, durationUnit, durationSustained } = getDuration(item)
+  const durationText = item.data.data.duration ? item.data.data.duration.value : ''
+  const descriptionText = item.data.data.description.value
+  const { durationValue, durationUnit, durationSustained } = getDuration(durationText, descriptionText)
   const image = getImage(item)
   return {
     type: 'effect',
@@ -218,7 +223,7 @@ const createEffect = (item) => {
       },
       description: {
         ...item.data.data.description,
-        value: `<h2>(Generated Effect)</h2>\n${item.data.data.description.value}`,
+        value: `<h2>(Generated Effect)</h2>\n${descriptionText}`,
       },
       traits: item.data.data.traits,
       level: item.data.data.level,
@@ -226,40 +231,6 @@ const createEffect = (item) => {
       slug: `temporary-effect-${item.data.data.slug}`,
     },
   }
-}
-
-const displayDialogToMaybeChangeEffect = async (effect) => {
-  return new Promise(resolve => {
-    new Dialog({
-      title: 'Rename effect before applying?',
-      content: `
-  <div>
-      <div class="form-group">
-          <label>Edit this if you want a different name/image for the effect.</label>
-          <input id="name" type="text" value="${effect.name}" />
-          <input id="image" type="text" value="${effect.img}" />
-      </div>
-  </div>`,
-      buttons: {
-        ok: {
-          icon: '<i class="fas fa-check"></i>',
-          label: 'Rename and apply',
-          callback: async (html) => {
-            effect.name = html.find('#name')[0].value
-            effect.image = html.find('#image')[0].value
-            resolve()
-          },
-        },
-        cancel: {
-          icon: '<i class="fas fa-times"></i>',
-          label: 'Cancel effect',
-          callback: async () => {
-          },
-        },
-      },
-      default: 'ok',
-    }).render(true)
-  })
 }
 
 const RANDOM_EFFECT_IMAGES = [

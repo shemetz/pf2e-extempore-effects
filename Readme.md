@@ -14,20 +14,30 @@ or [directly copy the manifest link for the latest release](https://github.com/i
 
 # Features
 
-To use, select one or more tokens and then right-click on a message in the chat.  An option, "Extempore Effect", should
-appear.  Clicking that option will grant a new Effect to all controlled tokens.
+To use, select one or more tokens and then right-click on a message in the chat. An option, "Extempore Effect", should
+appear. Clicking that option will grant a new Effect to all controlled tokens.
 
 The Effect will have its name, description, level, traits, etc. match the message's item ("item" here being a spell,
-an action, a feat, a weapon, etc.).  The duration will usually fit if possible (required some hardcoding and doesn't 
+an action, a feat, a weapon, etc.). The duration will usually fit if possible (required some hardcoding and doesn't
 cover all bases).
 
 The image will fit the item too, but not if it's a "default image" (like the default feat icon or
-any of the simple 1/2/3-action icons).  To avoid having several Effects with the same image (and avoid the boring 
+any of the simple 1/2/3-action icons). To avoid having several Effects with the same image (and avoid the boring
 default images), this module will either use the image of the original item's token/actor, or will randomly pick a
 simple colored image.
 
 As a bonus feature, right-clicking actual Effect messages will display an "Apply Effect" option to just apply that same
-effect to the controlled token.  This is just a quality-of-life feature.
+effect to the controlled token. This is just a quality-of-life feature.
 
+### Holding Shift
+
+If you hold the Shift button, the effect's sheet will be opened up for you to see and edit, after being applied.
+
+This is useful if you want to quickly edit the effect - for example:
+
+- Rename Mirror Image to "Effect: Mirror Image **(3)**",
+- Rename Mummy Rot to "Effect: Mummy Rot **(stage 1)**"
+- Change Steal Shadow's duration from Unlimited to 2 hours.
+- Change Arsenic's image from the picture of a powder to a picture of deadly poison.
 
 ![](metadata/ee_demo_1.gif)
