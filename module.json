@@ -18,6 +18,12 @@
   "system": [
     "pf2e"
   ],
+  "dependencies": [
+    {
+      "type": "module",
+      "name": "lib-wrapper"
+    }
+  ],
   "authors": [
     {
       "name": "shem",
