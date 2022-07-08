@@ -26,6 +26,31 @@ Hooks.on('init', () => {
   })
 })
 
+// to show effect sheets on shift-click, here's some dirty code
+Hooks.on('canvasInit', () => {
+  const origFunc = game.pf2e.effectPanel.activateListeners
+  game.pf2e.effectPanel.activateListeners = function ($html) {
+    origFunc.bind(game.pf2e.effectPanel)($html)
+    const $icons = $html.find('div[data-item-id]')
+    $icons.on('click', async (event) => {
+      const shiftPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT)
+      if (!shiftPressed) return
+      const $target = $(event.currentTarget)
+      const actor = this.actor
+      const effect = actor?.items.get($target.attr('data-item-id') ?? '')
+      if (!effect) return
+      effect.sheet.render(true) // will open and display the sheet!
+      let numericConditions = ['clumsy', 'doomed', 'drained', 'dying', 'enfeebled', 'frightened', 'sickened', 'slowed', 'stunned', 'stupefied', 'wounded']
+      if (effect.fromSystem && numericConditions.includes(effect.name.toLowerCase())) {
+        // terrible hack to counter the fact that shift+leftclick includes leftclick and thus increments effect
+        setTimeout(() => {
+          actor?.decreaseCondition(effect)
+        }, 500)
+      }
+    })
+  }.bind(game.pf2e.effectPanel)
+})
+
 const quickAddEmptyEffect = async () => {
   const tokens = canvas.tokens.controlled
   if (tokens.length !== 1) {
