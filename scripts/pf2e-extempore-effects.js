@@ -1,5 +1,5 @@
 const MODULE_ID = 'pf2e-extempore-effects'
-const MODULE_NAME = 'Extempore Effects'
+const MODULE_NAME = 'pf2E Extempore Effects'
 
 Hooks.on('init', () => {
   libWrapper.register(
@@ -17,7 +17,26 @@ Hooks.on('init', () => {
     type: Boolean,
     default: true,
   })
+  const { CONTROL, SHIFT } = KeyboardManager.MODIFIER_KEYS
+  game.keybindings.register(MODULE_ID, 'quick-add-empty-effect', {
+    name: 'Quick add empty effect',
+    hint: 'Create a new custom effect with a random icon, applied to the currently selected token',
+    editable: [{ key: 'KeyE', modifiers: [CONTROL, SHIFT] }],
+    onDown: quickAddEmptyEffect,
+  })
 })
+
+const quickAddEmptyEffect = async () => {
+  const tokens = canvas.tokens.controlled
+  if (tokens.length !== 1) {
+    ui.notifications.warn(`You need to have one token selected to apply a custom new effect.`)
+  } else {
+    const effect = createEmptyEffect()
+    const token = tokens[0]
+    const effectItems = await token.actor.createEmbeddedDocuments('Item', [effect])
+    effectItems[0].sheet.render(true)
+  }
+}
 
 const _getEntryContextOptions_Wrapper = (wrapped) => {
   const buttons = wrapped.bind(this)()
@@ -54,6 +73,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
       }
     },
     // Special case for "Effect" item messages;  though it's very unlikely they'll actually be put in chat
+    // (this option and the previous option will never both be available)
     {
       name: 'Apply Effect',
       icon: '<i class="fas fa-star"></i>',
@@ -229,6 +249,41 @@ const createEffect = (item) => {
       level: item.data.data.level,
       source: item.data.data.source,
       slug: `temporary-effect-${item.data.data.slug}`,
+    },
+  }
+}
+
+const createEmptyEffect = () => {
+  const screenPos = canvas.scene._viewPosition
+  const kindaRandomString = (screenPos.x + screenPos.y + screenPos.scale * 1000).toString()
+  const image = randomImage({ id: kindaRandomString })
+  return {
+    type: 'effect',
+    name: `Quick_untitled_effect`,
+    img: image,
+    data: {
+      tokenIcon: { show: true },
+      duration: {
+        value: 1,
+        unit: 'unlimited',
+        sustained: false,
+        expiry: 'turn-start',
+      },
+      description: {
+        value: `<h2>(Generated Effect)</h2>\nWrite whatever you want in here!`,
+      },
+      traits: {
+        custom: '',
+        rarity: 'common',
+        value: [],
+      },
+      level: {
+        value: 0,
+      },
+      source: {
+        value: 'quick effect created by ' + MODULE_NAME,
+      },
+      slug: `temporary-effect-${kindaRandomString}`,
     },
   }
 }
