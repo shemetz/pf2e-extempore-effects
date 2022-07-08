@@ -14,6 +14,7 @@ or [directly copy the manifest link for the latest release](https://github.com/i
 
 # Features
 
+### Message right-click context menu option, "Extempore Effect", to convert a message into an effect
 To use, select one or more tokens and then right-click on a message in the chat. An option, "Extempore Effect", should
 appear. Clicking that option will grant a new Effect to all controlled tokens.
 
@@ -29,8 +30,7 @@ simple colored image.
 As a bonus feature, right-clicking actual Effect messages will display an "Apply Effect" option to just apply that same
 effect to the controlled token. This is just a quality-of-life feature.
 
-### Holding Shift
-
+### Shift+clicking the "Extempore Effect" option, to also open the effect's sheet
 If you hold the Shift button, the effect's sheet will be opened up for you to see and edit, after being applied.
 
 This is useful if you want to quickly edit the effect - for example:
@@ -40,4 +40,20 @@ This is useful if you want to quickly edit the effect - for example:
 - Change Steal Shadow's duration from Unlimited to 2 hours.
 - Change Arsenic's image from the picture of a powder to a picture of deadly poison.
 
+### Shift+Clicking an effect in the effects panel, to edit it
+You can shift+click an existing effect icon in the panel that appears in the top right corner of the screen, when
+controlling a token.  This will open the sheet of that effect/condition, allowing you to read it and edit it.  Useful if
+you want to get a refresher about its rules, or to edit a small detail about it.
+
+Currently, this is hacky for system conditions that can stack (like Frightened) - it will increase and then decrease
+the condition.  Sorry about that.
+
+### Ctrl+Shift+E (editable) keybinding, to create an empty effect
+This new keybinding, "Quick create empty effect", will do something similar to the Extempore Effect except with fully
+empty contents (not based on any message), also immediately opening the sheet for you to edit.  The name will be
+untitled and the image will be a random icon (the randomness depends on screen position, so if you don't pan or zoom
+around you can keep creating random effects with the same icon, which is sometimes handy).
+
 ![](metadata/ee_demo_1.gif)
+
+![](metadata/shift_click_effect_panel_demo.gif)

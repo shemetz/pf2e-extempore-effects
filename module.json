@@ -2,7 +2,7 @@
   "name": "pf2e-extempore-effects",
   "title": "pf2E Extempore Effects",
   "description": "Allows creating temporary Effects from chat messages, to easily mark tokens as affected by a spell/action/item that doesn't normally have embedded effects.",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "minimumCoreVersion": "9",
   "compatibleCoreVersion": "9",
   "esmodules": [
