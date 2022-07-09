@@ -13,7 +13,7 @@ Hooks.on('init', () => {
     hint: `Default true:  when creating an effect out of a message that has an item but no actor (or has an actor with
     the default art), and that item has default art, pick a random colorful effect image instead.`,
     scope: 'world',
-    config: false,
+    config: true,
     type: Boolean,
     default: true,
   })
@@ -41,7 +41,7 @@ Hooks.on('canvasInit', () => {
       if (!effect) return
       effect.sheet.render(true) // will open and display the sheet!
       let numericConditions = ['clumsy', 'doomed', 'drained', 'dying', 'enfeebled', 'frightened', 'sickened', 'slowed', 'stunned', 'stupefied', 'wounded']
-      if (effect.fromSystem && numericConditions.includes(effect.name.toLowerCase())) {
+      if (effect.fromSystem && numericConditions.includes(effect.name.toLowerCase()) && !$target.attr('data-locked')) {
         // terrible hack to counter the fact that shift+leftclick includes leftclick and thus increments effect
         setTimeout(() => {
           actor?.decreaseCondition(effect)
