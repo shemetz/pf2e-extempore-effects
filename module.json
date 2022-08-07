@@ -1,10 +1,12 @@
 {
-  "name": "pf2e-extempore-effects",
+  "id": "pf2e-extempore-effects",
   "title": "pf2E Extempore Effects",
   "description": "Allows creating temporary Effects from chat messages, to easily mark tokens as affected by a spell/action/item that doesn't normally have embedded effects.",
   "version": "1.2.1",
-  "minimumCoreVersion": "9",
-  "compatibleCoreVersion": "9",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "10"
+  },
   "esmodules": [
     "scripts/pf2e-extempore-effects.js"
   ],
@@ -15,15 +17,30 @@
   "changelog": "https://github.com/itamarcu/pf2e-extempore-effects/blob/master/Changelog.md",
   "license": "https://github.com/itamarcu/pf2e-extempore-effects/blob/master/License.txt",
   "bugs": "https://github.com/itamarcu/pf2e-extempore-effects/issues",
-  "system": [
-    "pf2e"
-  ],
-  "dependencies": [
-    {
-      "type": "module",
-      "name": "lib-wrapper"
-    }
-  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "pf2e",
+        "type": "system",
+        "manifest": "https://github.com/foundryvtt/pf2e/releases/download/latest/system.json",
+        "compatibility": {
+          "minimum": "3.0.0",
+          "verified": "3.13.999"
+        }
+      }
+    ],
+    "requires": [
+      {
+        "id": "lib-wrapper",
+        "type": "module",
+        "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json",
+        "compatibility": {
+          "minimum": "1.12.7.0",
+          "verified": "1.12.7.0"
+        }
+      }
+    ]
+  },
   "authors": [
     {
       "name": "shem",

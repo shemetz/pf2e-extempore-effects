@@ -247,16 +247,16 @@ const hashString = str => {
 }
 
 const getImage = (item) => {
-  const itemImage = item.data.img
+  const itemImage = item.img
   if (!isImageBoring(itemImage)) return itemImage
-  const actorImage = item.actor?.token?.data?.img || item.actor?.data?.token?.img || item.actor?.img
+  const actorImage = item.actor?.token?.img || item.actor?.img
   if (!isImageBoring(actorImage)) return actorImage
   return randomImage(item)
 }
 
 const createEffect = (item) => {
-  const durationText = item.data.data.duration ? item.data.data.duration.value : ''
-  const descriptionText = item.data.data.description.value
+  const durationText = item.system.duration ? item.system.duration.value : ''
+  const descriptionText = item.system.description.value
   const { durationValue, durationUnit, durationSustained } = getDuration(durationText, descriptionText)
   const image = getImage(item)
   return {
@@ -272,13 +272,13 @@ const createEffect = (item) => {
         expiry: 'turn-start',
       },
       description: {
-        ...item.data.data.description,
+        ...item.system.description,
         value: `<h2>(Generated Effect)</h2>\n${descriptionText}`,
       },
-      traits: item.data.data.traits,
-      level: item.data.data.level,
-      source: item.data.data.source,
-      slug: `temporary-effect-${item.data.data.slug}`,
+      traits: item.system.traits,
+      level: item.system.level,
+      source: item.system.source,
+      slug: `temporary-effect-${item.system.slug}`,
     },
   }
 }
