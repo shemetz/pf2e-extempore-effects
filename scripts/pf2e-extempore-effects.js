@@ -183,6 +183,11 @@ const getDuration = (durationText, descriptionText) => {
     durationValue = -1
     durationUnit = 'encounter'
     durationSustained = false
+  } else if (itemDuration.includes(' or more')) {
+    // "1 or more rounds"
+    durationValue = 3
+    durationUnit = 'unlimited'
+    durationSustained = false
   } else if (itemDuration.includes(' ')) {
     // "10 minutes"
     durationValue = parseInt(itemDuration.split(' ')[0])
