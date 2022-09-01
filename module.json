@@ -10,13 +10,13 @@
   "esmodules": [
     "scripts/pf2e-extempore-effects.js"
   ],
-  "url": "https://github.com/itamarcu/pf2e-extempore-effects",
-  "manifest": "https://github.com/itamarcu/pf2e-extempore-effects/raw/master/module.json",
-  "download": "https://github.com/itamarcu/pf2e-extempore-effects/archive/master.zip",
-  "readme": "https://github.com/itamarcu/pf2e-extempore-effects/blob/master/Readme.md",
-  "changelog": "https://github.com/itamarcu/pf2e-extempore-effects/blob/master/Changelog.md",
-  "license": "https://github.com/itamarcu/pf2e-extempore-effects/blob/master/License.txt",
-  "bugs": "https://github.com/itamarcu/pf2e-extempore-effects/issues",
+  "url": "https://github.com/shemetz/pf2e-extempore-effects",
+  "manifest": "https://github.com/shemetz/pf2e-extempore-effects/raw/master/module.json",
+  "download": "https://github.com/shemetz/pf2e-extempore-effects/archive/master.zip",
+  "readme": "https://github.com/shemetz/pf2e-extempore-effects/blob/master/Readme.md",
+  "changelog": "https://github.com/shemetz/pf2e-extempore-effects/blob/master/Changelog.md",
+  "license": "https://github.com/shemetz/pf2e-extempore-effects/blob/master/License.txt",
+  "bugs": "https://github.com/shemetz/pf2e-extempore-effects/issues",
   "relationships": {
     "systems": [
       {
@@ -43,9 +43,9 @@
   },
   "authors": [
     {
-      "name": "shem",
+      "name": "shemetz",
       "email": "itamarcu+foundry@gmail.com",
-      "discord": "shem#0226",
+      "discord": "shemetz#0226",
       "reddit": "u/Shemetz"
     }
   ],

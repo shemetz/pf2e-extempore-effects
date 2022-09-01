@@ -1,15 +1,15 @@
 # [pf2E Extempore Effects](https://foundryvtt.com/packages/pf2e-extempore-effects/)
 
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/itamarcu/pf2e-extempore-effects?style=for-the-badge)
-![GitHub Releases](https://img.shields.io/github/downloads/itamarcu/pf2e-extempore-effects/latest/total?style=for-the-badge)
-![GitHub All Releases](https://img.shields.io/github/downloads/itamarcu/pf2e-extempore-effects/total?style=for-the-badge&label=Downloads+total)
-![Latest Supported Foundry Version](https://img.shields.io/endpoint?url=https://foundryshields.com/version?url=https://github.com/itamarcu/pf2e-extempore-effects/raw/master/module.json)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/shemetz/pf2e-extempore-effects?style=for-the-badge)
+![GitHub Releases](https://img.shields.io/github/downloads/shemetz/pf2e-extempore-effects/latest/total?style=for-the-badge)
+![GitHub All Releases](https://img.shields.io/github/downloads/shemetz/pf2e-extempore-effects/total?style=for-the-badge&label=Downloads+total)
+![Latest Supported Foundry Version](https://img.shields.io/endpoint?url=https://foundryshields.com/version?url=https://github.com/shemetz/pf2e-extempore-effects/raw/master/module.json)
 
 FoundryVTT module for the PF2e system, which allows creating temporary Effects from chat messages, to easily mark tokens
 as affected by a spell/action/item that doesn't normally have embedded effects.
 
 To install, browse for it in the module browser,
-or [directly copy the manifest link for the latest release](https://github.com/itamarcu/pf2e-extempore-effects/releases/latest/download/module.json)
+or [directly copy the manifest link for the latest release](https://github.com/shemetz/pf2e-extempore-effects/releases/latest/download/module.json)
 .
 
 # Features
