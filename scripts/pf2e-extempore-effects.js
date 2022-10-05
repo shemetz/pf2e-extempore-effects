@@ -40,7 +40,18 @@ Hooks.on('canvasInit', () => {
       const effect = actor?.items.get($target.attr('data-item-id') ?? '')
       if (!effect) return
       effect.sheet.render(true) // will open and display the sheet!
-      let numericConditions = ['clumsy', 'doomed', 'drained', 'dying', 'enfeebled', 'frightened', 'sickened', 'slowed', 'stunned', 'stupefied', 'wounded']
+      let numericConditions = [
+        'clumsy',
+        'doomed',
+        'drained',
+        'dying',
+        'enfeebled',
+        'frightened',
+        'sickened',
+        'slowed',
+        'stunned',
+        'stupefied',
+        'wounded']
       if (effect.fromSystem && numericConditions.includes(effect.name.toLowerCase()) && !$target.attr('data-locked')) {
         // terrible hack to counter the fact that shift+leftclick includes leftclick and thus increments effect
         setTimeout(() => {
@@ -80,7 +91,8 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
       },
       callback: async li => {
         const message = game.messages.get(li.data('messageId'))
-        const item = message.item || (message.getFlag('pf2e', 'origin') ? await fromUuid(message.getFlag('pf2e', 'origin').uuid) : null)
+        const item = message.item ||
+          (message.getFlag('pf2e', 'origin') ? await fromUuid(message.getFlag('pf2e', 'origin').uuid) : null)
         if (item === null) {
           return ui.notifications.warn(`Item not found in PF2e message.`)
         }
@@ -95,7 +107,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
             effectItems[0].sheet.render(true)
           }
         }
-      }
+      },
     },
     // Special case for "Effect" item messages;  though it's very unlikely they'll actually be put in chat
     // (this option and the previous option will never both be available)
@@ -113,7 +125,8 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
       },
       callback: async li => {
         const message = game.messages.get(li.data('messageId'))
-        const item = message.item || (message.getFlag('pf2e', 'origin') ? await fromUuid(message.getFlag('pf2e', 'origin').uuid) : null)
+        const item = message.item ||
+          (message.getFlag('pf2e', 'origin') ? await fromUuid(message.getFlag('pf2e', 'origin').uuid) : null)
         if (item === null) {
           return ui.notifications.warn(`Item not found in PF2e message.`)
         }
@@ -123,8 +136,8 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         } else for (const token of tokens) {
           await token.actor.createEmbeddedDocuments('Item', [item.toObject()])
         }
-      }
-    }
+      },
+    },
   )
   return buttons
 }
