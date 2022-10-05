@@ -285,7 +285,7 @@ const createEffect = (item) => {
 
 const createEmptyEffect = () => {
   const screenPos = canvas.scene._viewPosition
-  const kindaRandomString = (screenPos.x + screenPos.y + screenPos.scale * 1000).toString()
+  const kindaRandomString = Math.round(screenPos.x + screenPos.y + screenPos.scale * 1000).toString()
   const image = randomImage({ id: kindaRandomString })
   return {
     type: 'effect',
@@ -313,7 +313,8 @@ const createEmptyEffect = () => {
       source: {
         value: 'quick effect created by ' + MODULE_NAME,
       },
-      slug: `temporary-effect-${kindaRandomString}`,
+      // note: naming this just 'temporary-effect-...' will lead to a PF2E bug, apparently!
+      slug: `extempore-temporary-effect-${kindaRandomString}`,
     },
   }
 }
