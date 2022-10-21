@@ -45,9 +45,6 @@ You can shift+click an existing effect icon in the panel that appears in the top
 controlling a token.  This will open the sheet of that effect/condition, allowing you to read it and edit it.  Useful if
 you want to get a refresher about its rules, or to edit a small detail about it.
 
-Currently, this is hacky for system conditions that can stack (like Frightened) - it will increase and then decrease
-the condition.  Sorry about that.
-
 ### Ctrl+Shift+E (editable) keybinding, to create an empty effect
 This new keybinding, "Quick create empty effect", will do something similar to the Extempore Effect except with fully
 empty contents (not based on any message), also immediately opening the sheet for you to edit.  The name will be

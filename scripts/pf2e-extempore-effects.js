@@ -26,41 +26,32 @@ Hooks.on('init', () => {
   })
 })
 
-// to show effect sheets on shift-click, here's some dirty code
-Hooks.on('canvasInit', () => {
-  const origFunc = game.pf2e.effectPanel.activateListeners
-  game.pf2e.effectPanel.activateListeners = function ($html) {
-    origFunc.bind(game.pf2e.effectPanel)($html)
-    const $icons = $html.find('div[data-item-id]')
-    $icons.on('click', async (event) => {
-      const shiftPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT)
-      if (!shiftPressed) return
-      const $target = $(event.currentTarget)
-      const actor = this.actor
-      const effect = actor?.items.get($target.attr('data-item-id') ?? '')
-      if (!effect) return
-      effect.sheet.render(true) // will open and display the sheet!
-      let numericConditions = [
-        'clumsy',
-        'doomed',
-        'drained',
-        'dying',
-        'enfeebled',
-        'frightened',
-        'sickened',
-        'slowed',
-        'stunned',
-        'stupefied',
-        'wounded']
-      if (effect.fromSystem && numericConditions.includes(effect.name.toLowerCase()) && !$target.attr('data-locked')) {
-        // terrible hack to counter the fact that shift+leftclick includes leftclick and thus increments effect
-        setTimeout(() => {
-          actor?.decreaseCondition(effect)
-        }, 500)
-      }
-    })
-  }.bind(game.pf2e.effectPanel)
+// to show effect sheets on shift-click, here's some code
+Hooks.on('renderEffectsPanel', (panel, $html) => {
+  const instructions = `<p>${game.i18n.localize(MODULE_ID + '.open-sheet-instruction')}</p>`
+  $html.find('.instructions').append(instructions)
+  const $icons = $html.find('div[data-item-id]')
+  // removing default PF2e system behavior on left click!
+  $icons.off('click')
+  // adding new behavior, which first checks if shift is pressed
+  $icons.on('click', async (event) => {
+    const panel = game.pf2e.effectPanel
+    const shiftPressed = event.shiftKey
+    if (!shiftPressed) return normalIconLeftClickBehavior(event, panel)
+    const id = event.currentTarget.dataset.itemId
+    const effect = panel.actor?.items.get(id)
+    // open and display the sheet
+    effect?.sheet.render(true)
+  })
 })
+
+const normalIconLeftClickBehavior = async (event, panel) => {
+  const $target = $(event.currentTarget)
+  if ($target.attr('data-locked')) return
+
+  const effect = panel.actor?.items.get($target.attr('data-item-id') ?? '')
+  if (effect && isOfClass(effect, 'AbstractEffectPF2e')) await effect.increase()
+}
 
 const quickAddEmptyEffect = async () => {
   const tokens = canvas.tokens.controlled
@@ -257,6 +248,13 @@ const hashString = str => {
     hash = hash & hash // Convert to 32bit integer
   }
   return hash
+}
+
+export function isOfClass (obj, className) {
+  while ((obj = /** @type {object} */ (Reflect.getPrototypeOf(obj)))) {
+    if (obj.constructor.name === className) return true
+  }
+  return false
 }
 
 const getImage = (item) => {

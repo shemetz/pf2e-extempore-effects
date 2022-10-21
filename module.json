@@ -10,6 +10,13 @@
   "esmodules": [
     "scripts/pf2e-extempore-effects.js"
   ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
   "url": "https://github.com/shemetz/pf2e-extempore-effects",
   "manifest": "https://github.com/shemetz/pf2e-extempore-effects/raw/master/module.json",
   "download": "https://github.com/shemetz/pf2e-extempore-effects/archive/master.zip",
