@@ -1,3 +1,5 @@
+const MODULE_ID = 'pf2e-extempore-effects'
+const MODULE_NAME = 'pf2E Extempore Effects'
 
 Hooks.on('init', () => {
   libWrapper.register(

@@ -8,7 +8,8 @@
     "verified": "10"
   },
   "esmodules": [
-    "scripts/pf2e-extempore-effects.js"
+    "scripts/pf2e-extempore-effects.js",
+    "scripts/hidden-effects.js"
   ],
   "styles": [
     "styles/pf2e-extempore-effects.css"
