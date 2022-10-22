@@ -51,6 +51,30 @@ empty contents (not based on any message), also immediately opening the sheet fo
 untitled and the image will be a random icon (the randomness depends on screen position, so if you don't pan or zoom
 around you can keep creating random effects with the same icon, which is sometimes handy).
 
+### "Hidden from player" toggle for effects
+Gamemasters (GMs) can now mark an effect as hidden from players.  If they do, players will never be able to see that
+effect as long as that toggle is on.
+
+This removes the visibility of the effect from:
+- Character sheet
+- Effects panel (top right of screen)
+- Token status effect icon on the canvas
+- Scrolling text animations on the canvas
+- Token Action HUD module
+
+NOTE:  the core PF2E system will soon also have support for hidden effects.  When that happens, this module will no 
+longer support them.
+
+# Demos
+
+### Extempore Effects
+
 ![](metadata/ee_demo_1.gif)
 
+### Shift+clicking
+
 ![](metadata/shift_click_effect_panel_demo.gif)
+
+### Secret effects
+
+![](metadata/secret_effect_demo.gif)

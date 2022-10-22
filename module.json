@@ -10,6 +10,9 @@
   "esmodules": [
     "scripts/pf2e-extempore-effects.js"
   ],
+  "styles": [
+    "styles/pf2e-extempore-effects.css"
+  ],
   "languages": [
     {
       "lang": "en",

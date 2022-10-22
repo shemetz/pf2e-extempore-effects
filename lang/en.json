@@ -1,5 +1,6 @@
 {
   "pf2e-extempore-effects": {
-    "open-sheet-instruction": "[Shift + Left Click] Open sheet"
+    "hiddenFromPlayerText": "Hidden from player?",
+    "openSheetInstruction": "[Shift + Left Click] Open sheet"
   }
 }

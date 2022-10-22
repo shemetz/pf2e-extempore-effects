@@ -26,9 +26,11 @@ Hooks.on('init', () => {
   })
 })
 
-// to show effect sheets on shift-click, here's some code
+/**
+ * show effect sheets on shift-click
+ */
 Hooks.on('renderEffectsPanel', (panel, $html) => {
-  const instructions = `<p>${game.i18n.localize(MODULE_ID + '.open-sheet-instruction')}</p>`
+  const instructions = `<p>${game.i18n.localize(MODULE_ID + '.openSheetInstruction')}</p>`
   $html.find('.instructions').append(instructions)
   const $icons = $html.find('div[data-item-id]')
   // removing default PF2e system behavior on left click!
