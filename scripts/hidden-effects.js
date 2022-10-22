@@ -123,7 +123,7 @@ function ActorPF2E_temporaryEffects_Wrapper (wrapped, ...args) {
  */
 function TokenPF2E_showFloatyText_Wrapper (wrapped, params) {
   const effectData = params.create || params.delete
-  if (!effectData) return wrapped(params)
+  if (!effectData?.flags) return wrapped(params)
   const hidden = effectData.flags[MODULE_ID]?.['hiddenFromPlayer']
   if (!hidden || game.user.isGM || this.document.hidden) return wrapped(params)
 
