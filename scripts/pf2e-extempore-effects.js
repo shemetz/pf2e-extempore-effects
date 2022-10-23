@@ -9,18 +9,16 @@ Hooks.on('init', () => {
     'WRAPPER',
   )
   game.settings.register(MODULE_ID, 'randomize-image-if-default', {
-    name: `Prefer random images over default images`,
-    hint: `Default true.  When creating an effect out of a message that has an item but no actor (or has an actor with
-    the default art), and that item has default art, pick a random colorful effect image instead.`,
+    name: game.i18n.localize(MODULE_ID + '.settings.randomize-image-if-default.name'),
+    hint: game.i18n.localize(MODULE_ID + '.settings.randomize-image-if-default.hint'),
     scope: 'world',
     config: true,
     type: Boolean,
     default: true,
   })
   game.settings.register(MODULE_ID, 'hidden-by-default', {
-    name: `Create hidden effects by default`,
-    hint: `Default false.  When creating an effect with the module as a GM it will not default to "hidden from players".
-     Holding the Ctrl/Alt button while creating an effect will reverse this (making it hidden by default).`,
+    name: game.i18n.localize(MODULE_ID + '.settings.hidden-by-default.name'),
+    hint: game.i18n.localize(MODULE_ID + '.settings.hidden-by-default.hint'),
     scope: 'world',
     config: true,
     type: Boolean,
@@ -28,8 +26,8 @@ Hooks.on('init', () => {
   })
   const { CONTROL, SHIFT } = KeyboardManager.MODIFIER_KEYS
   game.keybindings.register(MODULE_ID, 'quick-add-empty-effect', {
-    name: 'Quick add empty effect',
-    hint: 'Create a new custom effect with a random icon, applied to the currently selected token',
+    name: game.i18n.localize(MODULE_ID + '.settings.quick-add-empty-effect.name'),
+    hint: game.i18n.localize(MODULE_ID + '.settings.quick-add-empty-effect.hint'),
     editable: [{ key: 'KeyE', modifiers: [CONTROL, SHIFT] }],
     onDown: quickAddEmptyEffect,
   })
@@ -67,7 +65,7 @@ const normalIconLeftClickBehavior = async (event, panel) => {
 const quickAddEmptyEffect = async () => {
   const tokens = canvas.tokens.controlled
   if (tokens.length !== 1) {
-    ui.notifications.warn(`You need to have one token selected to apply a custom new effect.`)
+    ui.notifications.error(game.i18n.localize(MODULE_ID + '.errorMultipleTokensCustomEffect'))
   } else {
     const effect = createEmptyEffect()
     const token = tokens[0]
@@ -82,7 +80,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
   // Add a button
   buttons.unshift(
     {
-      name: 'Extempore Effect',
+      name: game.i18n.localize(MODULE_ID + '.contextMenuExtemporeEffect'),
       icon: '<i class="fas fa-star"></i>',
       condition: li => {
         const message = game.messages.get(li.data('messageId'))
@@ -96,13 +94,13 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         const item = message.item ||
           (message.getFlag('pf2e', 'origin') ? await fromUuid(message.getFlag('pf2e', 'origin').uuid) : null)
         if (item === null) {
-          return ui.notifications.warn(`Item not found in PF2e message.`)
+          return ui.notifications.error(game.i18n.localize(MODULE_ID + '.errorItemNotFound'))
         }
         const shiftPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT)
         const effect = createEffect(item)
         const tokens = canvas.tokens.controlled
         if (tokens.length === 0) {
-          ui.notifications.warn(`You need to have token(s) selected to apply the effect.`)
+          ui.notifications.error(game.i18n.localize(MODULE_ID + '.errorNoTokensSelected'))
         } else for (const token of tokens) {
           const effectItems = await token.actor.createEmbeddedDocuments('Item', [effect])
           if (shiftPressed) {
@@ -114,7 +112,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
     // Special case for "Effect" item messages;  though it's very unlikely they'll actually be put in chat
     // (this option and the previous option will never both be available)
     {
-      name: 'Apply Effect',
+      name: game.i18n.localize(MODULE_ID + '.contextMenuApplyEffect'),
       icon: '<i class="fas fa-star"></i>',
       condition: li => {
         const message = game.messages.get(li.data('messageId'))
@@ -130,11 +128,11 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         const item = message.item ||
           (message.getFlag('pf2e', 'origin') ? await fromUuid(message.getFlag('pf2e', 'origin').uuid) : null)
         if (item === null) {
-          return ui.notifications.warn(`Item not found in PF2e message.`)
+          return ui.notifications.error(game.i18n.localize(MODULE_ID + '.errorItemNotFound'))
         }
         const tokens = canvas.tokens.controlled
         if (tokens.length === 0) {
-          ui.notifications.warn(`You need to have token(s) selected to apply the effect.`)
+          ui.notifications.error(game.i18n.localize(MODULE_ID + '.errorNoTokensSelected'))
         } else for (const token of tokens) {
           await token.actor.createEmbeddedDocuments('Item', [item.toObject()])
         }
@@ -286,7 +284,7 @@ const createEffect = (item) => {
   const image = getImage(item)
   return {
     type: 'effect',
-    name: `Effect: ${item.name}`,
+    name: game.i18n.localize(MODULE_ID + '.addedPrefixToEffectName') + item.name,
     img: image,
     data: {
       tokenIcon: { show: true },
@@ -298,7 +296,7 @@ const createEffect = (item) => {
       },
       description: {
         ...item.system.description,
-        value: `<h2>(Generated Effect)</h2>\n${descriptionText}`,
+        value: game.i18n.localize(MODULE_ID + '.addedPrefixToEffectDescription') + descriptionText,
       },
       traits: item.system.traits,
       level: item.system.level,
@@ -319,7 +317,7 @@ const createEmptyEffect = () => {
   const image = randomImage({ id: kindaRandomString })
   return {
     type: 'effect',
-    name: `Quick_untitled_effect`,
+    name: game.i18n.localize(MODULE_ID + '.nameOfQuickUntitledEffect'),
     img: image,
     data: {
       tokenIcon: { show: true },
@@ -330,7 +328,7 @@ const createEmptyEffect = () => {
         expiry: 'turn-start',
       },
       description: {
-        value: `<h2>(Generated Effect)</h2>\nWrite whatever you want in here!`,
+        value: game.i18n.localize(MODULE_ID + '.descriptionOfQuickUntitledEffect'),
       },
       traits: {
         custom: '',

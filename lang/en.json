@@ -1,6 +1,29 @@
 {
   "pf2e-extempore-effects": {
     "hiddenFromPlayerText": "Hidden from player?",
-    "openSheetInstruction": "[Shift + Left Click] Open sheet"
+    "openSheetInstruction": "[Shift + Left Click] Open sheet",
+    "contextMenuExtemporeEffect": "Extempore Effect",
+    "contextMenuApplyEffect": "Apply Effect",
+    "addedPrefixToEffectName": "Effect: ",
+    "addedPrefixToEffectDescription": "<h2>(Generated Effect)</h2>\n",
+    "nameOfQuickUntitledEffect": "Quick_untitled_effect",
+    "descriptionOfQuickUntitledEffect": "<h2>(Generated Effect)</h2>\nWrite whatever you want in here!",
+    "settings": {
+      "randomize-image-if-default": {
+        "name": "Prefer random images over default images",
+        "hint": "Default true.  When creating an effect out of a message that has an item but no actor (or has an actor with\n    the default art), and that item has default art, pick a random colorful effect image instead."
+      },
+      "hidden-by-default": {
+        "name": "Create hidden effects by default",
+        "hint": "Default false.  When creating an effect with the module as a GM it will not default to \"hidden from players\".\n     Holding the Ctrl/Alt button while creating an effect will reverse this (making it hidden by default)."
+      },
+      "quick-add-empty-effect": {
+        "name": "Quick add empty effect",
+        "hint": "Create a new custom effect with a random icon, applied to the currently selected token"
+      }
+    },
+    "errorMultipleTokensCustomEffect": "You need to have one token selected to apply a custom new effect.",
+    "errorNoTokensSelected": "You need to have token(s) selected to apply the effect.",
+    "errorItemNotFound": "Item not found in PF2e message."
   }
 }
