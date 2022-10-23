@@ -10,12 +10,21 @@ Hooks.on('init', () => {
   )
   game.settings.register(MODULE_ID, 'randomize-image-if-default', {
     name: `Prefer random images over default images`,
-    hint: `Default true:  when creating an effect out of a message that has an item but no actor (or has an actor with
+    hint: `Default true.  When creating an effect out of a message that has an item but no actor (or has an actor with
     the default art), and that item has default art, pick a random colorful effect image instead.`,
     scope: 'world',
     config: true,
     type: Boolean,
     default: true,
+  })
+  game.settings.register(MODULE_ID, 'hidden-by-default', {
+    name: `Create hidden effects by default`,
+    hint: `Default false.  When creating an effect with the module as a GM it will not default to "hidden from players".
+     Holding the Ctrl/Alt button while creating an effect will reverse this (making it hidden by default).`,
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
   })
   const { CONTROL, SHIFT } = KeyboardManager.MODIFIER_KEYS
   game.keybindings.register(MODULE_ID, 'quick-add-empty-effect', {
@@ -268,6 +277,9 @@ const getImage = (item) => {
 }
 
 const createEffect = (item) => {
+  const ctrlOrAltPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
+    || game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
+  const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const durationText = item.system.duration ? item.system.duration.value : ''
   const descriptionText = item.system.description.value
   const { durationValue, durationUnit, durationSustained } = getDuration(durationText, descriptionText)
@@ -293,11 +305,16 @@ const createEffect = (item) => {
       source: item.system.source,
       slug: `temporary-effect-${item.system.slug}`,
     },
+    flags: {
+      [MODULE_ID]: { 'hiddenFromPlayer': createHidden },
+    },
   }
 }
 
 const createEmptyEffect = () => {
   const screenPos = canvas.scene._viewPosition
+  const altPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
+  const createHidden = game.user.isGM && (altPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const kindaRandomString = Math.round(screenPos.x + screenPos.y + screenPos.scale * 1000).toString()
   const image = randomImage({ id: kindaRandomString })
   return {
@@ -328,6 +345,9 @@ const createEmptyEffect = () => {
       },
       // note: naming this just 'temporary-effect-...' will lead to a PF2E bug, apparently!
       slug: `extempore-temporary-effect-${kindaRandomString}`,
+    },
+    flags: {
+      [MODULE_ID]: { 'hiddenFromPlayer': createHidden },
     },
   }
 }
