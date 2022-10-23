@@ -2,7 +2,7 @@
   "id": "pf2e-extempore-effects",
   "title": "pf2E Extempore Effects",
   "description": "Allows creating temporary Effects from chat messages, to easily mark tokens as affected by a spell/action/item that doesn't normally have embedded effects.",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "compatibility": {
     "minimum": "10",
     "verified": "10"
@@ -19,6 +19,11 @@
       "lang": "en",
       "name": "English",
       "path": "lang/en.json"
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
     }
   ],
   "url": "https://github.com/shemetz/pf2e-extempore-effects",
@@ -36,7 +41,7 @@
         "manifest": "https://github.com/foundryvtt/pf2e/releases/download/latest/system.json",
         "compatibility": {
           "minimum": "3.0.0",
-          "verified": "3.13.999"
+          "verified": "4.2.6"
         }
       }
     ],
@@ -46,8 +51,8 @@
         "type": "module",
         "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json",
         "compatibility": {
-          "minimum": "1.12.7.0",
-          "verified": "1.12.7.0"
+          "minimum": "1.12.0.0",
+          "verified": "1.12.10.0"
         }
       }
     ]

@@ -36,7 +36,7 @@ If you hold the Shift button, the effect's sheet will be opened up for you to se
 This is useful if you want to quickly edit the effect - for example:
 
 - Rename Mirror Image to "Effect: Mirror Image **(3)**",
-- Rename Mummy Rot to "Effect: Mummy Rot **(stage 1)**"
+- Rename Mummy Rot to "Effect: Mummy Rot **(stage 1)**" (note:  less needed now that we have core Counter support)
 - Change Steal Shadow's duration from Unlimited to 2 hours.
 - Change Arsenic's image from the picture of a powder to a picture of deadly poison.
 
@@ -61,6 +61,10 @@ This removes the visibility of the effect from:
 - Token status effect icon on the canvas
 - Scrolling text animations on the canvas
 - Token Action HUD module
+
+You can hold **Ctrl** or **Alt** while creating the effect with the module to make it immediately hidden.  This is
+useful if you're quickly improvising a secret effect mid-session (e.g. when a player is afflicted by a disease described
+in a monster's feature).  You can also set this behavior to be default in the settings.
 
 NOTE:  the core PF2E system will soon also have support for hidden effects.  When that happens, this module will no 
 longer support them.
