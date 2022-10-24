@@ -2,7 +2,6 @@
   "pf2e-extempore-effects": {
     "hiddenFromPlayerText": "Caché pour les joueurs ?",
     "openSheetInstruction": "[Shift + clic gauche] Ouvrir la feuille",
-
     "contextMenuExtemporeEffect": "Effet improvisé",
     "contextMenuApplyEffect": "Appliquer l'effet",
     "addedPrefixToEffectName": "Effet: ",
