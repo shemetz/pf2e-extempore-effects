@@ -3,28 +3,28 @@
     "hiddenFromPlayerText": "Caché pour les joueurs ?",
     "openSheetInstruction": "[Shift + clic gauche] Ouvrir la feuille",
 
-    "contextMenuExtemporeEffect": "Extempore Effect",
-    "contextMenuApplyEffect": "Apply Effect",
-    "addedPrefixToEffectName": "Effect: ",
-    "addedPrefixToEffectDescription": "<h2>(Generated Effect)</h2>\n",
-    "nameOfQuickUntitledEffect": "Quick_untitled_effect",
-    "descriptionOfQuickUntitledEffect": "<h2>(Generated Effect)</h2>\nWrite whatever you want in here!",
+    "contextMenuExtemporeEffect": "Effet improvisé",
+    "contextMenuApplyEffect": "Appliquer l'effet",
+    "addedPrefixToEffectName": "Effet: ",
+    "addedPrefixToEffectDescription": "<h2>(Effet généré)</h2>\n",
+    "nameOfQuickUntitledEffect": "Effet non titré rapide",
+    "descriptionOfQuickUntitledEffect": "<h2>(Effet généré)</h2>\nÉcrivez ce que vous voulez ici !",
     "settings": {
       "randomize-image-if-default": {
-        "name": "Prefer random images over default images",
-        "hint": "Default true.  When creating an effect out of a message that has an item but no actor (or has an actor with\n    the default art), and that item has default art, pick a random colorful effect image instead."
+        "name": "Préférez les images aléatoires aux images par défaut",
+        "hint": "Par Défaut. Lorsque vous créez un effet en dehors d'un message qui a un objet mais pas d'acteur (ou qui possède \nun acteur avec une image par défaut) et que cet objet possède une image par défaut, choisissez une image colorée aléatoire à la place."
       },
       "hidden-by-default": {
-        "name": "Create hidden effects by default",
-        "hint": "Default false.  When creating an effect with the module as a GM it will not default to \"hidden from players\".\n     Holding the Ctrl/Alt button while creating an effect will reverse this (making it hidden by default)."
+        "name": "Créer un effet Caché",
+        "hint": "Pas par défaut. Lorsque vous créez un effet avec ce module en tant que MJ, il ne sera pas \"Caché des joueurs\" par défaut.\n     Maintenir la touche Ctrl/Alt en créant un effet produira l'inverse (le rendant caché par défaut)."
       },
       "quick-add-empty-effect": {
-        "name": "Quick add empty effect",
-        "hint": "Create a new custom effect with a random icon, applied to the currently selected token"
+        "name": "Ajout rapide d'un effet vide",
+        "hint": "Créez un nouvel effet personnalisé avec un icône aléatoire, appliqué au jeton actuellement sélectionné."
       }
     },
-    "errorMultipleTokensCustomEffect": "You need to have one token selected to apply a custom new effect.",
-    "errorNoTokensSelected": "You need to have token(s) selected to apply the effect.",
-    "errorItemNotFound": "Item not found in PF2e message."
+    "errorMultipleTokensCustomEffect": "Vous avez besoin d'avoir un objet sélectionné pour appliquer un nouvel effet personnalisé.",
+    "errorNoTokensSelected": "Vous avez besoin d'avoir un jeton (ou plusieurs) choisi pour appliquer l'effet.",
+    "errorItemNotFound": "Objet non trouvé dans le message PF2e."
   }
 }
