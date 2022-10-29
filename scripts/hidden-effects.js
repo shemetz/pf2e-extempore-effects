@@ -44,6 +44,7 @@ Hooks.on('renderEffectSheetPF2e', (sheet, $html) => {
  */
 Hooks.on('renderEffectsPanel', (panel, $html) => {
   const divElems = $html.find('.effect-item > div.icon')
+  let foundHiddenEffect = false
   divElems.each((i, dElem) => {
     const itemId = dElem.dataset.itemId
     const panel = game.pf2e.effectPanel
@@ -56,9 +57,15 @@ Hooks.on('renderEffectsPanel', (panel, $html) => {
         $(effectElement).addClass('pf2e-extempore-effects-hidden-effect-on-effects-panel')
       } else {
         effectElement.remove()
+        foundHiddenEffect = true
       }
     }
   })
+  // delete horizontal line if there's no longer an effect after it
+  const hrElement = $html.find('hr')[0]
+  if (hrElement && !hrElement.nextElementSibling) {
+    $html.find('hr').remove()
+  }
 })
 
 /**
