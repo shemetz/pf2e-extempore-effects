@@ -1,5 +1,6 @@
 const MODULE_ID = 'pf2e-extempore-effects'
 const MODULE_NAME = 'pf2E Extempore Effects'
+const LATEST_MIGRATION_VERSION = 2
 
 Hooks.on('init', () => {
   libWrapper.register(
@@ -31,7 +32,56 @@ Hooks.on('init', () => {
     editable: [{ key: 'KeyE', modifiers: [CONTROL, SHIFT] }],
     onDown: quickAddEmptyEffect,
   })
+  game.settings.register(MODULE_ID, 'migration-version', {
+    name: 'migration-version',
+    hint: 'migration-version',
+    scope: 'world',
+    config: false,
+    type: Number,
+    default: -1,
+  })
 })
+
+Hooks.on('ready', async () => {
+  const migrationVersion = game.settings.get(MODULE_ID, 'migration-version')
+  if (migrationVersion >= LATEST_MIGRATION_VERSION)
+    return
+  if (migrationVersion < 2) {
+    console.log(`${MODULE_NAME} | migrating hidden effects...`)
+    await migrateAllHiddenEffects()
+    game.settings.set(MODULE_ID, 'migration-version', 2)
+    console.log(`${MODULE_NAME} | migration version set to 2`)
+  }
+})
+
+const migrateAllHiddenEffects = async () => {
+  let effectsMigrated = 0
+  // NOTE:  only migrating actors outside scenes!  unlinked actors are not under the players' control anyways
+
+  const migrate = async effect => {
+    const flagValue = effect.getFlag(MODULE_ID, 'hiddenFromPlayer')
+    if (flagValue === true) {
+      await effect.update({ 'system.unidentified': true })
+      await effect.setFlag(MODULE_ID, 'hiddenFromPlayer', false)
+      effectsMigrated += 1
+    }
+  }
+
+  await game.items.forEach(async effect => {
+    await migrate(effect)
+  })
+
+  await game.actors.forEach(async actor => {
+    const effects = actor.items.filter(i => i.type === 'effect')
+    for (const effect of effects) {
+      await migrate(effect)
+    }
+  })
+
+  if (effectsMigrated) {
+    console.log(`${MODULE_NAME} | migrated ${effectsMigrated} effects to new "unidentified"`)
+  }
+}
 
 /**
  * show effect sheets on shift-click
@@ -298,14 +348,13 @@ const createEffect = (item) => {
         ...item.system.description,
         value: game.i18n.localize(MODULE_ID + '.addedPrefixToEffectDescription') + descriptionText,
       },
+      unidentified: createHidden,
       traits: item.system.traits,
       level: item.system.level,
       source: item.system.source,
       slug: `temporary-effect-${item.system.slug}`,
     },
-    flags: {
-      [MODULE_ID]: { 'hiddenFromPlayer': createHidden },
-    },
+    flags: {},
   }
 }
 
@@ -330,6 +379,7 @@ const createEmptyEffect = () => {
       description: {
         value: game.i18n.localize(MODULE_ID + '.descriptionOfQuickUntitledEffect'),
       },
+      unidentified: createHidden,
       traits: {
         custom: '',
         rarity: 'common',
@@ -344,9 +394,7 @@ const createEmptyEffect = () => {
       // note: naming this just 'temporary-effect-...' will lead to a PF2E bug, apparently!
       slug: `extempore-temporary-effect-${kindaRandomString}`,
     },
-    flags: {
-      [MODULE_ID]: { 'hiddenFromPlayer': createHidden },
-    },
+    flags: {},
   }
 }
 

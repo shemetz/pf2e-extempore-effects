@@ -14,8 +14,8 @@
         "hint": "Default true.  When creating an effect out of a message that has an item but no actor (or has an actor with\n    the default art), and that item has default art, pick a random colorful effect image instead."
       },
       "hidden-by-default": {
-        "name": "Create hidden effects by default",
-        "hint": "Default false.  When creating an effect with the module as a GM it will not default to \"hidden from players\".\n     Holding the Ctrl/Alt button while creating an effect will reverse this (making it hidden by default)."
+        "name": "Create unidentified effects by default",
+        "hint": "Default false.  When creating an effect with the module as a GM it will not default to \"unidentified\" (secret).\n     Holding the Ctrl/Alt button while creating an effect will reverse this (making it secret by default)."
       },
       "quick-add-empty-effect": {
         "name": "Quick add empty effect",

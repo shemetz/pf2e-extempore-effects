@@ -52,22 +52,9 @@ untitled and the image will be a random icon (the randomness depends on screen p
 around you can keep creating random effects with the same icon, which is sometimes handy).
 
 ### "Hidden from player" toggle for effects
-Gamemasters (GMs) can now mark an effect as hidden from players.  If they do, players will never be able to see that
-effect as long as that toggle is on.
+This feature was removed from the module, because now it's [part of the core system](https://github.com/foundryvtt/pf2e/pull/4608) :]
 
-This removes the visibility of the effect from:
-- Character sheet
-- Effects panel (top right of screen)
-- Token status effect icon on the canvas
-- Scrolling text animations on the canvas
-- Token Action HUD module
-
-You can hold **Ctrl** or **Alt** while creating the effect with the module to make it immediately hidden.  This is
-useful if you're quickly improvising a secret effect mid-session (e.g. when a player is afflicted by a disease described
-in a monster's feature).  You can also set this behavior to be default in the settings.
-
-NOTE:  the core PF2E system will soon also have support for hidden effects.  When that happens, this module will no 
-longer support them.
+(migration will happen for any users who relied on this module until now)
 
 # Demos
 
@@ -78,7 +65,3 @@ longer support them.
 ### Shift+clicking
 
 ![](metadata/shift_click_effect_panel_demo.gif)
-
-### Secret effects
-
-![](metadata/secret_effect_demo.gif)
