@@ -4,6 +4,7 @@
     "openSheetInstruction": "[Shift + clic gauche] Ouvrir la feuille",
     "contextMenuExtemporeEffect": "Effet improvisé",
     "contextMenuApplyEffect": "Appliquer l'effet",
+    "addedPrefixToExpendedEffectName": "Dépensé: ",
     "addedPrefixToEffectName": "Effet: ",
     "addedPrefixToEffectDescription": "<h2>(Effet généré)</h2>\n",
     "nameOfQuickUntitledEffect": "Effet non titré rapide",
