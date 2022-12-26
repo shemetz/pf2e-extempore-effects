@@ -218,7 +218,7 @@ function fromUuidNonAsync (uuid) {
   return doc || null
 }
 
-function getFrequency(frequency) {
+function getFrequency (frequency) {
   let durationValue, durationUnit, durationSustained = false
   switch (frequency.per) {
     case 'PT1M':
@@ -361,24 +361,28 @@ const createEffect = (item) => {
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const durationText = item.system.duration ? item.system.duration.value : ''
   const descriptionText = item.system.description.value
-  let durationValue, durationUnit, durationSustained;
-  if(item.system.frequency) {
+  let durationValue, durationUnit, durationSustained
+  if (item.system.frequency) {
     ({
       durationValue,
       durationUnit,
-      durationSustained
+      durationSustained,
     } = getFrequency(item.system.frequency))
   } else {
     ({
       durationValue,
       durationUnit,
-      durationSustained
+      durationSustained,
     } = getDuration(durationText, descriptionText))
   }
+  const effectName = game.i18n.localize(
+    MODULE_ID + item.system.frequency ? '.addedPrefixToExpendedEffectName' : '.addedPrefixToEffectName',
+  ) + item.name
+  const storedDescriptionText = game.i18n.localize(MODULE_ID + '.addedPrefixToEffectDescription') + descriptionText
   const image = getImage(item)
   return {
     type: 'effect',
-    name: (item.system.frequency ?game.i18n.localize(MODULE_ID + '.addedPrefixToExpendedEffectName') : game.i18n.localize(MODULE_ID + '.addedPrefixToEffectName')) + item.name,
+    name: effectName,
     img: image,
     data: {
       tokenIcon: { show: true },
@@ -390,7 +394,7 @@ const createEffect = (item) => {
       },
       description: {
         ...item.system.description,
-        value: game.i18n.localize(MODULE_ID + '.addedPrefixToEffectDescription') + descriptionText,
+        value: storedDescriptionText,
       },
       unidentified: createHidden,
       traits: item.system.traits,
