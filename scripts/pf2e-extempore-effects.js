@@ -218,6 +218,37 @@ function fromUuidNonAsync (uuid) {
   return doc || null
 }
 
+function getFrequency(frequency) {
+  let durationValue, durationUnit, durationSustained = false
+  switch (frequency.per) {
+    case 'PT1M':
+      durationUnit = 'minutes'
+      durationValue = 1
+      break
+    case 'PT10M':
+      durationUnit = 'minutes'
+      durationValue = 10
+      break
+    case 'PT1H':
+      durationUnit = 'hours'
+      durationValue = 1
+      break
+    case 'PT24H':
+      durationUnit = 'hours'
+      durationValue = 24
+      break
+    case 'day':
+      durationUnit = 'days'
+      durationValue = 1
+      break
+    case 'PT1W':
+      durationUnit = 'days'
+      durationValue = 7
+      break
+  }
+  return { durationSustained, durationUnit, durationValue }
+}
+
 const getDuration = (durationText, descriptionText) => {
   const itemDuration = durationText || ''
   let durationValue, durationUnit, durationSustained
@@ -330,11 +361,24 @@ const createEffect = (item) => {
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const durationText = item.system.duration ? item.system.duration.value : ''
   const descriptionText = item.system.description.value
-  const { durationValue, durationUnit, durationSustained } = getDuration(durationText, descriptionText)
+  let durationValue, durationUnit, durationSustained;
+  if(item.system.frequency) {
+    ({
+      durationValue,
+      durationUnit,
+      durationSustained
+    } = getFrequency(item.system.frequency))
+  } else {
+    ({
+      durationValue,
+      durationUnit,
+      durationSustained
+    } = getDuration(durationText, descriptionText))
+  }
   const image = getImage(item)
   return {
     type: 'effect',
-    name: game.i18n.localize(MODULE_ID + '.addedPrefixToEffectName') + item.name,
+    name: (item.system.frequency ?game.i18n.localize(MODULE_ID + '.addedPrefixToExpendedEffectName') : game.i18n.localize(MODULE_ID + '.addedPrefixToEffectName')) + item.name,
     img: image,
     data: {
       tokenIcon: { show: true },

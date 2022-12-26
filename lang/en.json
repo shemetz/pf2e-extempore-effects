@@ -4,6 +4,7 @@
     "openSheetInstruction": "[Shift + Left Click] Open sheet",
     "contextMenuExtemporeEffect": "Extempore Effect",
     "contextMenuApplyEffect": "Apply Effect",
+    "addedPrefixToExpendedEffectName": "Expended: ",
     "addedPrefixToEffectName": "Effect: ",
     "addedPrefixToEffectDescription": "<h2>(Generated Effect)</h2>\n",
     "nameOfQuickUntitledEffect": "Quick_untitled_effect",
