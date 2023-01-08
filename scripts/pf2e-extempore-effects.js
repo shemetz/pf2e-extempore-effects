@@ -376,7 +376,7 @@ const createEffect = (item) => {
     } = getDuration(durationText, descriptionText))
   }
   const effectName = game.i18n.localize(
-    MODULE_ID + item.system.frequency ? '.addedPrefixToExpendedEffectName' : '.addedPrefixToEffectName',
+    MODULE_ID + (item.system.frequency ? '.addedPrefixToExpendedEffectName' : '.addedPrefixToEffectName'),
   ) + item.name
   const storedDescriptionText = game.i18n.localize(MODULE_ID + '.addedPrefixToEffectDescription') + descriptionText
   const image = getImage(item)
