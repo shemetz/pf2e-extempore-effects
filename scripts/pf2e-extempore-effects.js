@@ -32,6 +32,19 @@ Hooks.on('init', () => {
     editable: [{ key: 'KeyE', modifiers: [CONTROL, SHIFT] }],
     onDown: quickAddEmptyEffect,
   })
+  game.settings.register(MODULE_ID, 'open-effect-sheet-shortcut', {
+    name: game.i18n.localize(MODULE_ID + '.settings.open-effect-sheet-shortcut.name'),
+    hint: game.i18n.localize(MODULE_ID + '.settings.open-effect-sheet-shortcut.hint'),
+    scope: 'client',
+    config: true,
+    type: String,
+    default: 'Shift + Left-Click',
+    choices: {
+      'Shift + Left-Click': 'Shift + Left-Click',
+      'Control + Left-Click': 'Control + Left-Click',
+      'Disabled': 'Disabled',
+    },
+  })
   game.settings.register(MODULE_ID, 'migration-version', {
     name: 'migration-version',
     hint: 'migration-version',
@@ -84,19 +97,42 @@ const migrateAllHiddenEffects = async () => {
 }
 
 /**
- * show effect sheets on shift-click
+ * show effect sheets on shift-click (configurable: ctrl+click)
  */
 Hooks.on('renderEffectsPanel', (panel, $html) => {
-  const instructions = `<p>${game.i18n.localize(MODULE_ID + '.openSheetInstruction')}</p>`
+  const openEffectSheetShortcut = game.settings.get(MODULE_ID, 'open-effect-sheet-shortcut')
+  let instructionStr
+  if (openEffectSheetShortcut === 'Shift + Left-Click') {
+    instructionStr = game.i18n.localize(MODULE_ID + '.openSheetInstructionShift')
+  } else if (openEffectSheetShortcut === 'Control + Left-Click') {
+    instructionStr = game.i18n.localize(MODULE_ID + '.openSheetInstructionCtrl')
+  } else {
+    instructionStr = null
+  }
+  if (!instructionStr) {
+    return  // not adding hotkey
+  }
+  const instructions = `<p>${instructionStr}</p>`
   $html.find('.instructions').append(instructions)
   const $icons = $html.find('div[data-item-id]')
   // removing default PF2e system behavior on left click!
   $icons.off('click')
-  // adding new behavior, which first checks if shift is pressed
+  // adding new behavior, which first checks if shift/ctrl is pressed
   $icons.on('click', async (event) => {
     const panel = game.pf2e.effectPanel
-    const shiftPressed = event.shiftKey
-    if (!shiftPressed) return normalIconLeftClickBehavior(event, panel)
+    let modifierKeyPressed
+    switch (openEffectSheetShortcut) {
+      case 'Shift + Left-Click':
+        modifierKeyPressed = event.shiftKey
+        break
+      case 'Control + Left-Click':
+        modifierKeyPressed = event.ctrlKey
+        break
+      case 'Disabled':
+        modifierKeyPressed = false
+        break
+    }
+    if (!modifierKeyPressed) return normalIconLeftClickBehavior(event, panel)
     const id = event.currentTarget.dataset.itemId
     const effect = panel.actor?.items.get(id)
     // open and display the sheet
@@ -146,14 +182,26 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         if (item === null) {
           return ui.notifications.error(game.i18n.localize(MODULE_ID + '.errorItemNotFound'))
         }
-        const shiftPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT)
+        const openEffectSheetShortcut = game.settings.get(MODULE_ID, 'open-effect-sheet-shortcut')
+        let modifierKeyPressed
+        switch (openEffectSheetShortcut) {
+          case 'Shift + Left-Click':
+            modifierKeyPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT)
+            break
+          case 'Control + Left-Click':
+            modifierKeyPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
+            break
+          case 'Disabled':
+            modifierKeyPressed = false
+            break
+        }
         const effect = createEffect(item)
         const tokens = canvas.tokens.controlled
         if (tokens.length === 0) {
           ui.notifications.error(game.i18n.localize(MODULE_ID + '.errorNoTokensSelected'))
         } else for (const token of tokens) {
           const effectItems = await token.actor.createEmbeddedDocuments('Item', [effect])
-          if (shiftPressed) {
+          if (modifierKeyPressed) {
             effectItems[0].sheet.render(true)
           }
         }

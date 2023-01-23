@@ -32,6 +32,7 @@ effect to the controlled token. This is just a quality-of-life feature.
 
 ### Shift+clicking the "Extempore Effect" option, to also open the effect's sheet
 If you hold the Shift button, the effect's sheet will be opened up for you to see and edit, after being applied.
+You can configure to use Ctrl instead of Shift, or to disable this behavior, in the module settings.
 
 This is useful if you want to quickly edit the effect - for example:
 
@@ -40,7 +41,7 @@ This is useful if you want to quickly edit the effect - for example:
 - Change Steal Shadow's duration from Unlimited to 2 hours.
 - Change Arsenic's image from the picture of a powder to a picture of deadly poison.
 
-### Shift+Clicking an effect in the effects panel, to edit it
+### Shift+clicking an effect in the effects panel, to edit it
 You can shift+click an existing effect icon in the panel that appears in the top right corner of the screen, when
 controlling a token.  This will open the sheet of that effect/condition, allowing you to read it and edit it.  Useful if
 you want to get a refresher about its rules, or to edit a small detail about it.

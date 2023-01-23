@@ -1,7 +1,8 @@
 {
   "pf2e-extempore-effects": {
     "hiddenFromPlayerText": "Hidden from player?",
-    "openSheetInstruction": "[Shift + Left Click] Open sheet",
+    "openSheetInstructionShift": "[Shift + Left Click] Open sheet",
+    "openSheetInstructionCtrl": "[Ctrl + Left Click] Open sheet",
     "contextMenuExtemporeEffect": "Extempore Effect",
     "contextMenuApplyEffect": "Apply Effect",
     "addedPrefixToExpendedEffectName": "Expended: ",
@@ -21,6 +22,10 @@
       "quick-add-empty-effect": {
         "name": "Quick add empty effect",
         "hint": "Create a new custom effect with a random icon, applied to the currently selected token"
+      },
+      "open-effect-sheet-shortcut": {
+        "name": "Open Effect Sheet shortcut",
+        "hint": "If not disabled, you can use this to open the effect's sheet when creating an Extempore Effect and when using the effects panel."
       }
     },
     "errorMultipleTokensCustomEffect": "You need to have one token selected to apply a custom new effect.",

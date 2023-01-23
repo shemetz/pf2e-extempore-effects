@@ -1,7 +1,8 @@
 {
   "pf2e-extempore-effects": {
     "hiddenFromPlayerText": "Caché pour les joueurs ?",
-    "openSheetInstruction": "[Shift + clic gauche] Ouvrir la feuille",
+    "openSheetInstructionShift": "[Shift + clic gauche] Ouvrir la feuille",
+    "openSheetInstructionCtrl": "[Ctrl + clic gauche] Ouvrir la feuille",
     "contextMenuExtemporeEffect": "Effet improvisé",
     "contextMenuApplyEffect": "Appliquer l'effet",
     "addedPrefixToExpendedEffectName": "Dépensé: ",
@@ -21,6 +22,10 @@
       "quick-add-empty-effect": {
         "name": "Ajout rapide d'un effet vide",
         "hint": "Créez un nouvel effet personnalisé avec un icône aléatoire, appliqué au jeton actuellement sélectionné."
+      },
+      "open-effect-sheet-shortcut": {
+        "name": "Open Effect Sheet shortcut",
+        "hint": "If not disabled, you can use this to open the effect's sheet when creating an Extempore Effect and when using the effects panel."
       }
     },
     "errorMultipleTokensCustomEffect": "Vous avez besoin d'avoir un objet sélectionné pour appliquer un nouvel effet personnalisé.",
