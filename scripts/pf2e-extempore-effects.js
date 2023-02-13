@@ -428,6 +428,7 @@ const createEffect = (item) => {
   ) + item.name
   const storedDescriptionText = game.i18n.localize(MODULE_ID + '.addedPrefixToEffectDescription') + descriptionText
   const image = getImage(item)
+  const effectLevel = item.system.level || item.parent.system.details.level
   return {
     type: 'effect',
     name: effectName,
@@ -446,7 +447,7 @@ const createEffect = (item) => {
       },
       unidentified: createHidden,
       traits: item.system.traits,
-      level: item.system.level,
+      level: effectLevel,
       source: item.system.source,
       slug: `temporary-effect-${item.system.slug}`,
     },
