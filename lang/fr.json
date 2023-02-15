@@ -5,8 +5,8 @@
     "openSheetInstructionCtrl": "[Ctrl + clic gauche] Ouvrir la feuille",
     "contextMenuExtemporeEffect": "Effet improvisé",
     "contextMenuApplyEffect": "Appliquer l'effet",
-    "addedPrefixToExpendedEffectName": "Dépensé: ",
-    "addedPrefixToEffectName": "Effet: ",
+    "addedPrefixToExpendedEffectName": "Dépensé : ",
+    "addedPrefixToEffectName": "Effet : ",
     "addedPrefixToEffectDescription": "<h2>(Effet généré)</h2>\n",
     "nameOfQuickUntitledEffect": "Effet non titré rapide",
     "descriptionOfQuickUntitledEffect": "<h2>(Effet généré)</h2>\nÉcrivez ce que vous voulez ici !",
@@ -21,11 +21,11 @@
       },
       "quick-add-empty-effect": {
         "name": "Ajout rapide d'un effet vide",
-        "hint": "Créez un nouvel effet personnalisé avec un icône aléatoire, appliqué au jeton actuellement sélectionné."
+        "hint": "Créer un nouvel effet personnalisé avec une icône aléatoire, appliqué au jeton actuellement sélectionné"
       },
       "open-effect-sheet-shortcut": {
         "name": "Ouvrir le raccourci de la feuille d'effet",
-        "hint": "S'il n'est pas activé, vous pouvez utiliser ceci pour ouvrir la feuille d'effets lorsque vous créez un 'extempore effect' et lorsque vous utilisez le panneau des effets"
+        "hint": "S'il n'est pas activé, vous pouvez utiliser ceci pour ouvrir la feuille d'effets lorsque vous créez un 'extempore effect' et lorsque vous utilisez le panneau des effets."
       }
     },
     "errorMultipleTokensCustomEffect": "Vous avez besoin d'avoir un objet sélectionné pour appliquer un nouvel effet personnalisé.",
