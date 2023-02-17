@@ -165,7 +165,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
       icon: '<i class="fas fa-star"></i>',
       condition: li => {
         const message = game.messages.get(li.data('messageId'))
-        if (message?.item?.type === 'effect' || message.getFlag('pf2e', 'origin')?.type === 'effect') {
+        if (isEffectOrCondition(message?.item) || isEffectOrCondition(message.getFlag('pf2e', 'origin'))) {
           return false
         }
         return message?.item || message.getFlag('pf2e', 'origin')?.uuid
@@ -209,8 +209,8 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
       icon: '<i class="fas fa-star"></i>',
       condition: li => {
         const message = game.messages.get(li.data('messageId'))
-        if (message?.item?.type === 'effect') return true
-        if (message.getFlag('pf2e', 'origin')?.type === 'effect') {
+        if (isEffectOrCondition(message?.item)) return true
+        if (isEffectOrCondition(message.getFlag('pf2e', 'origin'))) {
           const item = fromUuidNonAsync(message.getFlag('pf2e', 'origin').uuid)
           return !!item
         }
@@ -356,6 +356,10 @@ const getDuration = (durationText, descriptionText) => {
     durationUnit,
     durationSustained,
   }
+}
+
+const isEffectOrCondition = (document) => {
+  return document?.type === 'effect' || document?.type === 'condition'
 }
 
 const isImageBoring = (image) => {
