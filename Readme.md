@@ -36,8 +36,8 @@ You can configure to use Ctrl instead of Shift, or to disable this behavior, in 
 
 This is useful if you want to quickly edit the effect - for example:
 
-- Rename Mirror Image to "Effect: Mirror Image **(3)**",
-- Rename Mummy Rot to "Effect: Mummy Rot **(stage 1)**" (note:  less needed now that we have core Counter support)
+- Rename Mirror Image to "Effect: Mirror Image **(3)**" **(note:  less needed now that we have core Counter support)**
+- Rename Mummy Rot to "Effect: Mummy Rot **(stage 1)**" **(note:  less needed now that we have core Counter support)**
 - Change Steal Shadow's duration from Unlimited to 2 hours.
 - Change Arsenic's image from the picture of a powder to a picture of deadly poison.
 
@@ -58,6 +58,9 @@ This feature was removed from the module, because now it's [part of the core sys
 (migration will happen for any users who relied on this module until now)
 
 # Demos
+
+(These gifs are slightly outdated;  the option name changed from "Cause an Effect" to "Extempore Effect", and conditions
+no longer tick up-and-down on click.)
 
 ### Extempore Effects
 
