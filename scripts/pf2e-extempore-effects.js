@@ -114,39 +114,34 @@ Hooks.on('renderEffectsPanel', (panel, $html) => {
   }
   const instructions = `<p>${instructionStr}</p>`
   $html.find('.instructions').append(instructions)
-  const $icons = $html.find('div[data-item-id]')
-  // removing default PF2e system behavior on left click!
-  $icons.off('click')
-  // adding new behavior, which first checks if shift/ctrl is pressed
-  $icons.on('click', async (event) => {
-    const panel = game.pf2e.effectPanel
-    let modifierKeyPressed
-    switch (openEffectSheetShortcut) {
-      case 'Shift + Left-Click':
-        modifierKeyPressed = event.shiftKey
-        break
-      case 'Control + Left-Click':
-        modifierKeyPressed = event.ctrlKey
-        break
-      case 'Disabled':
-        modifierKeyPressed = false
-        break
-    }
-    if (!modifierKeyPressed) return normalIconLeftClickBehavior(event, panel)
-    const id = event.currentTarget.dataset.itemId
-    const effect = panel.actor?.items.get(id)
-    // open and display the sheet
-    effect?.sheet.render(true)
+
+  $html.find('.effect-item[data-item-id] .icon').each((i, icon) => {
+    icon.addEventListener('click', (event) => {
+      let modifierKeyPressed
+      switch (openEffectSheetShortcut) {
+        case 'Shift + Left-Click':
+          modifierKeyPressed = event.shiftKey
+          break
+        case 'Control + Left-Click':
+          modifierKeyPressed = event.ctrlKey
+          break
+        case 'Disabled':
+          modifierKeyPressed = false
+          break
+      }
+      if (!modifierKeyPressed) return
+      const id = event.currentTarget.closest('.effect-item[data-item-id]').dataset.itemId
+      const effect = panel.actor?.items.get(id)
+      if (!effect) return
+      // prevent normal PF2E click behavior, to make shift/ctrl click only open the sheet without increasing a counter
+      event.preventDefault()
+      event.stopPropagation()
+      event.stopImmediatePropagation()
+      // open and display the sheet
+      effect?.sheet.render(true)
+    }, true)
   })
 })
-
-const normalIconLeftClickBehavior = async (event, panel) => {
-  const $target = $(event.currentTarget)
-  if ($target.attr('data-locked')) return
-
-  const effect = panel.actor?.items.get($target.attr('data-item-id') ?? '')
-  if (effect && isOfClass(effect, 'AbstractEffectPF2e')) await effect.increase()
-}
 
 const quickAddEmptyEffect = async () => {
   const tokens = canvas.tokens.controlled
