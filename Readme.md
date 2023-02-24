@@ -57,6 +57,13 @@ This feature was removed from the module, because now it's [part of the core sys
 
 (migration will happen for any users who relied on this module until now)
 
+### Notifications for expired effects
+By default, this will only notify the GM about secret (unidentified) effects, though there is a setting to make it
+notify for all effects. When it triggers, it will both create a notification and create a chat message detailing which
+effect expired, what its duration was, which actor it applied to, and so on.  If you have the PF2E automation setting
+for "remove expired effects" turned on, then this message will also include a button to reapply the just-removed effect.
+
+
 # Demos
 
 (These gifs are slightly outdated;  the option name changed from "Cause an Effect" to "Extempore Effect", and conditions
