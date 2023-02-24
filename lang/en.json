@@ -25,7 +25,17 @@
       },
       "open-effect-sheet-shortcut": {
         "name": "Open Effect Sheet shortcut",
-        "hint": "If not disabled, you can use this to open the effect's sheet when creating an Extempore Effect and when using the effects panel."
+        "hint": "If not disabled, you can use this to open the effect's sheet when creating an Extempore Effect and when using the effects panel.",
+        "choice_shift_left_click": "Shift + Left-Click",
+        "choice_ctrl_left_click": "Control + Left-Click",
+        "choice_disabled": "Disabled"
+      },
+      "notifications-for-expired-effects": {
+        "name": "Notifications for expired events",
+        "hint": "Effects that expire will send a notification and a chat message, as a reminder",
+        "choice_all_effects": "All effects",
+        "choice_only_unidentified": "Only secret (unidentified) effects",
+        "choice_disabled": "Disabled"
       }
     },
     "errorMultipleTokensCustomEffect": "You need to have one token selected to apply a custom new effect.",

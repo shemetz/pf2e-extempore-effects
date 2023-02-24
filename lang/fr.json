@@ -25,7 +25,17 @@
       },
       "open-effect-sheet-shortcut": {
         "name": "Ouvrir le raccourci de la feuille d'effet",
-        "hint": "S'il n'est pas activé, vous pouvez utiliser ceci pour ouvrir la feuille d'effets lorsque vous créez un 'extempore effect' et lorsque vous utilisez le panneau des effets."
+        "hint": "S'il n'est pas activé, vous pouvez utiliser ceci pour ouvrir la feuille d'effets lorsque vous créez un 'extempore effect' et lorsque vous utilisez le panneau des effets.",
+        "choice_shift_left_click": "Shift + Left-Click",
+        "choice_ctrl_left_click": "Control + Left-Click",
+        "choice_disabled": "Disabled"
+      },
+      "notifications-for-expired-effects": {
+        "name": "Notifications for expired events",
+        "hint": "Effects that expire will send a notification and a chat message, as a reminder",
+        "choice_all_effects": "All effects",
+        "choice_only_unidentified": "Only secret (unidentified) effects",
+        "choice_disabled": "Disabled"
       }
     },
     "errorMultipleTokensCustomEffect": "Vous avez besoin d'avoir un objet sélectionné pour appliquer un nouvel effet personnalisé.",
