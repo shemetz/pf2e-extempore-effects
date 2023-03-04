@@ -184,6 +184,7 @@ Hooks.on('renderEffectsPanel', (panel, $html) => {
 
 // Wrap time-change functions so that the GM gets a notification on every Hidden condition that runs out of time
 const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
+  if (!game.user.isGM) return wrapped(...args)
   const newWorldTime = args[0]
   const oldWorldTime = game.time.worldTime
   // times are in seconds
@@ -209,7 +210,7 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
       console.log(`${MODULE_NAME} | ${effect.name} expired now!  ID = ${effect.id}`)
       const actor = effect.actor
       const stashedEffectJSON = effect.toJSON()
-      ui.notifications.info(`Secret effect expired, see chat!    (${effect.name})`)
+      ui.notifications.info(`${isSecretEffect ? 'Secret effect' : 'Effect'} expired, see chat!    (${effect.name})`)
       // post effect description again (it's usually helpful)
       const effTypeName = isSecretEffect ? 'Secret effect' : 'Effect'
       effect.toMessage(undefined, { rollMode: isSecretEffect ? 'gmroll' : undefined }).then(() => {
@@ -241,6 +242,7 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
       })
     }
   }
+
   wrapped(...args)
 }
 
