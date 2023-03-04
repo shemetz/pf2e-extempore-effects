@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.7.0] - 2023-02-24
 - Added automatic notifications and messages for expired unidentified effects (#5)
+- [1.7.1] Fixed double notification
 
 ## [1.6.6] - 2023-02-17
 - Fixed counters being added when shift-clicking effects in panel
@@ -83,4 +84,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.6.5]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.6.4...1.6.5
 [1.6.6]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.6.5...1.6.6
 [1.7.0]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.6.6...1.7.0
-[Unreleased]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.7.0...HEAD
+[1.7.1]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.7.0...1.7.1
+[Unreleased]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.7.1...HEAD
