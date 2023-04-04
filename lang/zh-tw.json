@@ -1,0 +1,45 @@
+{
+  "pf2e-extempore-effects": {
+    "errorNoTokensSelected": "你需要在應用效果時選中至少一個Token。",
+    "errorItemNotFound": "未能在PF2e訊息中找到物品。",
+    "addedPrefixToExpendedEffectName": "已過期： ",
+    "hiddenFromPlayerText": "對玩家隱藏？",
+    "openSheetInstructionShift": "[Shift + Left Click] 打開角色卡",
+    "openSheetInstructionCtrl": "[Ctrl + Left Click] 打開角色卡",
+    "contextMenuExtemporeEffect": "即興效果",
+    "contextMenuApplyEffect": "應用效果",
+    "addedPrefixToEffectName": "效果: ",
+    "addedPrefixToEffectDescription": "<h2>(產生效果)</h2>\n",
+    "nameOfQuickUntitledEffect": "快速無標題效果",
+    "descriptionOfQuickUntitledEffect": "<h2>(產生效果)</h2>\n隨便填入內容！",
+    "settings": {
+      "randomize-image-if-default": {
+        "name": "偏好隨機圖片",
+        "hint": "預設啟用：通過無主物品訊息建立效果（或持有物品的Actor無預設圖片）時，\n如該物品有預設圖片，則選用隨機彩色效果圖片。"
+      },
+      "hidden-by-default": {
+        "name": "預設建立為未鑑定效果",
+        "hint": "預設禁用。作為GM使用此MOD建立效果時，預設不將效果設定為「未鑑定」（秘密）\n按住Ctrl/Alt鍵以執行相反操作（預設為將效果設定為「未鑑定」）"
+      },
+      "quick-add-empty-effect": {
+        "name": "快速新增空白效果",
+        "hint": "使用隨機圖示建立新的自定義效果，新增到目前選擇的Token上"
+      },
+      "open-effect-sheet-shortcut": {
+        "name": "打開效果卡的快捷鍵",
+        "hint": "若未禁用，你可以在建立即興效果或使用效果控制檯時使用此快捷鍵打開效果卡片。",
+        "choice_shift_left_click": "Shift + 左鍵",
+        "choice_ctrl_left_click": "Ctrl+ 左鍵",
+        "choice_disabled": "禁用"
+      },
+      "notifications-for-expired-effects": {
+        "name": "通知效果過期",
+        "hint": "效果過期時將發送私聊以作提醒",
+        "choice_all_effects": "所有效果",
+        "choice_only_unidentified": "僅秘密（未鑑定）效果",
+        "choice_disabled": "禁用"
+      }
+    },
+    "errorMultipleTokensCustomEffect": "你需要在應用新效果時選取一個Token。"
+  }
+}
