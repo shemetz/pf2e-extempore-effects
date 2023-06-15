@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.2] - 2023-06-15
+- Added embedded save/check buttons to spells and items that benefit from them (#27)
+
+
 ## [1.7.0] - 2023-02-24
 - Added automatic notifications and messages for expired unidentified effects (#5)
 - [1.7.1] Fixed double notification
@@ -85,4 +89,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.6.6]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.6.5...1.6.6
 [1.7.0]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.6.6...1.7.0
 [1.7.1]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.7.0...1.7.1
-[Unreleased]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.7.1...HEAD
+[1.7.2]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.7.1...1.7.2
+[Unreleased]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.7.2...HEAD
