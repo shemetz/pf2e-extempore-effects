@@ -505,12 +505,52 @@ const getImage = (item) => {
   return randomImage(item)
 }
 
+const addCheckButtonsToItemDescription = (item) => {
+  let description = item.system.description.value
+  const dc = item.spellcasting?.statistic.dc.value
+  if (!dc) return description
+  for (const saveName of ['Fortitude', 'Will', 'Reflex']) {
+    const type = saveName.toLowerCase()
+    const name = `${saveName} save`
+    description = description.replaceAll(
+      new RegExp(` ${saveName} save(?!s)`, 'g'),
+      ` @Check[type:${type}|dc:${dc}]{${name}}`,
+    )
+  }
+  for (const checkName of [
+    'Acrobatics',
+    'Arcana',
+    'Athletics',
+    'Crafting',
+    'Deception',
+    'Diplomacy',
+    'Intimidation',
+    'Medicine',
+    'Nature',
+    'Occultism',
+    'Performance',
+    'Religion',
+    'Society',
+    'Stealth',
+    'Survival',
+    'Thievery',
+  ]) {
+    const type = checkName.toLowerCase()
+    const name = `${checkName} check`
+    description = description.replaceAll(
+      new RegExp(` ${checkName} check(?!s)`, 'g'),
+      ` @Check[type:${type}|dc:${dc}]{${name}}`,
+    )
+  }
+  return description
+}
+
 const createEffect = (item) => {
   const ctrlOrAltPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
     || game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const durationText = item.system.duration ? item.system.duration.value : ''
-  const descriptionText = item.system.description.value
+  const descriptionText = addCheckButtonsToItemDescription(item)
   let durationValue, durationUnit, durationSustained
   if (item.system.frequency) {
     ({
