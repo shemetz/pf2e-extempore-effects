@@ -253,6 +253,10 @@ const quickAddEmptyEffect = async () => {
   } else {
     const effect = createEmptyEffect()
     const token = tokens[0]
+    if (!token.actor) {
+      ui.notifications.error(`Token "${token.name}" has no actor, and so cannot have an effect.`)
+      return
+    }
     const effectItems = await token.actor.createEmbeddedDocuments('Item', [effect])
     effectItems[0].sheet.render(true)
   }
@@ -298,6 +302,10 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         if (tokens.length === 0) {
           ui.notifications.error(localize('.errorNoTokensSelected'))
         } else for (const token of tokens) {
+          if (!token.actor) {
+            ui.notifications.error(`Token "${token.name}" has no actor, and so cannot have an effect.`)
+            continue
+          }
           const effectItems = await token.actor.createEmbeddedDocuments('Item', [effect])
           if (modifierKeyPressed) {
             effectItems[0].sheet.render(true)
@@ -330,6 +338,10 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         if (tokens.length === 0) {
           ui.notifications.error(localize('.errorNoTokensSelected'))
         } else for (const token of tokens) {
+          if (!token.actor) {
+            ui.notifications.error(`Token "${token.name}" has no actor, and so cannot have an effect.`)
+            continue
+          }
           await token.actor.createEmbeddedDocuments('Item', [item.toObject()])
         }
       },
