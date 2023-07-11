@@ -275,12 +275,12 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         if (isEffectOrCondition(message?.item) || isEffectOrCondition(message.getFlag('pf2e', 'origin'))) {
           return false
         }
-        return message?.item || message.getFlag('pf2e', 'origin')?.uuid
+        return !!message?.item || !!messageGetOriginUuid(message)
       },
       callback: async li => {
         const message = game.messages.get(li.data('messageId'))
-        const item = message.item ||
-          (message.getFlag('pf2e', 'origin') ? await fromUuid(message.getFlag('pf2e', 'origin').uuid) : null)
+        const messageOriginUuid = messageGetOriginUuid(message)
+        const item = message.item || (messageOriginUuid && await fromUuid(messageOriginUuid)) || null
         if (item === null) {
           return ui.notifications.error(localize('.errorItemNotFound'))
         }
@@ -322,15 +322,15 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         const message = game.messages.get(li.data('messageId'))
         if (isEffectOrCondition(message?.item)) return true
         if (isEffectOrCondition(message.getFlag('pf2e', 'origin'))) {
-          const item = fromUuidNonAsync(message.getFlag('pf2e', 'origin').uuid)
+          const item = fromUuidNonAsync(messageGetOriginUuid(message))
           return !!item
         }
         return false
       },
       callback: async li => {
         const message = game.messages.get(li.data('messageId'))
-        const item = message.item ||
-          (message.getFlag('pf2e', 'origin') ? await fromUuid(message.getFlag('pf2e', 'origin').uuid) : null)
+        const messageOriginUuid = messageGetOriginUuid(message)
+        const item = message.item || (messageOriginUuid && await fromUuid(messageOriginUuid)) || null
         if (item === null) {
           return ui.notifications.error(localize('.errorItemNotFound'))
         }
@@ -348,6 +348,18 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
     },
   )
   return buttons
+}
+
+function messageGetOriginUuid (message) {
+  let uuid = message.getFlag('pf2e', 'origin')?.uuid
+  if (!uuid) {
+    return null
+  }
+  if (uuid.startsWith('Actor..')) {
+    // bugfix for Dorako UI module, which adds a "💬Send" button which does this
+    uuid = uuid.replace('Actor..', '')
+  }
+  return uuid
 }
 
 function fromUuidNonAsync (uuid) {
