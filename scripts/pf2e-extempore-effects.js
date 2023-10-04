@@ -452,8 +452,13 @@ const getDuration = (durationText, descriptionText) => {
     durationValue = 3
     durationUnit = 'unlimited'
     durationSustained = false
+  } else if (itemDuration.includes('daily preparation')) {
+    // "until the next time you make your daily preparations"
+    durationValue = 1
+    durationUnit = 'days'
+    durationSustained = false
   } else if (itemDuration.includes(' ')) {
-    // "10 minutes"
+    // "10 minutes", or possibly something weird
     durationValue = parseInt(itemDuration.split(' ')[0])
     durationUnit = itemDuration.split(' ')[1]
     if (!durationUnit.endsWith('s')) durationUnit += 's'  // e.g. "minutes"
