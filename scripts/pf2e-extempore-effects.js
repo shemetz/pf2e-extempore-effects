@@ -546,13 +546,6 @@ const hashString = str => {
   return hash
 }
 
-export function isOfClass (obj, className) {
-  while ((obj = /** @type {object} */ (Reflect.getPrototypeOf(obj)))) {
-    if (obj.constructor.name === className) return true
-  }
-  return false
-}
-
 const getImage = (item) => {
   const itemImage = item.img
   if (!isImageBoring(itemImage)) return itemImage
