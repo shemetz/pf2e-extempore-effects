@@ -20,7 +20,7 @@ appear. Clicking that option will grant a new Effect to all controlled tokens.
 
 The Effect will have its name, description, level, traits, etc. match the message's item ("item" here being a spell,
 an action, a feat, a weapon, etc.). The duration will usually fit if possible (required some hardcoding and doesn't
-cover all bases).
+cover all bases).  Afflictions will always start at Stage 1 and will expire after Stage 1's duration has passed.
 
 The image will fit the item too, but not if it's a "default image" (like the default feat icon or
 any of the simple 1/2/3-action icons). To avoid having several Effects with the same image (and avoid the boring
@@ -46,16 +46,13 @@ You can shift+click an existing effect icon in the panel that appears in the top
 controlling a token.  This will open the sheet of that effect/condition, allowing you to read it and edit it.  Useful if
 you want to get a refresher about its rules, or to edit a small detail about it.
 
+This is less useful now that the core pf2e system allows editing effects from the effects panel.
+
 ### Ctrl+Shift+E (editable) keybinding, to create an empty effect
 This new keybinding, "Quick create empty effect", will do something similar to the Extempore Effect except with fully
 empty contents (not based on any message), also immediately opening the sheet for you to edit.  The name will be
 untitled and the image will be a random icon (the randomness depends on screen position, so if you don't pan or zoom
 around you can keep creating random effects with the same icon, which is sometimes handy).
-
-### "Hidden from player" toggle for effects
-This feature was removed from the module, because now it's [part of the core system](https://github.com/foundryvtt/pf2e/pull/4608) :]
-
-(migration will happen for any users who relied on this module until now)
 
 ### Notifications for expired effects
 By default, this will only notify the GM about secret (unidentified) effects, though there is a setting to make it
@@ -68,15 +65,6 @@ However, this is probably not a problem for you - if you have an effect with a d
 aren't going to forget about it.
 
 
-# Demos
+# Demo gif
 
-(These gifs are slightly outdated;  the option name changed from "Cause an Effect" to "Extempore Effect", and conditions
-no longer tick up-and-down on click.)
-
-### Extempore Effects
-
-![](metadata/ee_demo_1.gif)
-
-### Shift+clicking
-
-![](metadata/shift_click_effect_panel_demo.gif)
+![](metadata/ee_demo_3.gif)
