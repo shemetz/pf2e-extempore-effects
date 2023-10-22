@@ -390,8 +390,9 @@ function fromUuidNonAsync (uuid) {
   return doc || null
 }
 
-function getFrequency (frequency) {
+function defineDurationFromFrequency (frequency) {
   let durationValue, durationUnit, durationSustained = false
+  const turnStartOrTurnEnd = 'turn-start'
   switch (frequency.per) {
     case 'PT1M':
       durationUnit = 'minutes'
@@ -418,10 +419,10 @@ function getFrequency (frequency) {
       durationValue = 7
       break
   }
-  return { durationSustained, durationUnit, durationValue }
+  return { durationSustained, durationUnit, durationValue, turnStartOrTurnEnd }
 }
 
-const getDuration = (durationText, descriptionText) => {
+const defineDurationFromText = (durationText, descriptionText) => {
   const itemDuration = durationText || ''
   let durationValue, durationUnit, durationSustained
   if (itemDuration.toLowerCase() === 'sustained') {
@@ -469,7 +470,12 @@ const getDuration = (durationText, descriptionText) => {
     if (descriptionText.includes('<strong>Maximum Duration</strong>')) {
       // an affliction with maximum duration will have that duration set (recursive call!)
       const maxDurationText = descriptionText.match(/<strong>Maximum Duration<\/strong>(.*?)</)[1].trim()
-      return getDuration(maxDurationText, descriptionText)
+      const returned = defineDurationFromText(maxDurationText, descriptionText)
+      return {
+        ...returned,
+        // tick down at end of turn rather than start of turn, afflictions are special this way
+        turnStartOrTurnEnd: 'turn-end',
+      }
     }
     if (descriptionText.includes('for 1 round') && !descriptionText.includes(' rounds')) {
       durationValue = 1
@@ -489,6 +495,7 @@ const getDuration = (durationText, descriptionText) => {
     durationValue,
     durationUnit,
     durationSustained,
+    turnStartOrTurnEnd: 'turn-start',
   }
 }
 
@@ -582,19 +589,21 @@ const createEffect = (item) => {
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const durationText = item.system.duration ? item.system.duration.value : ''
   const descriptionText = addCheckButtonsToItemDescription(item)
-  let durationValue, durationUnit, durationSustained
+  let durationValue, durationUnit, durationSustained, turnStartOrTurnEnd
   if (item.system.frequency) {
     ({
       durationValue,
       durationUnit,
       durationSustained,
-    } = getFrequency(item.system.frequency))
+      turnStartOrTurnEnd,
+    } = defineDurationFromFrequency(item.system.frequency))
   } else {
     ({
       durationValue,
       durationUnit,
       durationSustained,
-    } = getDuration(durationText, descriptionText))
+      turnStartOrTurnEnd,
+    } = defineDurationFromText(durationText, descriptionText))
   }
   const effectName = game.i18n.localize(
     MODULE_ID + (item.system.frequency ? '.addedPrefixToExpendedEffectName' : '.addedPrefixToEffectName'),
@@ -612,7 +621,7 @@ const createEffect = (item) => {
         value: durationValue,
         unit: durationUnit,
         sustained: durationSustained,
-        expiry: 'turn-start',
+        expiry: turnStartOrTurnEnd,
       },
       description: {
         ...item.system.description,
