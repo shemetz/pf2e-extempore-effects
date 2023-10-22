@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2023-10-22
+- Added affliction badges (Stage 1 by default) and will rely on stage 1 duration (rather than Maximum Duration)
+- Stopped creating chat messages for expired effects in combat (until now this happened in start of initiative which was bad) (#29)
+- Changed affliction effects (things with "Maximum Duration") to expire at end of turn rather than the default of start of turn (#29)
+- Added extemporability to Recharge Breath Weapon rolls (#28) 
+
 ## [1.7.4] - 2023-10-04
 - Fixed error with certain effects that should last a day ("daily preparations")
 
@@ -98,4 +104,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.7.2]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.7.1...1.7.2
 [1.7.3]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.7.2...1.7.3
 [1.7.4]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.7.3...1.7.4
-[Unreleased]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.7.4...HEAD
+[1.8.0]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.7.4...1.8.0
+[Unreleased]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.8.0...HEAD
