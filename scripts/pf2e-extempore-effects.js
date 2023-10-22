@@ -215,6 +215,7 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
       ui.notifications.info(`${isSecretEffect ? 'Secret effect' : 'Effect'} expired, see chat!    (${effect.name})`)
       // post effect description again (it's usually helpful)
       const effTypeName = isSecretEffect ? 'Secret effect' : 'Effect'
+      const badge = effect.system.badge
       effect.toMessage(undefined, { rollMode: isSecretEffect ? 'gmroll' : undefined }).then(() => {
         // post special message explaining what just happened and adding a button to undo it if the effect was removed
         ChatMessage.create({
@@ -226,8 +227,11 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
 <div><b>Actor:</b> ${actor.name}</div>
 <div><b>Expired:</b> ${golS}</div>
 <div><b>After duration:</b> ${durS}</div>
-<br/>
+` + (badge ? `
+<div><b>Badge:</b> ${badge.label ? badge.label : badge.value}</div>
+` : ``) + `
 ` + (willExpirationDeleteEffects ? `
+<br/>
 <button id="extempore-reapply">Reapply ${effect.name} to ${actor.name}?</button>
 <div>(This button will stop working after a refresh)</div>
 ` : ``),
@@ -422,6 +426,19 @@ function defineDurationFromFrequency (frequency) {
   return { durationSustained, durationUnit, durationValue, turnStartOrTurnEnd }
 }
 
+const defineDurationFromTextOfAffliction = (itemDescriptionText) => {
+  // an affliction effect's duration is the duration of its first stage!
+  const firstStageDuration = itemDescriptionText
+    // example: '<p><strong>Stage 1</strong> carrier with no ill effect (1 minute)</p>'
+    .match(/<p>\s*<strong>\s*Stage \d+<\/strong> .+? \((.+)\)\s*<\/p>/)[1]
+  const durationObj = defineDurationFromText(firstStageDuration, itemDescriptionText)
+  return {
+    ...durationObj,
+    // tick down at end of turn rather than start of turn, afflictions are special this way
+    turnStartOrTurnEnd: 'turn-end',
+  }
+}
+
 const defineDurationFromText = (durationText, descriptionText) => {
   const itemDuration = durationText || ''
   let durationValue, durationUnit, durationSustained
@@ -467,16 +484,6 @@ const defineDurationFromText = (durationText, descriptionText) => {
     if (!durationUnit.endsWith('s')) durationUnit += 's'  // e.g. "minutes"
     durationSustained = false
   } else if (itemDuration === '') {
-    if (descriptionText.includes('<strong>Maximum Duration</strong>')) {
-      // an affliction with maximum duration will have that duration set (recursive call!)
-      const maxDurationText = descriptionText.match(/<strong>Maximum Duration<\/strong>(.*?)</)[1].trim()
-      const returned = defineDurationFromText(maxDurationText, descriptionText)
-      return {
-        ...returned,
-        // tick down at end of turn rather than start of turn, afflictions are special this way
-        turnStartOrTurnEnd: 'turn-end',
-      }
-    }
     if (descriptionText.includes('for 1 round') && !descriptionText.includes(' rounds')) {
       durationValue = 1
       durationUnit = 'round'
@@ -501,6 +508,17 @@ const defineDurationFromText = (durationText, descriptionText) => {
 
 const isEffectOrCondition = (document) => {
   return document?.type === 'effect' || document?.type === 'condition'
+}
+
+const isAffliction = (itemDescriptionText) => {
+  return itemDescriptionText.match(/<strong>Stage \d+/)
+}
+
+const calcHighestStageOfAffliction = (itemDescriptionText) => {
+  const stageNumbers = [...itemDescriptionText.matchAll(/[Ss]tage (\d+)/g)]
+    .map(m => m[1])
+    .map(numStr => parseInt(numStr))
+  return Math.max(...stageNumbers)
 }
 
 const isImageBoring = (image) => {
@@ -543,7 +561,7 @@ const getImage = (item) => {
   return randomImage(item)
 }
 
-const addCheckButtonsToItemDescription = (item) => {
+const getItemDescriptionWithCheckButtonsIncluded = (item) => {
   let description = item.system.description.value
   const dc = item.spellcasting?.statistic.dc.value
   if (!dc) return description
@@ -588,9 +606,24 @@ const createEffect = (item) => {
     || game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const durationText = item.system.duration ? item.system.duration.value : ''
-  const descriptionText = addCheckButtonsToItemDescription(item)
+  const descriptionText = getItemDescriptionWithCheckButtonsIncluded(item)
   let durationValue, durationUnit, durationSustained, turnStartOrTurnEnd
-  if (item.system.frequency) {
+  let itemBadge = undefined
+  if (isAffliction(descriptionText)) {
+    ({
+      durationValue,
+      durationUnit,
+      durationSustained,
+      turnStartOrTurnEnd,
+    } = defineDurationFromTextOfAffliction(descriptionText))
+    // Afflictions get created at Stage 1
+    const highestStage = calcHighestStageOfAffliction(descriptionText)
+    itemBadge = {
+      type: 'counter',
+      value: 1,
+      labels: Array.fromRange(highestStage, 1).map(n => `Stage ${n}`),
+    }
+  } else if (item.system.frequency) {
     ({
       durationValue,
       durationUnit,
@@ -632,6 +665,7 @@ const createEffect = (item) => {
       level: effectLevel,
       source: item.system.source,
       slug: `temporary-effect-${item.system.slug}`,
+      badge: itemBadge,
     },
     flags: {},
   }
