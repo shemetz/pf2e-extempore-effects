@@ -63,6 +63,10 @@ notify for all effects. When it triggers, it will both create a notification and
 effect expired, what its duration was, which actor it applied to, and so on.  If you have the PF2E automation setting
 for "remove expired effects" turned on, then this message will also include a button to reapply the just-removed effect.
 
+Note that this will not work for tiny 1-round time changes (which happens in combat), because of technical difficulties.
+However, this is probably not a problem for you - if you have an effect with a duration measured in rounds, you probably
+aren't going to forget about it.
+
 
 # Demos
 

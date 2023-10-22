@@ -187,8 +187,10 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
   if (!game.user.isGM) return wrapped(...args)
   const newWorldTime = args[0]
   const oldWorldTime = game.time.worldTime
-  // times are in seconds
+  // these times are in seconds
   const timeDeltaS = newWorldTime - oldWorldTime
+  // ignore time updates of 1 round (6 seconds);  because tracking expiration between rounds is very hard and usually doesn't require reminders
+  if (timeDeltaS <= 6) return wrapped(...args)
   // pf2e has a luxon-based time system, very nice
   const oldWorldTimeLux = game.pf2e.worldClock.worldTime
   const newWorldTimeLux = oldWorldTimeLux.plus({ seconds: timeDeltaS })
