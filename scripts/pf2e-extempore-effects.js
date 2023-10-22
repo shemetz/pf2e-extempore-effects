@@ -632,7 +632,7 @@ const createEffect = (item) => {
   const effectName = localize(item.system.frequency ? '.addedPrefixToExpendedEffectName' : '.addedPrefixToEffectName') + item.name
   const storedDescriptionText = localize('.addedPrefixToEffectDescription') + descriptionText
   const image = getImage(item)
-  const effectLevel = item.system.level || item.parent.system.details.level
+  const effectLevel = item.system.level || item.parent?.system.details.level
   return {
     type: 'effect',
     name: effectName,
