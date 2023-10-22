@@ -156,19 +156,7 @@ Hooks.on('renderEffectsPanel', (panel, $html) => {
 
   $html.find('.effect-item[data-item-id] .icon').each((i, icon) => {
     icon.addEventListener('click', (event) => {
-      let modifierKeyPressed
-      switch (openEffectSheetShortcut) {
-        case 'shift_left_click':
-          modifierKeyPressed = event.shiftKey
-          break
-        case 'ctrl_left_click':
-          modifierKeyPressed = event.ctrlKey
-          break
-        case 'disabled':
-          modifierKeyPressed = false
-          break
-      }
-      if (!modifierKeyPressed) return
+      if (!event.ctrlKey && !event.shiftKey) return
       const id = event.currentTarget.closest('.effect-item[data-item-id]').dataset.itemId
       const effect = panel.actor?.items.get(id)
       if (!effect) return
@@ -281,29 +269,22 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         if (isEffectOrCondition(message?.item) || isEffectOrCondition(message.getFlag('pf2e', 'origin'))) {
           return false
         }
+        if (isRechargeRoll(message)) {
+          return true
+        }
         return !!message?.item || !!messageGetOriginUuid(message)
       },
       callback: async li => {
         const message = game.messages.get(li.data('messageId'))
         const messageOriginUuid = messageGetOriginUuid(message)
         const item = message.item || (messageOriginUuid && await fromUuid(messageOriginUuid)) || null
-        if (item === null) {
-          return ui.notifications.error(localize('.errorItemNotFound'))
+        let effect
+        if (item !== null) {
+          effect = createEffect(item)
+        } else if (isRechargeRoll(message)) {
+          effect = createEffectFromRechargeRoll(message)
         }
-        const openEffectSheetShortcut = game.settings.get(MODULE_ID, 'open-effect-sheet-shortcut')
-        let modifierKeyPressed
-        switch (openEffectSheetShortcut) {
-          case 'shift_left_click':
-            modifierKeyPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT)
-            break
-          case 'ctrl_left_click':
-            modifierKeyPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
-            break
-          case 'disabled':
-            modifierKeyPressed = false
-            break
-        }
-        const effect = createEffect(item)
+        else return ui.notifications.error(localize('.errorItemNotFound'))
         const tokens = canvas.tokens.controlled
         if (tokens.length === 0) {
           ui.notifications.error(localize('.errorNoTokensSelected'))
@@ -313,7 +294,20 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
             continue
           }
           const effectItems = await token.actor.createEmbeddedDocuments('Item', [effect])
-          if (modifierKeyPressed) {
+          const openEffectSheetShortcut = game.settings.get(MODULE_ID, 'open-effect-sheet-shortcut')
+          let isModifierKeyPressed
+          switch (openEffectSheetShortcut) {
+            case 'shift_left_click':
+              isModifierKeyPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT)
+              break
+            case 'ctrl_left_click':
+              isModifierKeyPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
+              break
+            case 'disabled':
+              isModifierKeyPressed = false
+              break
+          }
+          if (isModifierKeyPressed) {
             effectItems[0].sheet.render(true)
           }
         }
@@ -514,6 +508,10 @@ const isAffliction = (itemDescriptionText) => {
   return itemDescriptionText.match(/<strong>Stage \d+/)
 }
 
+const isRechargeRoll = (message) => {
+  return !isNaN(parseInt(message.content)) && message.flavor?.includes("charge")
+}
+
 const calcHighestStageOfAffliction = (itemDescriptionText) => {
   const stageNumbers = [...itemDescriptionText.matchAll(/[Ss]tage (\d+)/g)]
     .map(m => m[1])
@@ -631,9 +629,7 @@ const createEffect = (item) => {
       turnStartOrTurnEnd,
     } = defineDurationFromText(durationText, descriptionText))
   }
-  const effectName = game.i18n.localize(
-    MODULE_ID + (item.system.frequency ? '.addedPrefixToExpendedEffectName' : '.addedPrefixToEffectName'),
-  ) + item.name
+  const effectName = localize(item.system.frequency ? '.addedPrefixToExpendedEffectName' : '.addedPrefixToEffectName') + item.name
   const storedDescriptionText = localize('.addedPrefixToEffectDescription') + descriptionText
   const image = getImage(item)
   const effectLevel = item.system.level || item.parent.system.details.level
@@ -659,6 +655,36 @@ const createEffect = (item) => {
       source: item.system.source,
       slug: `temporary-effect-${item.system.slug}`,
       badge: itemBadge,
+    },
+    flags: {},
+  }
+}
+
+const createEffectFromRechargeRoll = (message) => {
+  const rechargeRoundsRemaining = parseInt(message.content)
+  const createHidden = game.user.isGM
+  const descriptionText = `${message.flavor} -- rolled ${message.content}`
+  const effectName = localize('.addedPrefixToEffectName') + message.flavor
+  const storedDescriptionText = localize('.addedPrefixToEffectDescription') +
+    descriptionText
+  return {
+    type: 'effect',
+    name: effectName,
+    img: RECHARGE_IMAGE,
+    data: {
+      tokenIcon: { show: true },
+      duration: {
+        value: rechargeRoundsRemaining,
+        unit: 'rounds',
+        sustained: false,
+        expiry: 'turn-start',
+      },
+      description: {
+        value: storedDescriptionText,
+      },
+      unidentified: createHidden,
+      level: { value: 0 },
+      slug: `temporary-effect-recharge-${rechargeRoundsRemaining}`,
     },
     flags: {},
   }
@@ -703,6 +729,8 @@ const createEmptyEffect = () => {
     flags: {},
   }
 }
+
+const RECHARGE_IMAGE = 'icons/magic/symbols/symbol-lightning-bolt.webp'
 
 const RANDOM_EFFECT_IMAGES = [
   'icons/magic/air/air-burst-spiral-large-blue.webp',
