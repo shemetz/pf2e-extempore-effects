@@ -28,6 +28,11 @@
       "lang": "cn",
       "name": "中文（简体）",
       "path": "lang/zh_Hans.json"
+    },
+    {
+      "lang": "de",
+      "name": "Deutsch",
+      "path": "lang/de.json"
     }
   ],
   "url": "https://github.com/shemetz/pf2e-extempore-effects",
