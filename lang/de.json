@@ -5,6 +5,29 @@
     "openSheetInstructionCtrl": "[Steuerung + Linksklick] Blatt öffnen",
     "contextMenuApplyEffect": "Effekt anwenden",
     "addedPrefixToEffectName": "Effekt ",
-    "addedPrefixToEffectDescription": "<h2>(Generierter Effekt)</h2>\n"
+    "addedPrefixToEffectDescription": "<h2>(Generierter Effekt)</h2>\n",
+    "settings": {
+      "quick-add-empty-effect": {
+        "name": "Schnell leeren Effekt hinzufügen",
+        "hint": "Erstelle einen neuen, leeren Effekt mit einem zufälligen Symbol, angewendet auf das aktuell ausgewählte Token."
+      },
+      "open-effect-sheet-shortcut": {
+        "name": "Tastenkombination zum Öffnen des Effektbogens",
+        "hint": "Wenn nicht deaktiviert, kannst du dies verwenden, um den Effektbogen beim Erstellen eines Improvisierten Effekts und bei der Verwendung des Effekt-Panels zu öffnen.",
+        "choice_shift_left_click": "Umschalt + Links-Klick",
+        "choice_ctrl_left_click": "Strg + Links-Klick",
+        "choice_disabled": "Deaktiviert"
+      },
+      "notifications-for-expired-effects": {
+        "name": "Benachrichtigungen für abgelaufene Ereignisse",
+        "hint": "Effekte, die ablaufen, senden eine Benachrichtigung und eine Chat-Nachricht als Erinnerung",
+        "choice_all_effects": "Alle Effekte",
+        "choice_only_unidentified": "Nur geheime (unidentifizierte) Effekte",
+        "choice_disabled": "Deaktiviert"
+      }
+    },
+    "errorMultipleTokensCustomEffect": "Du musst ein Token auswählen, um einen neuen benutzerdefinierten Effekt anzuwenden.",
+    "errorNoTokensSelected": "Du musst Token(s) auswählen, um den Effekt anzuwenden.",
+    "errorItemNotFound": "Gegenstand in PF2e-Nachricht nicht gefunden."
   }
 }
