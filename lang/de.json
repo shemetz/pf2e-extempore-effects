@@ -39,6 +39,7 @@
     "errorItemNotFound": "Gegenstand in PF2e-Nachricht nicht gefunden.",
     "contextMenuExtemporeEffect": "Improvisierter Effekt",
     "addedPrefixToExpendedEffectName": "Verbraucht: ",
-    "descriptionOfQuickUntitledEffect": "<h2>(Generierter Effekt)</h2>\nSchreibe hier hinein, was du möchtest!"
+    "descriptionOfQuickUntitledEffect": "<h2>(Generierter Effekt)</h2>\nSchreibe hier hinein, was du möchtest!",
+    "nameOfQuickUntitledEffect": "Schneller_unbetitelter_Effekt"
   }
 }
