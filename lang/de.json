@@ -1,1 +1,10 @@
-{}
+{
+  "pf2e-extempore-effects": {
+    "hiddenFromPlayerText": "Vor dem Spieler verborgen?",
+    "openSheetInstructionShift": "[Umschalttaste + Linksklick] Blatt öffnen",
+    "openSheetInstructionCtrl": "[Steuerung + Linksklick] Blatt öffnen",
+    "contextMenuApplyEffect": "Effekt anwenden",
+    "addedPrefixToEffectName": "Effekt ",
+    "addedPrefixToEffectDescription": "<h2>(Generierter Effekt)</h2>\n"
+  }
+}
