@@ -33,6 +33,11 @@
       "lang": "zh-tw",
       "name": "正體中文",
       "path": "lang/zh-tw.json"
+    },
+    {
+      "lang": "de",
+      "name": "Deutsch",
+      "path": "lang/de.json"
     }
   ],
   "url": "https://github.com/shemetz/pf2e-extempore-effects",
