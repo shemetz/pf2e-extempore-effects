@@ -9,7 +9,7 @@
     "settings": {
       "quick-add-empty-effect": {
         "name": "Schnell leeren Effekt hinzufügen",
-        "hint": "Erstelle einen neuen, leeren Effekt mit einem zufälligen Symbol, angewendet auf das aktuell ausgewählte Token."
+        "hint": "Erstelle einen neuen, leeren Effekt mit einem zufälligen Symbol, angewendet auf das aktuell ausgewählte Token"
       },
       "open-effect-sheet-shortcut": {
         "name": "Tastenkombination zum Öffnen des Effektbogens",
