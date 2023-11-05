@@ -1,10 +1,10 @@
 {
   "pf2e-extempore-effects": {
     "hiddenFromPlayerText": "Vor dem Spieler verborgen?",
-    "openSheetInstructionShift": "[Umschalttaste + Linksklick] Blatt öffnen",
+    "openSheetInstructionShift": "[Umschalt + Links-Klick] Bogen öffnen",
     "openSheetInstructionCtrl": "[Steuerung + Linksklick] Blatt öffnen",
     "contextMenuApplyEffect": "Effekt anwenden",
-    "addedPrefixToEffectName": "Effekt ",
+    "addedPrefixToEffectName": "Effekt: ",
     "addedPrefixToEffectDescription": "<h2>(Generierter Effekt)</h2>\n",
     "settings": {
       "quick-add-empty-effect": {
@@ -24,10 +24,21 @@
         "choice_all_effects": "Alle Effekte",
         "choice_only_unidentified": "Nur geheime (unidentifizierte) Effekte",
         "choice_disabled": "Deaktiviert"
+      },
+      "randomize-image-if-default": {
+        "name": "Zufällige Bilder gegenüber Standardbildern bevorzugen",
+        "hint": "Standardmäßig aktiviert.  Wenn ein Effekt aus einer Nachricht erstellt wird, die einen Gegenstand, aber keinen Akteur hat (oder einen Akteur mit\n der Standardgrafik) und dieser Gegenstand eine Standardgrafik hat, wähle stattdessen ein zufälliges, farbenfrohes Effektbild."
+      },
+      "hidden-by-default": {
+        "hint": "Standardmäßig deaktiviert.  Wenn als Spielleiter ein Effekt mit dem Modul erstellt wird, wird er nicht standardmäßig als \"unidentifiziert\" (geheim) gesetzt. \nDas Halten der Strg/Alt-Taste beim Erstellen eines Effekts kehrt dies um (macht es standardmäßig geheim).",
+        "name": "Standardmäßig unidentifizierte Effekte erstellen"
       }
     },
     "errorMultipleTokensCustomEffect": "Du musst ein Token auswählen, um einen neuen benutzerdefinierten Effekt anzuwenden.",
     "errorNoTokensSelected": "Du musst Token(s) auswählen, um den Effekt anzuwenden.",
-    "errorItemNotFound": "Gegenstand in PF2e-Nachricht nicht gefunden."
+    "errorItemNotFound": "Gegenstand in PF2e-Nachricht nicht gefunden.",
+    "contextMenuExtemporeEffect": "Improvisierter Effekt",
+    "addedPrefixToExpendedEffectName": "Verbraucht: ",
+    "descriptionOfQuickUntitledEffect": "<h2>(Generierter Effekt)</h2>\nSchreibe hier hinein, was du möchtest!"
   }
 }
