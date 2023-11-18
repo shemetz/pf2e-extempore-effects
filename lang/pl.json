@@ -1,1 +1,45 @@
-{}
+{
+  "pf2e-extempore-effects": {
+    "hiddenFromPlayerText": "Ukryty przed graczem?",
+    "openSheetInstructionShift": "[Shift + kliknięcie lewym przyciskiem myszy] Otwórz kartę",
+    "openSheetInstructionCtrl": "[Ctrl + kliknięcie lewym przyciskiem myszy] Otwórz kartę",
+    "contextMenuApplyEffect": "Zastosuj efekt",
+    "addedPrefixToExpendedEffectName": "Wykorzystano: ",
+    "addedPrefixToEffectName": "Efekt: ",
+    "addedPrefixToEffectDescription": "<h2>(Efekt wygenerowany)</h2>\n",
+    "nameOfQuickUntitledEffect": "Szybki_efekt_bez_tytułu",
+    "descriptionOfQuickUntitledEffect": "<h2>(Wygenerowany efekt)</h2>\nWpisz tutaj, co tylko chcesz!",
+    "settings": {
+      "randomize-image-if-default": {
+        "name": "Preferuj losowe obrazy zamiast domyślnych",
+        "hint": "Domyślnie true.  Podczas tworzenia efektu z wiadomości, która ma element, ale nie ma aktora (lub ma aktora z domyślną grafiką).\n    , a ten element ma domyślną grafikę, zamiast niej wybierany jest losowy kolorowy obrazek efektu."
+      },
+      "hidden-by-default": {
+        "name": "Twórz domyślnie niezidentyfikowane efekty",
+        "hint": "Domyślnie false.  Podczas tworzenia efektu z modułem jako GM nie będzie on domyślnie \"niezidentyfikowany\" (tajny).\n     Przytrzymanie klawiszy Ctrl/Alt podczas tworzenia efektu spowoduje odwrócenie tego ustawienia (domyślne utajnienie efektu)."
+      },
+      "quick-add-empty-effect": {
+        "name": "Szybkie dodawanie pustego efektu",
+        "hint": "Utwórz nowy efekt niestandardowy z losową ikoną, zastosowany do aktualnie wybranego tokena"
+      },
+      "open-effect-sheet-shortcut": {
+        "name": "Skrót klawiszowy Otwórz kartę efektów",
+        "hint": "Jeśli opcja ta nie jest wyłączona, można jej użyć do otwarcia arkusza efektu podczas tworzenia efektu Extempore i korzystania z panelu efektów.",
+        "choice_shift_left_click": "Shift + kliknięcie lewym przyciskiem myszy",
+        "choice_ctrl_left_click": "Control + kliknięcie lewym przyciskiem myszy",
+        "choice_disabled": "Wyłączony"
+      },
+      "notifications-for-expired-effects": {
+        "name": "Powiadomienia o wygasłych zdarzeniach",
+        "hint": "Efekty, które wygasną, wyślą powiadomienie i wiadomość na czacie, jako przypomnienie",
+        "choice_all_effects": "Wszystkie efekty",
+        "choice_only_unidentified": "Tylko tajne (niezidentyfikowane) efekty",
+        "choice_disabled": "Wyłączony"
+      }
+    },
+    "contextMenuExtemporeEffect": "Extempore Effect",
+    "errorMultipleTokensCustomEffect": "Aby zastosować nowy efekt niestandardowy, należy wybrać jeden token.",
+    "errorNoTokensSelected": "Aby zastosować efekt, należy wybrać token(y).",
+    "errorItemNotFound": "Nie znaleziono elementu w wiadomości PF2e."
+  }
+}
