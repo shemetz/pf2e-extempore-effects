@@ -280,7 +280,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         const item = message.item || (messageOriginUuid && await fromUuid(messageOriginUuid)) || null
         let effect
         if (item !== null) {
-          effect = createEffect(item)
+          effect = await createEffect(item)
         } else if (isRechargeRoll(message)) {
           effect = createEffectFromRechargeRoll(message)
         }
@@ -552,8 +552,8 @@ const getImage = (item) => {
   return randomImage(item)
 }
 
-const getItemDescriptionWithCheckButtonsIncluded = (item) => {
-  let description = item.system.description.value
+const getItemDescriptionWithCheckButtonsIncluded = (item, enrichedContentDescription) => {
+  let description = enrichedContentDescription
   const dc = item.spellcasting?.statistic.dc.value
   if (!dc) return description
   for (const saveName of ['Fortitude', 'Will', 'Reflex']) {
@@ -592,12 +592,13 @@ const getItemDescriptionWithCheckButtonsIncluded = (item) => {
   return description
 }
 
-const createEffect = (item) => {
+const createEffect = async (item) => {
   const ctrlOrAltPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
     || game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const durationText = item.system.duration ? item.system.duration.value : ''
-  const descriptionText = getItemDescriptionWithCheckButtonsIncluded(item)
+  const { enrichedContent } = await item.sheet.getData()
+  let descriptionText = await getItemDescriptionWithCheckButtonsIncluded(item, enrichedContent.description)
   let durationValue, durationUnit, durationSustained, turnStartOrTurnEnd
   let itemBadge = undefined
   if (isAffliction(descriptionText)) {
@@ -630,7 +631,7 @@ const createEffect = (item) => {
     } = defineDurationFromText(durationText, descriptionText))
   }
   const effectName = localize(item.system.frequency ? '.addedPrefixToExpendedEffectName' : '.addedPrefixToEffectName') + item.name
-  const storedDescriptionText = localize('.addedPrefixToEffectDescription') + descriptionText
+  descriptionText = localize('.addedPrefixToEffectDescription') + descriptionText
   const image = getImage(item)
   const effectLevel = item.system.level || item.parent?.system.details.level
   return {
@@ -646,8 +647,8 @@ const createEffect = (item) => {
         expiry: turnStartOrTurnEnd,
       },
       description: {
-        ...item.system.description,
-        value: storedDescriptionText,
+        gm: enrichedContent.gmNotes,
+        value: descriptionText,
       },
       unidentified: createHidden,
       traits: item.system.traits,
