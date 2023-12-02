@@ -66,6 +66,13 @@ Hooks.on('init', () => {
       'disabled': localize('.settings.notifications-for-expired-effects.choice_disabled'),
     },
   })
+  game.settings.register(MODULE_ID, 'short-stage-badge', {
+    name: 'Shorten "Stage 2" to e.g. "[2/6]" in effect badges',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
+  })
   game.settings.register(MODULE_ID, 'migration-version', {
     name: 'migration-version',
     hint: 'migration-version',
@@ -610,10 +617,13 @@ const createEffect = async (item) => {
     } = defineDurationFromTextOfAffliction(descriptionText))
     // Afflictions get created at Stage 1
     const highestStage = calcHighestStageOfAffliction(descriptionText)
+    const stageTextFromNumber = game.settings.get(MODULE_ID, "short-stage-badge")
+      ? (n) => `[${n}/${highestStage}]`
+      : (n) => localize(`.stageN`).replace("{n}", n)
     itemBadge = {
       type: 'counter',
       value: 1,
-      labels: Array.fromRange(highestStage, 1).map(n => `Stage ${n}`),
+      labels: Array.fromRange(highestStage, 1).map(n => stageTextFromNumber(n)),
     }
   } else if (item.system.frequency) {
     ({
