@@ -428,9 +428,14 @@ function defineDurationFromFrequency (frequency) {
 
 const defineDurationFromTextOfAffliction = (itemDescriptionText) => {
   // an affliction effect's duration is the duration of its first stage!
-  const firstStageDuration = itemDescriptionText
+  const firstStageDurationMatch = itemDescriptionText
     // example: '<p><strong>Stage 1</strong> carrier with no ill effect (1 minute)</p>'
-    .match(/<p>\s*<strong>\s*Stage \d+<\/strong> .+? \((.+)\)\s*<\/p>/)[1]
+    .match(/<p>\s*<strong>\s*Stage \d+<\/strong> .+? \((.+)\)\s*<\/p>/)
+  const maximumDurationMatch = itemDescriptionText
+    // example: '<p><strong>Maximum Duration</strong> 6 rounds</p>'
+    .match(/<p>\s*<strong>\s*Maximum Duration<\/strong> (\d+ rounds?)\s*<\/p>/)
+  // defaults to maximum duration if 1st-stage duration doesn't exist, because some creatures (like Athach) are bugged and don't mention specific stage durations
+  const firstStageDuration = firstStageDurationMatch?.[1] ?? maximumDurationMatch?.[1] ?? ''
   const durationObj = defineDurationFromText(firstStageDuration, itemDescriptionText)
   return {
     ...durationObj,
