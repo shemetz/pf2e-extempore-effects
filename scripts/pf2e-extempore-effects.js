@@ -290,8 +290,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
           effect = await createEffect(item)
         } else if (isRechargeRoll(message)) {
           effect = createEffectFromRechargeRoll(message)
-        }
-        else return ui.notifications.error(localize('.errorItemNotFound'))
+        } else return ui.notifications.error(localize('.errorItemNotFound'))
         const tokens = canvas.tokens.controlled
         if (tokens.length === 0) {
           ui.notifications.error(localize('.errorNoTokensSelected'))
@@ -516,13 +515,12 @@ const isAffliction = (itemDescriptionText) => {
 }
 
 const isRechargeRoll = (message) => {
-  return !isNaN(parseInt(message.content)) && message.flavor?.includes("charge")
+  return !isNaN(parseInt(message.content)) && message.flavor?.includes('charge')
 }
 
 const calcHighestStageOfAffliction = (itemDescriptionText) => {
-  const stageNumbers = [...itemDescriptionText.matchAll(/[Ss]tage (\d+)/g)]
-    .map(m => m[1])
-    .map(numStr => parseInt(numStr))
+  const stageNumbers = [...itemDescriptionText.matchAll(/[Ss]tage (\d+)/g)].map(m => m[1]).
+    map(numStr => parseInt(numStr))
   return Math.max(...stageNumbers)
 }
 
@@ -617,9 +615,9 @@ const createEffect = async (item) => {
     } = defineDurationFromTextOfAffliction(descriptionText))
     // Afflictions get created at Stage 1
     const highestStage = calcHighestStageOfAffliction(descriptionText)
-    const stageTextFromNumber = game.settings.get(MODULE_ID, "short-stage-badge")
+    const stageTextFromNumber = game.settings.get(MODULE_ID, 'short-stage-badge')
       ? (n) => `[${n}/${highestStage}]`
-      : (n) => localize(`.stageN`).replace("{n}", n)
+      : (n) => localize(`.stageN`).replace('{n}', n)
     itemBadge = {
       type: 'counter',
       value: 1,
@@ -640,7 +638,8 @@ const createEffect = async (item) => {
       turnStartOrTurnEnd,
     } = defineDurationFromText(durationText, descriptionText))
   }
-  const effectName = localize(item.system.frequency ? '.addedPrefixToExpendedEffectName' : '.addedPrefixToEffectName') + item.name
+  const effectName = localize(item.system.frequency ? '.addedPrefixToExpendedEffectName' : '.addedPrefixToEffectName') +
+    item.name
   descriptionText = localize('.addedPrefixToEffectDescription') + descriptionText
   const image = getImage(item)
   const effectLevel = item.system.level || item.parent?.system.details.level
