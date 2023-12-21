@@ -30,6 +30,14 @@ simple colored image.
 As a bonus feature, right-clicking actual Effect messages will display an "Apply Effect" option to just apply that same
 effect to the controlled token. This is just a quality-of-life feature.
 
+### Affliction automation (partial)
+
+When you create an effect from an affliction chat message - such as the one from Scalathrax Venom - the module will
+attempt to give the effect a list of stages equal to the affliction's stage count, set the initial stage to 1, set
+the duration to the first stage's duration, and set the expiration to the end of the turn.  These, altogether, **do not
+automate affliction tracking** - but they should at least help keep track of things nicely until the core system support
+is added.
+
 ### Shift+clicking the "Extempore Effect" option, to also open the effect's sheet
 If you hold the Shift button, the effect's sheet will be opened up for you to see and edit, after being applied.
 You can configure to use Ctrl instead of Shift, or to disable this behavior, in the module settings.
@@ -37,7 +45,6 @@ You can configure to use Ctrl instead of Shift, or to disable this behavior, in 
 This is useful if you want to quickly edit the effect - for example:
 
 - Rename Mirror Image to "Effect: Mirror Image **(3)**" **(note:  less needed now that we have core Counter support)**
-- Rename Mummy Rot to "Effect: Mummy Rot **(stage 1)**" **(note:  less needed now that we have core Counter support)**
 - Change Steal Shadow's duration from Unlimited to 2 hours.
 - Change Arsenic's image from the picture of a powder to a picture of deadly poison.
 
@@ -63,6 +70,25 @@ for "remove expired effects" turned on, then this message will also include a bu
 Note that this will not work for tiny 1-round time changes (which happens in combat), because of technical difficulties.
 However, this is probably not a problem for you - if you have an effect with a duration measured in rounds, you probably
 aren't going to forget about it.
+
+
+# Settings & Extras
+
+### Secret effects - hold Alt/Ctrl to create an unidentified effect or change the default behavior in the setting
+
+The "Create unidentified effects by default" setting can be used to change this default behavior, in which case all new
+extempore effects will be unidentified *unless* you hold Alt/Ctrl.
+
+### Random abstract color images for default-image effects
+
+A lot of pf2e items, feats, features, etc have no image, so instead of using that uninteresting default icon this module
+will pick a random abstract color image from the core foundry magic icons.  You can change this behavior with the
+"Prefer random images over default images" setting.
+
+### Shorter "stage" badges
+
+The setting called 'Shorten "Stage 2" to e.g. "\[2/6\]" in effect badges' will do... that.  It may be useful if you use
+particular CSS themes that have less space for text in them (in the top right effects area).
 
 
 # Demo gif
