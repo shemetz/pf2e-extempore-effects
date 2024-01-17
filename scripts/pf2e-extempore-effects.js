@@ -432,9 +432,9 @@ const defineDurationFromTextOfAffliction = (itemDescriptionText) => {
   const maximumDurationMatch = itemDescriptionText
     // example: '<p><strong>Maximum Duration</strong> 6 rounds</p>'
     .match(/<p>\s*<strong>\s*Maximum Duration<\/strong> (\d+ rounds?)\s*<\/p>/)
-  // defaults to maximum duration if 1st-stage duration doesn't exist, because some creatures (like Athach) are bugged and don't mention specific stage durations
-  const firstStageDuration = firstStageDurationMatch?.[1] ?? maximumDurationMatch?.[1] ?? ''
-  const durationObj = defineDurationFromText(firstStageDuration, itemDescriptionText)
+  // defaults to maximum duration
+  const chosenDurationText = maximumDurationMatch?.[1] ?? firstStageDurationMatch?.[1] ?? ''
+  const durationObj = defineDurationFromText(chosenDurationText, itemDescriptionText)
   return {
     ...durationObj,
     // tick down at end of turn rather than start of turn, afflictions are special this way
