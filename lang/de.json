@@ -22,7 +22,6 @@
         "name": "Benachrichtigungen für abgelaufene Ereignisse",
         "hint": "Effekte, die ablaufen, senden eine Benachrichtigung und eine Chat-Nachricht als Erinnerung",
         "choice_all_effects": "Alle Effekte",
-        "choice_only_unidentified": "Nur geheime (unidentifizierte) Effekte",
         "choice_disabled": "Deaktiviert"
       },
       "randomize-image-if-default": {

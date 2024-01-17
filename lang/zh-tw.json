@@ -36,7 +36,6 @@
         "name": "通知效果過期",
         "hint": "效果過期時將發送私聊以作提醒",
         "choice_all_effects": "所有效果",
-        "choice_only_unidentified": "僅秘密（未鑑定）效果",
         "choice_disabled": "禁用"
       }
     },

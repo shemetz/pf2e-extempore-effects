@@ -33,7 +33,6 @@
         "name": "Powiadomienia o wygasłych zdarzeniach",
         "hint": "Efekty, które wygasną, wyślą powiadomienie i wiadomość na czacie, jako przypomnienie",
         "choice_all_effects": "Wszystkie efekty",
-        "choice_only_unidentified": "Tylko tajne (niezidentyfikowane) efekty",
         "choice_disabled": "Wyłączony"
       }
     },

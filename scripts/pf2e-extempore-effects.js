@@ -59,10 +59,9 @@ Hooks.on('init', () => {
     scope: 'world',
     config: true,
     type: String,
-    default: 'only_unidentified',
+    default: 'all_effects',
     choices: {
       'all_effects': localize('.settings.notifications-for-expired-effects.choice_all_effects'),
-      'only_unidentified': localize('.settings.notifications-for-expired-effects.choice_only_unidentified'),
       'disabled': localize('.settings.notifications-for-expired-effects.choice_disabled'),
     },
   })
@@ -197,7 +196,6 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
     if (effectNotificationSetting === 'disabled') break
     if (effect.isExpired) continue
     const isSecretEffect = effect.system.unidentified
-    if (!isSecretEffect && effectNotificationSetting === 'only_unidentified') continue
     const effectExpiryTimeLux = oldWorldTimeLux.plus({ seconds: effect.remainingDuration.remaining })
     const isEffectGonnaExpireNow = effectExpiryTimeLux.startOf('second') <= newWorldTimeLux.startOf('second')
     if (isEffectGonnaExpireNow) {
