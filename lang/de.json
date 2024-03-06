@@ -2,7 +2,7 @@
   "pf2e-extempore-effects": {
     "hiddenFromPlayerText": "Vor dem Spieler verborgen?",
     "openSheetInstructionShift": "[Umschalt + Links-Klick] Bogen öffnen",
-    "openSheetInstructionCtrl": "[Steuerung + Linksklick] Blatt öffnen",
+    "openSheetInstructionCtrl": "[Steuerung + Linksklick] Bogen öffnen",
     "contextMenuApplyEffect": "Effekt anwenden",
     "addedPrefixToEffectName": "Effekt: ",
     "addedPrefixToEffectDescription": "<h2>(Generierter Effekt)</h2>\n",
@@ -34,7 +34,7 @@
       }
     },
     "errorMultipleTokensCustomEffect": "Du musst ein Token auswählen, um einen neuen benutzerdefinierten Effekt anzuwenden.",
-    "errorNoTokensSelected": "Du musst Token(s) auswählen, um den Effekt anzuwenden.",
+    "errorNoTokensSelected": "Du musst Token auswählen, um den Effekt anzuwenden.",
     "errorItemNotFound": "Gegenstand in PF2e-Nachricht nicht gefunden.",
     "contextMenuExtemporeEffect": "Improvisierter Effekt",
     "addedPrefixToExpendedEffectName": "Verbraucht: ",
