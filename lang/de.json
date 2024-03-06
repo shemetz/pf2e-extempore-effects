@@ -19,7 +19,7 @@
         "choice_disabled": "Deaktiviert"
       },
       "notifications-for-expired-effects": {
-        "name": "Benachrichtigungen für abgelaufene Ereignisse",
+        "name": "Benachrichtigungen für abgelaufene Effekte",
         "hint": "Effekte, die ablaufen, senden eine Benachrichtigung und eine Chat-Nachricht als Erinnerung",
         "choice_all_effects": "Alle Effekte",
         "choice_disabled": "Deaktiviert"
