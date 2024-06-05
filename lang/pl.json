@@ -16,7 +16,7 @@
       },
       "hidden-by-default": {
         "name": "Twórz domyślnie niezidentyfikowane efekty",
-        "hint": "Domyślnie false.  Podczas tworzenia efektu z modułem jako GM nie będzie on domyślnie \"niezidentyfikowany\" (tajny).\n     Przytrzymanie klawiszy Ctrl/Alt podczas tworzenia efektu spowoduje odwrócenie tego ustawienia (domyślne utajnienie efektu)."
+        "hint": "Domyślnie false.  Podczas tworzenia efektu z modułem jako MG nie będzie on domyślnie \"niezidentyfikowany\" (tajny).\n     Przytrzymanie klawiszy Ctrl/Alt podczas tworzenia efektu spowoduje odwrócenie tego ustawienia (domyślne utajnienie efektu)."
       },
       "quick-add-empty-effect": {
         "name": "Szybkie dodawanie pustego efektu",
@@ -24,7 +24,7 @@
       },
       "open-effect-sheet-shortcut": {
         "name": "Skrót klawiszowy Otwórz kartę efektów",
-        "hint": "Jeśli opcja ta nie jest wyłączona, można jej użyć do otwarcia arkusza efektu podczas tworzenia efektu Extempore i korzystania z panelu efektów.",
+        "hint": "Jeśli opcja ta nie jest wyłączona, można jej użyć do otwarcia arkusza efektu podczas tworzenia efektu zaimprowizowanego i korzystania z panelu efektów.",
         "choice_shift_left_click": "Shift + kliknięcie lewym przyciskiem myszy",
         "choice_ctrl_left_click": "Control + kliknięcie lewym przyciskiem myszy",
         "choice_disabled": "Wyłączony"
@@ -36,7 +36,7 @@
         "choice_disabled": "Wyłączony"
       }
     },
-    "contextMenuExtemporeEffect": "Extempore Effect",
+    "contextMenuExtemporeEffect": "Efekt zaimprowizowany",
     "errorMultipleTokensCustomEffect": "Aby zastosować nowy efekt niestandardowy, należy wybrać jeden token.",
     "errorNoTokensSelected": "Aby zastosować efekt, należy wybrać token(y).",
     "errorItemNotFound": "Nie znaleziono elementu w wiadomości PF2e.",
