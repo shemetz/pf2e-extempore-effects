@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.8.4] - 2024-06-15
 - Fixed compatibility with pf2e version ~6.0 (not sure exactly which one)
 - Marked as verified compatible with Foundry V12
+- Re-added setting to only show expiring unidentified effects and not other effects (#34)
+- Updated translations
 
 ## [1.8.3] - 2024-01-17
 - Fixed stage detection from text
