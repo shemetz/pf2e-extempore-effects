@@ -59,7 +59,7 @@ Hooks.on('init', () => {
     scope: 'world',
     config: true,
     type: String,
-    default: 'only_unidentified',
+    default: 'all_effects',
     choices: {
       'all_effects': localize('.settings.notifications-for-expired-effects.choice_all_effects'),
       'only_unidentified': localize('.settings.notifications-for-expired-effects.choice_only_unidentified'),
