@@ -33,8 +33,9 @@
       },
       "notifications-for-expired-effects": {
         "name": "Notifications for expired events",
-        "hint": "Effects with a long duration that expire will send a notification and a chat message, as a reminder",
+        "hint": "Effects that expire will send a notification and a chat message, as a reminder",
         "choice_all_effects": "All effects",
+        "choice_only_unidentified": "Only secret (unidentified) effects",
         "choice_disabled": "Disabled"
       }
     },
