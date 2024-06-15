@@ -650,7 +650,7 @@ const createEffect = async (item) => {
     type: 'effect',
     name: effectName,
     img: image,
-    data: {
+    system: {
       tokenIcon: { show: true },
       duration: {
         value: durationValue,
@@ -684,7 +684,7 @@ const createEffectFromRechargeRoll = (message) => {
     type: 'effect',
     name: effectName,
     img: RECHARGE_IMAGE,
-    data: {
+    system: {
       tokenIcon: { show: true },
       duration: {
         value: rechargeRoundsRemaining,
@@ -713,7 +713,7 @@ const createEmptyEffect = () => {
     type: 'effect',
     name: localize('.nameOfQuickUntitledEffect'),
     img: image,
-    data: {
+    system: {
       tokenIcon: { show: true },
       duration: {
         value: 1,
