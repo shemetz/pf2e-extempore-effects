@@ -280,6 +280,9 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         return !!message?.item || !!messageGetOriginUuid(message)
       },
       callback: async li => {
+        const tokens = canvas.tokens.controlled
+        if (tokens.length === 0)
+          return ui.notifications.error(localize('.errorNoTokensSelected'))
         const message = game.messages.get(li.data('messageId'))
         const messageOriginUuid = messageGetOriginUuid(message)
         const item = message.item || (messageOriginUuid && await fromUuid(messageOriginUuid)) || null
@@ -289,10 +292,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         } else if (isRechargeRoll(message)) {
           effect = createEffectFromRechargeRoll(message)
         } else return ui.notifications.error(localize('.errorItemNotFound'))
-        const tokens = canvas.tokens.controlled
-        if (tokens.length === 0) {
-          ui.notifications.error(localize('.errorNoTokensSelected'))
-        } else for (const token of tokens) {
+        for (const token of tokens) {
           if (!token.actor) {
             ui.notifications.error(`Token "${token.name}" has no actor, and so cannot have an effect.`)
             continue
@@ -332,16 +332,16 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         return false
       },
       callback: async li => {
+        const tokens = canvas.tokens.controlled
+        if (tokens.length === 0)
+          return ui.notifications.error(localize('.errorNoTokensSelected'))
         const message = game.messages.get(li.data('messageId'))
         const messageOriginUuid = messageGetOriginUuid(message)
         const item = message.item || (messageOriginUuid && await fromUuid(messageOriginUuid)) || null
         if (item === null) {
           return ui.notifications.error(localize('.errorItemNotFound'))
         }
-        const tokens = canvas.tokens.controlled
-        if (tokens.length === 0) {
-          ui.notifications.error(localize('.errorNoTokensSelected'))
-        } else for (const token of tokens) {
+        for (const token of tokens) {
           if (!token.actor) {
             ui.notifications.error(`Token "${token.name}" has no actor, and so cannot have an effect.`)
             continue
