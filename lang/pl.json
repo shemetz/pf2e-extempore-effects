@@ -31,7 +31,7 @@
       },
       "notifications-for-expired-effects": {
         "name": "Powiadomienia o wygasłych zdarzeniach",
-        "hint": "Efekty, które wygasną, wyślą powiadomienie i wiadomość na czacie, jako przypomnienie",
+        "hint": "Efekty o długim czasie trwania, które wygasną, wyślą powiadomienie i wiadomość na czacie jako przypomnienie",
         "choice_all_effects": "Wszystkie efekty",
         "choice_only_unidentified": "Tylko tajne (niezidentyfikowane) efekty",
         "choice_disabled": "Wyłączony"
@@ -40,6 +40,7 @@
     "contextMenuExtemporeEffect": "Extempore Effect",
     "errorMultipleTokensCustomEffect": "Aby zastosować nowy efekt niestandardowy, należy wybrać jeden token.",
     "errorNoTokensSelected": "Aby zastosować efekt, należy wybrać token(y).",
-    "errorItemNotFound": "Nie znaleziono elementu w wiadomości PF2e."
+    "errorItemNotFound": "Nie znaleziono elementu w wiadomości PF2e.",
+    "stageN": "Etap {n}"
   }
 }
