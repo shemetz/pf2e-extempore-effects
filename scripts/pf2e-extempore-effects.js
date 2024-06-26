@@ -356,7 +356,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
   return buttons
 }
 
-function messageGetOriginUuid(message) {
+function messageGetOriginUuid (message) {
   let uuid = message.getFlag('pf2e', 'origin')?.uuid
   if (!uuid) {
     return null
@@ -368,7 +368,7 @@ function messageGetOriginUuid(message) {
   return uuid
 }
 
-function fromUuidNonAsync(uuid) {
+function fromUuidNonAsync (uuid) {
   let parts = uuid.split('.')
   let doc
 
@@ -394,7 +394,7 @@ function fromUuidNonAsync(uuid) {
   return doc || null
 }
 
-function defineDurationFromFrequency(frequency) {
+function defineDurationFromFrequency (frequency) {
   let durationValue, durationUnit, durationSustained = false
   const turnStartOrTurnEnd = 'turn-start'
   switch (frequency.per) {
@@ -428,10 +428,10 @@ function defineDurationFromFrequency(frequency) {
 
 const defineDurationFromTextOfAffliction = (itemDescriptionText) => {
   // an affliction effect's duration is the duration of its first stage!
-  let stageNRegex = new RegExp(`<p>\s*<strong>\s*${localize(`.stageN`).replace('{n}', "\\d")}+<\/strong> .+? \((.+)\)\s*<\/p>`)
-  const firstStageDurationMatch = itemDescriptionText
-    // example: '<p><strong>Stage 1</strong> carrier with no ill effect (1 minute)</p>'
-    .match(stageNRegex)
+  // example: '<p><strong>Stage 1</strong> carrier with no ill effect (1 minute)</p>'
+  const stageNRegex = new RegExp(`<p>\\s*<strong>\\s*${localize('.stageN').replace('{n}', '\\d+')}<\/strong> .+? \\((.+)\\)\\s*<\/p>`,
+    'i')
+  const firstStageDurationMatch = itemDescriptionText.match(stageNRegex)
   const maximumDurationMatch = itemDescriptionText
     // example: '<p><strong>Maximum Duration</strong> 6 rounds</p>'
     .match(/<p>\s*<strong>\s*Maximum Duration<\/strong> (\d+ rounds?)\s*<\/p>/)
@@ -517,7 +517,7 @@ const isEffectOrCondition = (document) => {
 }
 
 const isAffliction = (itemDescriptionText) => {
-  let stageNRegex = new RegExp(`<strong>${localize(`.stageN`).replace('{n}', "\\d")}+`)
+  const stageNRegex = new RegExp(`<strong>${localize('.stageN').replace('{n}', '\\d')}+`)
   return itemDescriptionText.match(stageNRegex)
 }
 
@@ -526,8 +526,7 @@ const isRechargeRoll = (message) => {
 }
 
 const calcHighestStageOfAffliction = (itemDescriptionText) => {
-  let stageNLocalized = localize(`.stageN`)
-  let stageNRegex = new RegExp(`${stageNLocalized.replace('{n}', "(\\d+)").replace(stageNLocalized.charAt(0), `[${stageNLocalized.charAt(0).toUpperCase()}${stageNLocalized.charAt(0).toLowerCase()}]`)}`, 'g')
+  const stageNRegex = new RegExp(localize(`.stageN`).replace('{n}', '(\\d+)'), 'gi')
   const stageNumbers = [...itemDescriptionText.matchAll(stageNRegex)].map(m => m[1]).
     map(numStr => parseInt(numStr))
   return Math.max(...stageNumbers)
