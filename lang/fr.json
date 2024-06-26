@@ -3,12 +3,13 @@
     "hiddenFromPlayerText": "Caché pour les joueurs ?",
     "openSheetInstructionShift": "[Shift + clic gauche] Ouvrir la feuille",
     "openSheetInstructionCtrl": "[Ctrl + clic gauche] Ouvrir la feuille",
-    "contextMenuExtemporeEffect": "Effet improvisé",
+    "contextMenuExtemporeEffect": "Effet spontané",
     "contextMenuApplyEffect": "Appliquer l'effet",
     "addedPrefixToExpendedEffectName": "Dépensé : ",
     "addedPrefixToEffectName": "Effet : ",
     "addedPrefixToEffectDescription": "<h2>(Effet généré)</h2>\n",
-    "nameOfQuickUntitledEffect": "Effet non titré rapide",
+    "nameOfQuickUntitledEffect": "Effet rapide non titré",
+    "stageN": "Stade {n}",
     "descriptionOfQuickUntitledEffect": "<h2>(Effet généré)</h2>\nÉcrivez ce que vous voulez ici !",
     "settings": {
       "randomize-image-if-default": {
@@ -16,8 +17,8 @@
         "hint": "Par Défaut. Lorsque vous créez un effet en dehors d'un message qui a un objet mais pas d'acteur (ou qui possède \nun acteur avec une image par défaut) et que cet objet possède une image par défaut, choisissez une image colorée aléatoire à la place."
       },
       "hidden-by-default": {
-        "name": "Créer un effet Caché",
-        "hint": "Pas par défaut. Lorsque vous créez un effet avec ce module en tant que MJ, il ne sera pas \"Caché des joueurs\" par défaut.\n     Maintenir la touche Ctrl/Alt en créant un effet produira l'inverse (le rendant caché par défaut)."
+        "name": "Créer des effets non identifiés par défaut",
+        "hint": "Désactivé par défaut. Lorsque vous créez un effet avec ce module en tant que MJ, il ne sera pas \"non identifié\" par défaut.\n     Maintenir la touche Ctrl/Alt en créant un effet produira l'inverse (le rendant non identifié par défaut)."
       },
       "quick-add-empty-effect": {
         "name": "Ajout rapide d'un effet vide",
@@ -39,7 +40,7 @@
       }
     },
     "errorMultipleTokensCustomEffect": "Vous avez besoin d'avoir un objet sélectionné pour appliquer un nouvel effet personnalisé.",
-    "errorNoTokensSelected": "Vous avez besoin d'avoir un jeton (ou plusieurs) choisi pour appliquer l'effet.",
+    "errorNoTokensSelected": "Vous avez besoin d'avoir un jeton (ou plusieurs) selectionnés pour appliquer l'effet.",
     "errorItemNotFound": "Objet non trouvé dans le message PF2e."
   }
 }
