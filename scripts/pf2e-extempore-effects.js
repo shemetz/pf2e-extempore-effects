@@ -293,7 +293,10 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
           effect = await createEffect(item)
         } else if (isRechargeRoll(message)) {
           effect = createEffectFromRechargeRoll(message)
-        } else return ui.notifications.error(localize('.errorItemNotFound'))
+        } else {
+          ui.notifications.warn(localize('.errorItemNotFound'))
+          effect = createEffectFromItemlessMessage(message)
+        }
         for (const token of tokens) {
           if (!token.actor) {
             ui.notifications.error(`Token "${token.name}" has no actor, and so cannot have an effect.`)
@@ -538,8 +541,8 @@ const isImageBoring = (image) => {
     || image === 'systems/pf2e/icons/features/feats/feats.webp'
 }
 
-const randomImage = (item) => {
-  const hashNum = hashString(item.id)
+const randomImage = (rawSeed) => {
+  const hashNum = hashString(rawSeed)
   const images = RANDOM_EFFECT_IMAGES
   const randomIndex = Math.abs(hashNum) % images.length
   return images[randomIndex]
@@ -562,7 +565,7 @@ const getImage = (item) => {
   if (!isImageBoring(itemImage)) return itemImage
   const actorImage = item.actor?.token?.img || item.actor?.img
   if (!isImageBoring(actorImage)) return actorImage
-  return randomImage(item)
+  return randomImage(item.id)
 }
 
 const getItemDescriptionWithCheckButtonsIncluded = (item, enrichedContentDescription) => {
@@ -708,12 +711,88 @@ const createEffectFromRechargeRoll = (message) => {
   }
 }
 
+const createEffectFromItemlessMessage = (message) => {
+  const ctrlOrAltPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
+    || game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
+  const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
+  const descriptionText = $(message.content).find('.card-content').html() || message.content // TODO simplify?
+  const $header = $(message.content).find('header.card-header')
+  const maybeItemName = $header.find('h3').text()
+  const maybeItemImage = $header.find('img').attr('src')
+  const rollOptions = message.flags.pf2e?.origin?.rollOptions
+  const maybeItemLevelStr = rollOptions?.find(rollOpt => rollOpt.startsWith('origin:item:level:'))?.split(':').pop()
+  const maybeItemTraitsList = rollOptions?.filter(rollOpt => rollOpt.startsWith('origin:item:trait:')).
+    map(rollOpt => rollOpt.split(':').pop()) // e.g. [alchemical, consumable, incapacitation, injury, poison, sleep]
+  const maybeItemSlug = rollOptions?.find(rollOpt => rollOpt.startsWith('origin:item:slug:'))?.split(':').pop()
+  const maybeItemRarity = rollOptions?.find(rollOpt => rollOpt.startsWith('origin:item:rarity:'))?.split(':').pop()
+
+  const effectName = localize('.addedPrefixToEffectName') + (maybeItemName || `??? (${message.speaker.alias})`)
+  const effectDescription = localize('.addedPrefixToEffectDescription') + descriptionText
+  const effectImage = maybeItemImage || randomImage(message.timestamp)
+  const effectSlug = maybeItemSlug ?? `extempore-itemless-effect-${message.timestamp}`
+  const effectLevel = parseInt(maybeItemLevelStr ?? '0')
+
+  let durationValue, durationUnit, durationSustained, turnStartOrTurnEnd
+  let afflictionBadge = undefined
+  if (isAffliction(descriptionText)) {
+    ({
+      durationValue,
+      durationUnit,
+      durationSustained,
+      turnStartOrTurnEnd,
+    } = defineDurationFromTextOfAffliction(descriptionText))
+    // Afflictions get created at Stage 1
+    const highestStage = calcHighestStageOfAffliction(descriptionText)
+    const stageTextFromNumber = game.settings.get(MODULE_ID, 'short-stage-badge')
+      ? (n) => `[${n}/${highestStage}]`
+      : (n) => localize(`.stageN`).replace('{n}', n)
+    afflictionBadge = {
+      type: 'counter',
+      value: 1,
+      labels: Array.fromRange(highestStage, 1).map(n => stageTextFromNumber(n)),
+    }
+  } else {
+    ({
+      durationValue,
+      durationUnit,
+      durationSustained,
+      turnStartOrTurnEnd,
+    } = defineDurationFromText('', descriptionText))
+  }
+  return {
+    type: 'effect',
+    name: effectName,
+    img: effectImage,
+    system: {
+      tokenIcon: { show: true },
+      duration: {
+        value: durationValue,
+        unit: durationUnit,
+        sustained: durationSustained,
+        expiry: turnStartOrTurnEnd,
+      },
+      description: { value: effectDescription },
+      unidentified: createHidden,
+      traits: {
+        otherTags: [],
+        value: maybeItemTraitsList ?? [],
+        rarity: maybeItemRarity ?? 'common',
+      },
+      level: { value: effectLevel },
+      source: { value: 'itemless effect created by ' + MODULE_NAME },
+      slug: effectSlug,
+      badge: afflictionBadge,
+    },
+    flags: {},
+  }
+}
+
 const createEmptyEffect = () => {
   const screenPos = canvas.scene._viewPosition
   const altPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
   const createHidden = game.user.isGM && (altPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const kindaRandomString = Math.round(screenPos.x + screenPos.y + screenPos.scale * 1000).toString()
-  const image = randomImage({ id: kindaRandomString })
+  const image = randomImage(kindaRandomString)
   return {
     type: 'effect',
     name: localize('.nameOfQuickUntitledEffect'),
