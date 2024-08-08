@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.6] - 2024-08-08
+- Fixed (added) effects from consumed items (e.g. poisons)
+
 ## [1.8.5] - 2024-06-27
 - Improved detection of affliction stages for localizations, not perfectly (#40)
 
@@ -131,4 +134,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.8.3]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.8.2...1.8.3
 [1.8.4]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.8.3...1.8.4
 [1.8.5]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.8.4...1.8.5
-[Unreleased]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.8.5...HEAD
+[1.8.6]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.8.5...1.8.6
+[Unreleased]: https://github.com/shemetz/pf2e-extempore-effects/compare/1.8.6...HEAD
