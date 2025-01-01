@@ -572,13 +572,16 @@ const getItemDescriptionWithCheckButtonsIncluded = (item, enrichedContentDescrip
   let description = enrichedContentDescription
   const dc = item.spellcasting?.statistic.dc.value
   if (!dc) return description
-  debugger
   for (const saveName of ['Fortitude', 'Will', 'Reflex']) {
     const type = saveName.toLowerCase()
     const name = `${saveName} save`
     description = description.replaceAll(
-      new RegExp(` ${saveName} save(?!s)`, 'g'),
+      new RegExp(` ${saveName} (saves|save|saving throw)`, 'g'),
       ` @Check[type:${type}|dc:${dc}]{${name}}`,
+    ).replaceAll(
+      // e.g. <strong>Defense</strong> Will;
+      new RegExp(`\\n\\s+${saveName};`, 'g'),
+      `\n @Check[type:${type}|dc:${dc}]{${name}};`,
     )
   }
   for (const checkName of [
