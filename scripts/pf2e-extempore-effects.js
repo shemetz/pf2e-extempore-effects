@@ -572,6 +572,7 @@ const getItemDescriptionWithCheckButtonsIncluded = (item, enrichedContentDescrip
   let description = enrichedContentDescription
   const dc = item.spellcasting?.statistic.dc.value
   if (!dc) return description
+  debugger
   for (const saveName of ['Fortitude', 'Will', 'Reflex']) {
     const type = saveName.toLowerCase()
     const name = `${saveName} save`
@@ -715,8 +716,9 @@ const createEffectFromItemlessMessage = (message) => {
   const ctrlOrAltPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
     || game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
-  const descriptionText = $(message.content).find('.card-content').html() || message.content // TODO simplify?
-  const $header = $(message.content).find('header.card-header')
+  const $content = $('<div>' + (message.content.length > 2 ? message.content : message.flavor) + '</div>')
+  const descriptionText = $content.find('.card-content').html() || $content.text()
+  const $header = $content.find('header.card-header')
   const maybeItemName = $header.find('h3').text()
   const maybeItemImage = $header.find('img').attr('src')
   const rollOptions = message.flags.pf2e?.origin?.rollOptions
@@ -726,7 +728,10 @@ const createEffectFromItemlessMessage = (message) => {
   const maybeItemSlug = rollOptions?.find(rollOpt => rollOpt.startsWith('origin:item:slug:'))?.split(':').pop()
   const maybeItemRarity = rollOptions?.find(rollOpt => rollOpt.startsWith('origin:item:rarity:'))?.split(':').pop()
 
-  const effectName = localize('.addedPrefixToEffectName') + (maybeItemName || `??? (${message.speaker.alias})`)
+  const extraInfo = (
+    $content.find('.action').text() + ' ' + $content.find('.degree-of-success span:first-child').text()
+  ) || message.speaker.alias
+  const effectName = localize('.addedPrefixToEffectName') + (maybeItemName || `??? (${extraInfo})`)
   const effectDescription = localize('.addedPrefixToEffectDescription') + descriptionText
   const effectImage = maybeItemImage || randomImage(message.timestamp)
   const effectSlug = maybeItemSlug ?? `extempore-itemless-effect-${message.timestamp}`
