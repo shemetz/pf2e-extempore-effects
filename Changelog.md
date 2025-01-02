@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.8] - 2025-01-03
+- Removed lock file from git repo (how the heck did I not notice this for 2.5 years?)
+- Improved itemless effect name a little, now says e.g. "??? (Will Saving Throw Failure)"
+- Improved embedded check button replacement in item-based descriptions (#42)
+
 ## [1.8.6] - 2024-08-08
 - Fixed (added) effects from consumed items (e.g. poisons)
 
