@@ -12,24 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: latest
-          cache: npm
 
       # get part of the tag after the `v`
       - name: Extract tag version number
         id: get-version
         run: echo "version-without-v=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
-
-      - name: Get Module JSON
-        id: set_var
-        run: |
-          echo "PACKAGE_JSON=$(jq -c . < module.json)" >> $GITHUB_OUTPUT
-
-      - name: Get Module Title
-        id: title
-        run: echo "title=${{ fromJson(steps.set_var.outputs.PACKAGE_JSON).title }}" >> "$GITHUB_OUTPUT"
 
       # Substitute the Manifest and Download URLs in the `module.json`.
       - name: Substitute Manifest and Download Links For Versioned Ones
