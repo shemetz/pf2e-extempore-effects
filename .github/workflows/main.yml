@@ -19,15 +19,6 @@ jobs:
         id: get-version
         run: echo "version-without-v=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
 
-      # Create the release on GitHub
-      - name: Create release on Github
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
-        # Add the files one-by-one in an effort to avoid timeouts
-        run: |
-          hub release create -a module.zip
-
       - name: Substitute manifest and download links for versioned ones
         id: sub_manifest_link_version
         uses: devops-actions/variable-substitution@v1.2
@@ -36,14 +27,12 @@ jobs:
         env:
           version: ${{ steps.get-version.outputs.version-without-v }}
           manifest: https://github.com/${{ github.repository }}/releases/latest/download/module.json
-          download: https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/module.zip
+          download: https://github.com/${{ github.repository }}/releases/download/${{ steps.get-version.outputs.version-without-v }}/module.zip
 
-      # Create a folder containing all the module stuff and zip it for the release
-      - name: Create zip
+      - name: Create zip with all important module stuff (skipping unwanted files)
         run: zip -r9 ./module.zip lang/ scripts/ styles/ Readme.md License.txt Changelog.md module.json
 
-      # Update the release on GitHub
-      - name: Update GitHub release with json and zip files
+      - name: Createu/Update GitHub release with json and zip files
         id: create_version_release
         uses: ncipollo/release-action@v1
         with:
@@ -57,12 +46,11 @@ jobs:
           name: ${{ steps.get-version.outputs.version-without-v }}
           artifacts: './module.json, ./module.zip'
 
-      # Update the release on GitHub
       - name: Publish to FoundryVTT
         uses: cs96and/FoundryVTT-release-package@v1.0.2
-        if: ${{ !github.event.release.prerelease && env.PACKAGE_TOKEN }}
+        if: ${{ env.PACKAGE_TOKEN }}
         env:
           PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
         with:
           package-token: ${{ env.PACKAGE_TOKEN }}
-          manifest-url: https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/module.json
+          manifest-url: https://github.com/${{ github.repository }}/releases/download/${{ steps.get-version.outputs.version-without-v }}/module.json
