@@ -2,7 +2,6 @@ name: Release Creation
 
 on:
   push:
-    branches: [ 'master-2' ]
     tags:
       - v*
 
