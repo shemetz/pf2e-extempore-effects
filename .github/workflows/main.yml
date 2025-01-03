@@ -11,17 +11,26 @@ permissions:
 
 jobs:
   release:
+    name: Release pushed tag as github release and then publish it to Foundry
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      # get part of the tag after the `v`
-      - name: Extract tag version number
+      - name: Extract tag version number without the v
         id: get-version
         run: echo "version-without-v=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
 
-      # Substitute the Manifest and Download URLs in the `module.json`.
-      - name: Substitute Manifest and Download Links For Versioned Ones
+      # Create the release on GitHub
+      - name: Create release on Github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.get-version.outputs.version-without-v }}" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${{ steps.get-version.outputs.version-without-v }}" \
+              --generate-notes
+
+      - name: Substitute manifest and download links for versioned ones
         id: sub_manifest_link_version
         uses: devops-actions/variable-substitution@v1.2
         with:
@@ -32,10 +41,11 @@ jobs:
           download: https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/module.zip
 
       # Create a folder containing all the module stuff and zip it for the release
-      - name: Create Zip
+      - name: Create zip
         run: zip -r9 ./module.zip lang/ scripts/ styles/ Readme.md License.txt Changelog.md module.json
 
-      - name: Create Release with Files
+      # Update the release on GitHub
+      - name: Update GitHub release with json and zip files
         id: create_version_release
         uses: ncipollo/release-action@v1
         with:
@@ -49,6 +59,7 @@ jobs:
           name: ${{ steps.get-version.outputs.version-without-v }}
           artifacts: './module.json, ./module.zip'
 
+      # Update the release on GitHub
       - name: Publish to FoundryVTT
         uses: cs96and/FoundryVTT-release-package@v1.0.2
         if: ${{ !github.event.release.prerelease && env.PACKAGE_TOKEN }}
