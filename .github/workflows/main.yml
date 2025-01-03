@@ -2,7 +2,9 @@ name: Release Creation
 
 on:
   push:
-    branches: ['master-2']
+    branches: [ 'master-2' ]
+    tags:
+      - v*
 
 permissions:
   contents: write
@@ -14,9 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Extract tag version number without the v from latest commit message
+      - name: Extract tag version number without the v
         id: get-version
-        run: echo "version-without-v=${github.event.head_commit.message#v}" >> "$GITHUB_OUTPUT"
+        run: echo "version-without-v=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
 
       # Create the release on GitHub
       - name: Create release on Github
