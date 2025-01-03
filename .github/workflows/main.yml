@@ -23,11 +23,10 @@ jobs:
       - name: Create release on Github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+        # Add the files one-by-one in an effort to avoid timeouts
         run: |
-          gh release create "${{ steps.get-version.outputs.version-without-v }}" \
-              --repo="$GITHUB_REPOSITORY" \
-              --title="${{ steps.get-version.outputs.version-without-v }}" \
-              --generate-notes
+          hub release create -a module.zip
 
       - name: Substitute manifest and download links for versioned ones
         id: sub_manifest_link_version
