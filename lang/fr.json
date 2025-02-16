@@ -35,7 +35,7 @@
       },
       "notifications-for-expired-effects": {
         "name": "Notifications pour les évènements expirés",
-        "hint": "Les effets qui expirent enverront une notification et un message dans la conversation à titre de rappel",
+        "hint": "Les effets avec une durée longue qui expirent enverront une notification et un message dans la conversation à titre de rappel",
         "choice_all_effects": "Tous les effets",
         "choice_only_unidentified": "Seulement les effets secrets (non identifiés)",
         "choice_disabled": "Désactivé"
