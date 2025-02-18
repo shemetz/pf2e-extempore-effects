@@ -1,3 +1,9 @@
+## 1.8.99 - 2025-02-18
+- Fixed said versioning bug
+
+## 1.8.9 - 2025-01-03
+- Added a versioning bug
+ 
 ## 1.8.10 - 2025-02-18
 - Added extemporability to all basic chat messages
 
