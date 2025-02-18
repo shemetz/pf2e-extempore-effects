@@ -1,3 +1,6 @@
+## 1.8.10 - 2025-02-18
+- Added extemporability to all basic chat messages
+
 ## 1.8.8 - 2025-01-03
 - Removed lock file from git repo (how the heck did I not notice this for 2.5 years?)
 - Improved itemless effect name a little, now says e.g. "??? (Will Saving Throw Failure)"
