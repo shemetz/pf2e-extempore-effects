@@ -202,6 +202,7 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
     const isEffectGonnaExpireNow = effectExpiryTimeLux.startOf('second') <= newWorldTimeLux.startOf('second')
     if (isEffectGonnaExpireNow) {
       // convert to golarion time
+      // TODO rely on system calendar in foundry v13
       const golS = effectExpiryTimeLux.plus({ years: 2700 }).toFormat('yyyy-LL-dd HH:mm:ss')
       const durS = `${effect.system.duration.value} ${effect.system.duration.unit}`
       console.log(`${MODULE_NAME} | ${effect.name} expired now!  ID = ${effect.id}`)
@@ -279,6 +280,9 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         if (isRechargeRoll(message)) {
           return true
         }
+        if (isNormalTextMessage(message)) {
+          return true
+        }
         return !!message?.item || !!messageGetOriginUuid(message)
       },
       callback: async li => {
@@ -293,6 +297,8 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
           effect = await createEffect(item)
         } else if (isRechargeRoll(message)) {
           effect = createEffectFromRechargeRoll(message)
+        } else if (isNormalTextMessage(message)) {
+          effect = createEffectFromPureTextMessage(message)
         } else {
           ui.notifications.warn(localize('.errorItemNotFound'))
           effect = createEffectFromItemlessMessage(message)
@@ -528,6 +534,10 @@ const isRechargeRoll = (message) => {
   return !isNaN(parseInt(message.content)) && message.flavor?.includes('charge')
 }
 
+const isNormalTextMessage = (message) => {
+  return !!message.content?.length && !message.isRoll && Object.keys(message.system ?? {}).length === 0
+}
+
 const calcHighestStageOfAffliction = (itemDescriptionText) => {
   const stageNRegex = new RegExp(localize(`.stageN`).replace('{n}', '(\\d+)'), 'gi')
   const stageNumbers = [...itemDescriptionText.matchAll(stageNRegex)].map(m => m[1]).
@@ -542,7 +552,7 @@ const isImageBoring = (image) => {
 }
 
 const randomImage = (rawSeed) => {
-  const hashNum = hashString(rawSeed)
+  const hashNum = hashString(rawSeed?.toString())
   const images = RANDOM_EFFECT_IMAGES
   const randomIndex = Math.abs(hashNum) % images.length
   return images[randomIndex]
@@ -830,6 +840,46 @@ const createEmptyEffect = () => {
       },
       // note: naming this just 'temporary-effect-...' will lead to a PF2E bug, apparently!
       slug: `extempore-temporary-effect-${kindaRandomString}`,
+    },
+    flags: {},
+  }
+}
+
+const createEffectFromPureTextMessage = (message) => {
+  const improvisedName = message.content.length < 20 ? message.content : message.content.substring(0, 20) + '...'
+  const descriptionText = localize('.addedPrefixToEffectDescription') + message.content
+  const ctrlOrAltPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
+    || game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
+  const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
+  const image = randomImage(message.timestamp)
+  return {
+    type: 'effect',
+    name: improvisedName,
+    img: image,
+    system: {
+      tokenIcon: { show: true },
+      duration: {
+        value: 1,
+        unit: 'unlimited',
+        sustained: false,
+        expiry: 'turn-start',
+      },
+      description: {
+        value: descriptionText,
+      },
+      unidentified: createHidden,
+      traits: {
+        otherTags: [],
+        value: [],
+        rarity: 'common',
+      },
+      level: {
+        value: 0,
+      },
+      source: {
+        source: { value: 'itemless effect created by ' + MODULE_NAME },
+      },
+      slug: `extempore-text-message-effect-${message.timestamp}`,
     },
     flags: {},
   }
