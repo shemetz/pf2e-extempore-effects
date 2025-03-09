@@ -37,10 +37,44 @@
         "choice_all_effects": "All effects",
         "choice_only_unidentified": "Only secret (unidentified) effects",
         "choice_disabled": "Disabled"
+      },
+      "notifications-sound-for-expired-effects": {
+        "name": "Notification sound for expired events",
+        "hint": "Play a sound when an effect expires and notifications are enabled."
+      },
+      "notifications-pause-for-expired-effects": {
+        "name": "Pause clock advancement to first expired effect",
+        "hint": "Only advance the clock to the first expired effect notification and display a dialog to continue or cancel the advancement of the clock."
       }
     },
     "errorMultipleTokensCustomEffect": "You need to have one token selected to apply a custom new effect.",
     "errorNoTokensSelected": "You need to have token(s) selected to apply the effect.",
-    "errorItemNotFound": "Item not found in PF2e message."
+    "errorItemNotFound": "Item not found in PF2e message.",
+    "dialog": {
+      "expired-effects": {
+        "title": "Time Partially Advanced to",
+        "content": {
+          "header": "Time advanced to Expired Effects:",
+          "message-time": "The clock was only advanced by",
+          "message-continue": "Do you want to continue advancing time for the remaining"
+        },
+        "buttons": {
+          "yes": "Yes",
+          "no": "No"
+        }
+      }
+    },
+    "time": {
+      "second": "second",
+      "seconds": "seconds",
+      "minute": "minute",
+      "minutes": "minutes",
+      "hour": "hour",
+      "hours": "hours",
+      "day": "day",
+      "days": "days",
+      "week": "week",
+      "weeks": "weeks"
+    }
   }
 }
