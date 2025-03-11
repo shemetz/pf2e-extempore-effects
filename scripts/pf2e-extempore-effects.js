@@ -308,12 +308,12 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
   // If there was an expired effect notification, and the user requested to advance time beyond the expiry time,
   // let's prompt the user if they want to continue to requested time or stop at the expiry time.
   if (expireEffectMessageShown && newWorldTime < requestedNewWorldTime) {
-    const dialogTitle = `${localize('.dialog.expired-effects.title')} ${lastExpiryTime}`;
-    let dialogContent = `<span><h6>${localize('.dialog.expired-effects.content.header')}</h6><ul>`;
+    const dialogTitle = `${localize('.dialog.expiredEffects.title')} ${lastExpiryTime}`;
+    let dialogContent = `<span><h6>${localize('.dialog.expiredEffects.content.header')}</h6><ul>`;
 
     for (const effect of effectsExpired) dialogContent += `<li>${effect.name} (${effect.actor.name})</li>`;
 
-    dialogContent += `</ul>${localize('.dialog.expired-effects.content.message-time')} ${formatTime(newWorldTime - oldWorldTime)}.</span><span>${localize('.dialog.expired-effects.content.message-continue')}<br>${formatTime(requestedNewWorldTime - newWorldTime)}?</span>`
+    dialogContent += `</ul>${localize('.dialog.expiredEffects.content.message-time')} ${formatTime(newWorldTime - oldWorldTime)}.</span><span>${localize('.dialog.expiredEffects.content.message-continue')}<br>${formatTime(requestedNewWorldTime - newWorldTime)}?</span>`
 
     promptUserToContinue(requestedNewWorldTime, newWorldTime, oldWorldTime, dialogTitle, dialogContent);
   }
@@ -338,7 +338,7 @@ function promptUserToContinue(requestedNewWorldTime, newWorldTime, oldWorldTime,
     buttons: [{
       icon: 'fas fa-check',
       action: "yes",
-      label: localize('.dialog.expired-effects.buttons.yes'),
+      label: localize('.dialog.expiredEffects.buttons.yes'),
       callback: async () => {
         await game.time.advance(0) // stupid hack, without this the time doesn't advance properly?
         await game.time.advance((requestedNewWorldTime - newWorldTime));
@@ -346,8 +346,16 @@ function promptUserToContinue(requestedNewWorldTime, newWorldTime, oldWorldTime,
       default: true
     }, {
       icon: 'fas fa-times',
-      action: "no",
-      label: localize('.dialog.expired-effects.buttons.no'),
+      action: "noStop",
+      label: localize('.dialog.expiredEffects.buttons.noStop'),
+    }, {
+      icon: 'fas fa-times',
+      action: "cancelRevert",
+      label: localize('.dialog.expiredEffects.buttons.cancelRevert'),
+      callback: async () => {
+        await game.time.advance(0) // stupid hack, without this the time doesn't advance properly?
+        await game.time.advance((oldWorldTime - newWorldTime));
+      },
     }]
   }).render({force: true});
 }

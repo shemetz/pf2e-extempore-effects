@@ -51,16 +51,17 @@
     "errorNoTokensSelected": "You need to have token(s) selected to apply the effect.",
     "errorItemNotFound": "Item not found in PF2e message.",
     "dialog": {
-      "expired-effects": {
-        "title": "Time Partially Advanced to",
+      "expiredEffects": {
+        "title": "Time partially advanced to",
         "content": {
-          "header": "Time advanced to Expired Effects:",
-          "message-time": "The clock was only advanced by",
+          "header": "Time has partially advanced, and stopped when these effects expired:",
+          "message-time": "The clock has only moved forward by",
           "message-continue": "Do you want to continue advancing time for the remaining"
         },
         "buttons": {
-          "yes": "Yes",
-          "no": "No"
+          "yes": "Yes, keep advancing",
+          "noStop": "No, stop here",
+          "cancelRevert": "Cancel, revert to old time"
         }
       }
     },
