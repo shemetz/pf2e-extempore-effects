@@ -535,7 +535,8 @@ const isRechargeRoll = (message) => {
 }
 
 const isNormalTextMessage = (message) => {
-  return !!message.content?.length && !message.isRoll && Object.keys(message.system ?? {}).length === 0
+  return !!message.content?.length && !message.isRoll && Object.keys(message.system ?? {}).length === 0 &&
+    !message.content.includes('<div')
 }
 
 const calcHighestStageOfAffliction = (itemDescriptionText) => {
@@ -663,8 +664,11 @@ const createEffect = async (item) => {
       turnStartOrTurnEnd,
     } = defineDurationFromText(durationText, descriptionText))
   }
-  const effectName = localize(item.system.frequency ? '.addedPrefixToExpendedEffectName' : '.addedPrefixToEffectName') +
-    item.name
+  const effectName = localize(
+    item.system.frequency
+      ? '.addedPrefixToExpendedEffectName'
+      : '.addedPrefixToEffectName',
+  ) + item.name
   descriptionText = localize('.addedPrefixToEffectDescription') + descriptionText
   const image = getImage(item)
   const effectLevel = item.system.level || item.parent?.system.details.level
@@ -746,7 +750,9 @@ const createEffectFromItemlessMessage = (message) => {
   ) || message.speaker.alias
   const effectName = localize('.addedPrefixToEffectName') + (maybeItemName || `??? (${extraInfo})`)
   const effectDescription = localize('.addedPrefixToEffectDescription') + descriptionText
-  const effectImage = maybeItemImage || randomImage(message.timestamp)
+  const effectImage = (maybeItemImage && !isImageBoring(maybeItemImage))
+    ? maybeItemImage
+    : randomImage(message.timestamp)
   const effectSlug = maybeItemSlug ?? `extempore-itemless-effect-${message.timestamp}`
   const effectLevel = parseInt(maybeItemLevelStr ?? '0')
 
