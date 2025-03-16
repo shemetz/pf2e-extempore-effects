@@ -30,7 +30,7 @@ simple colored image.
 As a bonus feature, right-clicking actual Effect messages will display an "Apply Effect" option to just apply that same
 effect to the controlled token. This is just a quality-of-life feature.
 
-### Affliction automation (partial)
+### Affliction automation (very partial)
 
 When you create an effect from an affliction chat message - such as the one from Scalathrax Venom - the module will
 attempt to give the effect a list of stages equal to the affliction's stage count, set the initial stage to 1, set
@@ -71,6 +71,10 @@ Note that this will not work for tiny 1-round time changes (which happens in com
 However, this is probably not a problem for you - if you have an effect with a duration measured in rounds, you probably
 aren't going to forget about it.
 
+### Pop-up when effects expire, to stop advancing time
+Optional setting (disabled by default), "Pause clock advancement to first expired effect".  You can choose to limit it
+only to unidentified (secret) effects, too.  When an effect expires, the clock will stop advancing until you click one
+of the buttons:  revert to initial time (undo advancement), stop here, or continue moving time forward.
 
 # Settings & Extras
 

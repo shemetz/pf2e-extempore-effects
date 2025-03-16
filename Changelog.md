@@ -1,3 +1,6 @@
+## 1.9.0 - 2025-03-16
+- Added "stop the clock" feature (optional setting), which will pause time-advancement when an effect expires
+
 ## 1.8.99 - 2025-02-18
 - Fixed said versioning bug
 
