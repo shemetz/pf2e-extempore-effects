@@ -205,6 +205,11 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
   const willExpirationDeleteEffects = game.settings.get('pf2e', 'automation.removeExpiredEffects')
   const effectNotificationSetting = game.settings.get(MODULE_ID, 'notifications-for-expired-effects')
   const requestedNewWorldTime = args[0]
+  const requestedTimeDeltaS = requestedNewWorldTime - oldWorldTime
+  // ignore time updates of 1 round (6 seconds);  because tracking expiration between rounds is very hard and usually doesn't require reminders
+  if (requestedTimeDeltaS <= 6) {
+    return wrapped(...args)
+  }
 
   let newWorldTime = requestedNewWorldTime
   let expireEffectMessageShown = false
@@ -217,6 +222,7 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
       if (effect.isExpired) continue;
       const isSecretEffect = effect.system.unidentified;
       if (effectNotificationSetting === 'only_unidentified' && !isSecretEffect) continue;
+      if (effect.remainingDuration.remaining <= 0) continue;
 
       if ((oldWorldTime + effect.remainingDuration.remaining) <= requestedNewWorldTime) {
         firstExpiringEffect = effect;
@@ -230,13 +236,13 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
     }
   }
 
-  // these times are in seconds
-  // ignore time updates of 1 round (6 seconds);  because tracking expiration between rounds is very hard and usually doesn't require reminders
-  const timeDeltaS = newWorldTime - oldWorldTime
-  if (timeDeltaS <= 6 || !game.user.isGM) {
-    args[0] = newWorldTime
+  args[0] = newWorldTime
+  // Players will get their time to advance to this point, but won't get the extra dialog prompt
+  if (!game.user.isGM) {
     return wrapped(...args)
   }
+
+  const timeDeltaS = newWorldTime - oldWorldTime
   // pf2e has a luxon-based time system, very nice
 
   const oldWorldTimeLux = game.pf2e.worldClock.worldTime
@@ -309,7 +315,7 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
   // let's prompt the user if they want to continue to requested time or stop at the expiry time.
   if (expireEffectMessageShown && newWorldTime < requestedNewWorldTime) {
     const dialogTitle = `${localize('.dialog.expiredEffects.title')} ${lastExpiryTime}`;
-    let dialogContent = `<span><h6>${localize('.dialog.expiredEffects.content.header')}</h6><ul>`;
+    let dialogContent = `<span><b>${localize('.dialog.expiredEffects.content.header')}</b><ul>`;
 
     for (const effect of effectsExpired) dialogContent += `<li>${effect.name} (${effect.actor.name})</li>`;
 
@@ -324,40 +330,43 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
     foundry.audio.AudioHelper.play({src: effectNotificationSoundSetting});
   }
 
-  args[0] = newWorldTime
   wrapped(...args);
 }
 
-function promptUserToContinue(requestedNewWorldTime, newWorldTime, oldWorldTime, dialogTitle, dialogContent) {
-  new foundry.applications.api.DialogV2({
+const promptUserToContinue = async (requestedNewWorldTime, newWorldTime, oldWorldTime, dialogTitle, dialogContent) => {
+  return foundry.applications.api.DialogV2.wait({
     window: {
       title: dialogTitle,
       icon: 'fa-regular fa-alarm-exclamation'
     },
     content: dialogContent,
     buttons: [{
-      icon: 'fas fa-check',
-      action: "yes",
-      label: localize('.dialog.expiredEffects.buttons.yes'),
-      callback: async () => {
-        await game.time.advance(0) // stupid hack, without this the time doesn't advance properly?
-        await game.time.advance((requestedNewWorldTime - newWorldTime));
-      },
-      default: true
-    }, {
-      icon: 'fas fa-times',
-      action: "noStop",
-      label: localize('.dialog.expiredEffects.buttons.noStop'),
-    }, {
-      icon: 'fas fa-times',
-      action: "cancelRevert",
-      label: localize('.dialog.expiredEffects.buttons.cancelRevert'),
+      action: "revertBack",
+      label: localize('.dialog.expiredEffects.buttons.revertBack'),
+      icon: 'fas fa-backward-fast',
       callback: async () => {
         await game.time.advance(0) // stupid hack, without this the time doesn't advance properly?
         await game.time.advance((oldWorldTime - newWorldTime));
       },
-    }]
-  }).render({force: true});
+    }, {
+      action: "stopHere",
+      label: localize('.dialog.expiredEffects.buttons.stopHere'),
+      icon: 'fas fa-pause',
+    }, {
+      default: true,
+      action: "continueForward",
+      label: localize('.dialog.expiredEffects.buttons.continueForward'),
+      icon: 'fas fa-forward',
+      callback: async () => {
+        await game.time.advance(0) // stupid hack, without this the time doesn't advance properly?
+        await game.time.advance((requestedNewWorldTime - newWorldTime));
+      },
+    },]
+  }).catch(async () => {
+    // on dialog dismiss, keep moving forward because the user probably missed this prompt and just wants to keep going
+    await game.time.advance(0) // stupid hack, without this the time doesn't advance properly?
+    await game.time.advance((requestedNewWorldTime - newWorldTime));
+  })
 }
 
 

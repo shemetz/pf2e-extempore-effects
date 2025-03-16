@@ -59,9 +59,9 @@
           "message-continue": "Do you want to continue advancing time for the remaining"
         },
         "buttons": {
-          "yes": "Yes, keep advancing",
-          "noStop": "No, stop here",
-          "cancelRevert": "Cancel, revert to old time"
+          "revertBack": "Revert to previous time",
+          "stopHere": "Stop here",
+          "continueForward": "Continue forward"
         }
       }
     },
