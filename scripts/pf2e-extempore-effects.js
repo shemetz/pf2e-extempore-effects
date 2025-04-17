@@ -1072,3 +1072,10 @@ const RANDOM_EFFECT_IMAGES = [
   'icons/magic/light/explosion-star-teal-purple.webp',
   'icons/magic/light/explosion-star-teal.webp',
 ]
+
+window.pf2eExtempore = {
+  createEffect,
+  createEffectFromPureTextMessage,
+  createEffectFromRechargeRoll,
+  createEffectFromItemlessMessage,
+}
