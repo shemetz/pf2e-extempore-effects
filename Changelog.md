@@ -1,3 +1,6 @@
+## 1.9.1 - 2025-04-17
+- Added API (window.pf2eExtempore) (#48)
+
 ## 1.9.0 - 2025-03-16
 - Added "stop the clock" feature (optional setting), which will pause time-advancement when an effect expires
 
