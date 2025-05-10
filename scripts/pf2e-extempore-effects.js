@@ -7,13 +7,13 @@ const localize = (key) => game.i18n.localize(MODULE_ID + key)
 Hooks.on('init', () => {
   libWrapper.register(
     MODULE_ID,
-    'ChatLog.prototype._getEntryContextOptions',
+    'foundry.applications.sidebar.tabs.ChatLog.prototype._getEntryContextOptions',
     _getEntryContextOptions_Wrapper,
     'WRAPPER',
   )
   libWrapper.register(
     MODULE_ID,
-    'GameTime.prototype.onUpdateWorldTime',
+    'foundry.helpers.GameTime.prototype.onUpdateWorldTime',
     onUpdateWorldTime_Wrapper,
     'WRAPPER',
   )
@@ -33,7 +33,7 @@ Hooks.on('init', () => {
     type: Boolean,
     default: false,
   })
-  const { CONTROL, SHIFT } = KeyboardManager.MODIFIER_KEYS
+  const { CONTROL, SHIFT } = foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS
   game.keybindings.register(MODULE_ID, 'quick-add-empty-effect', {
     name: localize('.settings.quick-add-empty-effect.name'),
     hint: localize('.settings.quick-add-empty-effect.hint'),
@@ -158,6 +158,18 @@ const migrateSettings = async () => {
     game.settings.set(MODULE_ID, 'open-effect-sheet-shortcut', renamedMapping[prevSetting])
   }
 }
+
+const isShiftHeld = () => game.keyboard.isModifierActive(
+  foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.SHIFT,
+)
+
+const isCtrlHeld = () => game.keyboard.isModifierActive(
+  foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.CONTROL,
+)
+
+const isAltHeld = () => game.keyboard.isModifierActive(
+  foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.ALT,
+)
 
 /**
  * show effect sheets on shift-click (configurable: ctrl+click)
@@ -447,25 +459,25 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
           ui.notifications.warn(localize('.errorItemNotFound'))
           effect = createEffectFromItemlessMessage(message)
         }
+        const openEffectSheetShortcut = game.settings.get(MODULE_ID, 'open-effect-sheet-shortcut')
+        let isModifierKeyPressed
+        switch (openEffectSheetShortcut) {
+          case 'shift_left_click':
+            isModifierKeyPressed = isShiftHeld()
+            break
+          case 'ctrl_left_click':
+            isModifierKeyPressed = isCtrlHeld()
+            break
+          case 'disabled':
+            isModifierKeyPressed = false
+            break
+        }
         for (const token of tokens) {
           if (!token.actor) {
             ui.notifications.error(`Token "${token.name}" has no actor, and so cannot have an effect.`)
             continue
           }
           const effectItems = await token.actor.createEmbeddedDocuments('Item', [effect])
-          const openEffectSheetShortcut = game.settings.get(MODULE_ID, 'open-effect-sheet-shortcut')
-          let isModifierKeyPressed
-          switch (openEffectSheetShortcut) {
-            case 'shift_left_click':
-              isModifierKeyPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT)
-              break
-            case 'ctrl_left_click':
-              isModifierKeyPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
-              break
-            case 'disabled':
-              isModifierKeyPressed = false
-              break
-          }
           if (isModifierKeyPressed) {
             effectItems[0].sheet.render(true)
           }
@@ -768,8 +780,7 @@ const getItemDescriptionWithCheckButtonsIncluded = (item, enrichedContentDescrip
 }
 
 const createEffect = async (item) => {
-  const ctrlOrAltPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
-    || game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
+  const ctrlOrAltPressed = isCtrlHeld() || isAltHeld()
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const durationText = item.system.duration ? item.system.duration.value : ''
   const { enrichedContent } = await item.sheet.getData()
@@ -874,8 +885,7 @@ const createEffectFromRechargeRoll = (message) => {
 }
 
 const createEffectFromItemlessMessage = (message) => {
-  const ctrlOrAltPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
-    || game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
+  const ctrlOrAltPressed = isCtrlHeld() || isAltHeld()
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const $content = $('<div>' + (message.content.length > 2 ? message.content : message.flavor) + '</div>')
   const descriptionText = $content.find('.card-content').html() || $content.text()
@@ -957,7 +967,7 @@ const createEffectFromItemlessMessage = (message) => {
 
 const createEmptyEffect = () => {
   const screenPos = canvas.scene._viewPosition
-  const altPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
+  const altPressed = isAltHeld()
   const createHidden = game.user.isGM && (altPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const kindaRandomString = Math.round(screenPos.x + screenPos.y + screenPos.scale * 1000).toString()
   const image = randomImage(kindaRandomString)
@@ -998,8 +1008,7 @@ const createEmptyEffect = () => {
 const createEffectFromPureTextMessage = (message) => {
   const improvisedName = message.content.length < 20 ? message.content : message.content.substring(0, 20) + '...'
   const descriptionText = localize('.addedPrefixToEffectDescription') + message.content
-  const ctrlOrAltPressed = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.CONTROL)
-    || game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.ALT)
+  const ctrlOrAltPressed = isCtrlHeld() || isAltHeld()
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const image = randomImage(message.timestamp)
   return {
