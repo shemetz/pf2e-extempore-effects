@@ -1,3 +1,9 @@
+## 1.10.0 - 2025-05-11
+- Updated to V13+ core Foundry compatibility
+- Fixed ctrl/shift effect opening shortcut (it always used either, ignored setting)
+- Removed the instruction text for the effect opening shortcut in the effects panel -- the pf2e v7 code now uses
+a tooltip so this is no longer easy to add to the rendered list of shortcuts (let me know if you find out otherwise).
+
 ## 1.9.1 - 2025-04-17
 - Added API (window.pf2eExtempore) (#48)
 
