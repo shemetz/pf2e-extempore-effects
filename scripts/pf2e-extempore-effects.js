@@ -174,7 +174,7 @@ const isAltHeld = () => game.keyboard.isModifierActive(
 /**
  * show effect sheets on shift-click (configurable: ctrl+click)
  */
-Hooks.on('renderEffectsPanel', (panel, $html) => {
+Hooks.on('renderEffectsPanel', (_panel, panelEl, context, _options) => {
   const openEffectSheetShortcut = game.settings.get(MODULE_ID, 'open-effect-sheet-shortcut')
   let instructionStr
   if (openEffectSheetShortcut === 'shift_left_click') {
@@ -188,20 +188,26 @@ Hooks.on('renderEffectsPanel', (panel, $html) => {
     return  // not adding hotkey
   }
   const instructions = `<p>${instructionStr}</p>`
-  $html.find('.instructions').append(instructions)
+  // FIXME -- this is broken now, because the tooltip aside with the instructions does not render until the user hovers over it, and when it does there's no hook/even to use
+  // so the following line of code will be useless :(
+  document.querySelector('aside.pf2e.effect-info > .content > .instructions')?.append(instructions)
 
-  $html.find('.effect-item[data-item-id] .icon').each((i, icon) => {
-    icon.addEventListener('click', (event) => {
+  panelEl.querySelectorAll('.effect-item[data-item-id] .icon').forEach((iconEl) => {
+    iconEl.addEventListener('click', (event) => {
       if (!event.ctrlKey && !event.shiftKey) return
       const id = event.currentTarget.closest('.effect-item[data-item-id]').dataset.itemId
-      const effect = panel.actor?.items.get(id)
+      const { afflictions, conditions, effects, actor } = context
+      const effect = effects.find(it => it.effect.id === id)?.effect
+        || afflictions.find(it => it.effect.id === id)?.effect
+        || conditions.find(it => it.effect.id === id)?.effect
+        || actor.items.get(id)
       if (!effect) return
       // prevent normal PF2E click behavior, to make shift/ctrl click only open the sheet without increasing a counter
       event.preventDefault()
       event.stopPropagation()
       event.stopImmediatePropagation()
       // open and display the sheet
-      effect?.sheet.render(true)
+      effect.sheet.render(true)
     }, true)
   })
 })
