@@ -437,7 +437,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
       name: localize('.contextMenuExtemporeEffect'),
       icon: '<i class="fas fa-star"></i>',
       condition: li => {
-        const message = game.messages.get(li.data('messageId'))
+        const message = game.messages.get(li.dataset['messageId'])
         if (isEffectOrCondition(message?.item) || isEffectOrCondition(message.getFlag('pf2e', 'origin'))) {
           return false
         }
@@ -453,7 +453,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         const tokens = canvas.tokens.controlled
         if (tokens.length === 0)
           return ui.notifications.error(localize('.errorNoTokensSelected'))
-        const message = game.messages.get(li.data('messageId'))
+        const message = game.messages.get(li.dataset['messageId'])
         const messageOriginUuid = messageGetOriginUuid(message)
         const item = message.item || (messageOriginUuid && await fromUuid(messageOriginUuid)) || null
         let effect
@@ -498,7 +498,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
       name: localize('.contextMenuApplyEffect'),
       icon: '<i class="fas fa-star"></i>',
       condition: li => {
-        const message = game.messages.get(li.data('messageId'))
+        const message = game.messages.get(li.dataset['messageId'])
         if (isEffectOrCondition(message?.item)) return true
         if (isEffectOrCondition(message.getFlag('pf2e', 'origin'))) {
           const item = fromUuidNonAsync(messageGetOriginUuid(message))
@@ -510,7 +510,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         const tokens = canvas.tokens.controlled
         if (tokens.length === 0)
           return ui.notifications.error(localize('.errorNoTokensSelected'))
-        const message = game.messages.get(li.data('messageId'))
+        const message = game.messages.get(li.dataset['messageId'])
         const messageOriginUuid = messageGetOriginUuid(message)
         const item = message.item || (messageOriginUuid && await fromUuid(messageOriginUuid)) || null
         if (item === null) {
