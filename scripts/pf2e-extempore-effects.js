@@ -179,7 +179,7 @@ Hooks.on('renderEffectsPanel', (_panel, panelEl, context, _options) => {
   let instructionStr
   if (openEffectSheetShortcut === 'shift_left_click') {
     instructionStr = localize('.openSheetInstructionShift')
-  } else if (openEffectSheetShortcut === 'Control + Left-Click') {
+  } else if (openEffectSheetShortcut === 'ctrl_left_click') {
     instructionStr = localize('.openSheetInstructionCtrl')
   } else {
     instructionStr = null
@@ -194,7 +194,9 @@ Hooks.on('renderEffectsPanel', (_panel, panelEl, context, _options) => {
 
   panelEl.querySelectorAll('.effect-item[data-item-id] .icon').forEach((iconEl) => {
     iconEl.addEventListener('click', (event) => {
-      if (!event.ctrlKey && !event.shiftKey) return
+      const openEffectSheetShortcut = game.settings.get(MODULE_ID, 'open-effect-sheet-shortcut')
+      if (openEffectSheetShortcut === 'shift_left_click' && !isShiftHeld()) return
+      if (openEffectSheetShortcut === 'ctrl_left_click' && !isCtrlHeld()) return
       const id = event.currentTarget.closest('.effect-item[data-item-id]').dataset.itemId
       const { afflictions, conditions, effects, actor } = context
       const effect = effects.find(it => it.effect.id === id)?.effect
