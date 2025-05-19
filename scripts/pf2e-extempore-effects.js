@@ -862,8 +862,25 @@ const createEffect = async (item) => {
   }
 }
 
+const defineRechargeUnit = (text) => {
+  const rechargeText = text || ''
+  let rechargeUnit
+  if (rechargeText.toLowerCase().includes('days')) {
+    rechargeUnit = 'days'
+  } else if (rechargeText.toLowerCase().includes('hours')) {
+    rechargeUnit = 'hours'
+  } else if (rechargeText.toLowerCase().includes('minutes')) {
+    rechargeUnit = 'minutes'
+  } else {
+    rechargeUnit = 'rounds'
+  }
+  console.log(`${MODULE_NAME} | ${rechargeUnit}`)
+  return rechargeUnit
+}
+
 const createEffectFromRechargeRoll = (message) => {
-  const rechargeRoundsRemaining = parseInt(message.content)
+  const rechargeRemaining = parseInt(message.content)
+  const rechargeUnit = defineRechargeUnit(message.flavor)
   const createHidden = game.user.isGM
   const descriptionText = `${message.flavor} -- rolled ${message.content}`
   const effectName = localize('.addedPrefixToEffectName') + message.flavor
@@ -876,8 +893,8 @@ const createEffectFromRechargeRoll = (message) => {
     system: {
       tokenIcon: { show: true },
       duration: {
-        value: rechargeRoundsRemaining,
-        unit: 'rounds',
+        value: rechargeRemaining,
+        unit: rechargeUnit,
         sustained: false,
         expiry: 'turn-start',
       },
@@ -886,7 +903,7 @@ const createEffectFromRechargeRoll = (message) => {
       },
       unidentified: createHidden,
       level: { value: 0 },
-      slug: `temporary-effect-recharge-${rechargeRoundsRemaining}`,
+      slug: `temporary-effect-recharge-${rechargeRemaining}`,
     },
     flags: {},
   }
