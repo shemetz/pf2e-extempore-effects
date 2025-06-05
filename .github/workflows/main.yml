@@ -1,3 +1,17 @@
+# Shemetz's FoundryVTT Package Release Workflow -- last updated 2025-01-03
+#
+# To set this up, copy this workflow and set up the PACKAGE_TOKEN action secret in your repository secrets settings.
+#
+# To work with this, create a New Tag for the new version's commit, e.g. "v1.2.3"  (the v is important)
+# and then push the tag (pushing the branch is not enough!).
+#
+# This workflow will:
+# 1. Create a new release on GitHub with the tag name
+# 2. Set up the required zip and json files inside it (updated with the correct version)
+# 3. Publish the release to FoundryVTT
+#
+# Remember to occasionally go to the Foundry package edit page and clean up versions (~once per major foundry version)
+
 name: Release Creation
 
 on:
@@ -29,10 +43,10 @@ jobs:
           manifest: https://github.com/${{ github.repository }}/releases/latest/download/module.json
           download: https://github.com/${{ github.repository }}/releases/download/${{ steps.get-version.outputs.version-without-v }}/module.zip
 
-      - name: Create zip with all important module stuff (skipping unwanted files)
+      - name: Create zip with all important module stuff (skipping unwanted files/folders, warning about missing ones)
         run: zip -r9 ./module.zip assets/ packs/ lang/ scripts/ styles/ Readme.md License.txt Changelog.md module.json
 
-      - name: Createu/Update GitHub release with json and zip files
+      - name: Create/Update GitHub release with json and zip files
         id: create_version_release
         uses: ncipollo/release-action@v1
         with:
