@@ -438,7 +438,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
       icon: '<i class="fas fa-star"></i>',
       condition: li => {
         const message = game.messages.get(li.dataset['messageId'])
-        if (isEffectOrCondition(message?.item) || isEffectOrCondition(message.getFlag('pf2e', 'origin'))) {
+        if (isEffectOrCondition(message.item) || isEffectOrCondition(message.getFlag('pf2e', 'origin'))) {
           return false
         }
         if (isRechargeRoll(message)) {
@@ -447,7 +447,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         if (isNormalTextMessage(message)) {
           return true
         }
-        return !!message?.item || !!messageGetOriginUuid(message)
+        return !!message.item || !!messageGetOriginUuid(message)
       },
       callback: async li => {
         const tokens = canvas.tokens.controlled
@@ -499,7 +499,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
       icon: '<i class="fas fa-star"></i>',
       condition: li => {
         const message = game.messages.get(li.dataset['messageId'])
-        if (isEffectOrCondition(message?.item)) return true
+        if (isEffectOrCondition(message.item)) return true
         if (isEffectOrCondition(message.getFlag('pf2e', 'origin'))) {
           const item = fromUuidNonAsync(messageGetOriginUuid(message))
           return !!item
