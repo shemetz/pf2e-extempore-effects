@@ -700,7 +700,7 @@ const isRechargeRoll = (message) => {
 
 const isNormalTextMessage = (message) => {
   return !!message.content?.length && !message.isRoll && Object.keys(message.system ?? {}).length === 0 &&
-    !message.content.includes('<div')
+    !message.content?.includes('<div')
 }
 
 const calcHighestStageOfAffliction = (itemDescriptionText) => {
