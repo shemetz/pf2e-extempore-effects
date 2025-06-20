@@ -459,7 +459,10 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
           return ui.notifications.error(localize('.errorNoTokensSelected'))
         const message = game.messages.get(li.dataset['messageId'])
         const messageOriginUuid = messageGetOriginUuid(message)
-        const item = message.item || (messageOriginUuid && await fromUuid(messageOriginUuid)) || null
+        let item = message.item ?? null;
+        if (messageOriginUuid)
+          item = await fromUuid(messageOriginUuid);
+
         let effect
         if (item !== null) {
           effect = await createEffect(item)
@@ -468,7 +471,12 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         } else if (isNormalTextMessage(message)) {
           effect = createEffectFromPureTextMessage(message)
         } else {
-          ui.notifications.warn(localize('.errorItemNotFound'))
+          if (message.flags?.pf2e?.origin?.type === "consumable") {
+            // consumable was used, so fromUuid returned null (item has been removed from its actor)
+            console.log(`${MODULE_NAME} | creating effect from used consumable, so item automation isn't so good`)
+          } else {
+            ui.notifications.warn(localize('.errorItemNotFound'))
+          }
           effect = createEffectFromItemlessMessage(message)
         }
         const openEffectSheetShortcut = game.settings.get(MODULE_ID, 'open-effect-sheet-shortcut')
@@ -925,8 +933,11 @@ const createEffectFromRechargeRoll = (message) => {
 }
 
 /**
- * This should ideally never be called;  if the button is available, the item should always be found, otherwise it
+ * This should ideally never be called;  if the button is available, the item should always* be found, otherwise it
  * needs to fit one of the other options (recharge roll, pure text).
+ *
+ * *but still, right now we have to call this for consumed consumable items (after the user Uses them the item disappears
+ * from the actor that owned it).
  */
 const createEffectFromItemlessMessage = (message) => {
   const ctrlOrAltPressed = isCtrlHeld() || isAltHeld()
