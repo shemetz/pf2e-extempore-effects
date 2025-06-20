@@ -747,7 +747,7 @@ const getImage = (item) => {
   return randomImage(item.id)
 }
 
-const getItemDescriptionWithCheckButtonsIncluded = (item, enrichedContentDescription) => {
+const placeCheckButtonsInItemDescription = (item, enrichedContentDescription) => {
   let description = enrichedContentDescription
   const dc = item.spellcasting?.statistic.dc.value
   if (!dc) return description
@@ -791,23 +791,35 @@ const getItemDescriptionWithCheckButtonsIncluded = (item, enrichedContentDescrip
   return description
 }
 
+const addPrefixAndOriginToDescription = (description, item) => {
+  if (!item || !item.uuid || !item.name)
+    return localize('.addedPrefixToEffectDescription') + description
+  const itemEmbed = `@UUID[${item.uuid}]{${item.name}}`
+  const owner = item.actor
+  if (!owner || !owner.uuid || !owner.name)
+    return localize('.addedPrefixWithOriginToEffectDescription').replace('{ORIGIN}', `${itemEmbed}`) + description
+  const ownerEmbed = `@UUID[${owner.uuid}]{${owner.name}}`
+  return localize('.addedPrefixWithOriginToEffectDescription').replace('{ORIGIN}', `${ownerEmbed} > ${itemEmbed}`) +
+    description
+}
+
 const createEffect = async (item) => {
   const ctrlOrAltPressed = isCtrlHeld() || isAltHeld()
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const durationText = item.system.duration ? item.system.duration.value : ''
   const { enrichedContent } = await item.sheet.getData()
-  let descriptionText = await getItemDescriptionWithCheckButtonsIncluded(item, enrichedContent.description)
+  const originalDescription = enrichedContent.description
   let durationValue, durationUnit, durationSustained, turnStartOrTurnEnd
   let itemBadge = undefined
-  if (isAffliction(descriptionText)) {
+  if (isAffliction(originalDescription)) {
     ({
       durationValue,
       durationUnit,
       durationSustained,
       turnStartOrTurnEnd,
-    } = defineDurationFromTextOfAffliction(descriptionText))
+    } = defineDurationFromTextOfAffliction(originalDescription))
     // Afflictions get created at Stage 1
-    const highestStage = calcHighestStageOfAffliction(descriptionText)
+    const highestStage = calcHighestStageOfAffliction(originalDescription)
     const stageTextFromNumber = game.settings.get(MODULE_ID, 'short-stage-badge')
       ? (n) => `[${n}/${highestStage}]`
       : (n) => localize(`.stageN`).replace('{n}', n)
@@ -829,14 +841,15 @@ const createEffect = async (item) => {
       durationUnit,
       durationSustained,
       turnStartOrTurnEnd,
-    } = defineDurationFromText(durationText, descriptionText))
+    } = defineDurationFromText(durationText, originalDescription))
   }
   const effectName = localize(
     item.system.frequency
       ? '.addedPrefixToExpendedEffectName'
       : '.addedPrefixToEffectName',
   ) + item.name
-  descriptionText = localize('.addedPrefixToEffectDescription') + descriptionText
+  let descriptionText = placeCheckButtonsInItemDescription(item, originalDescription)
+  descriptionText = addPrefixAndOriginToDescription(descriptionText, item)
   const image = getImage(item)
   const effectLevel = item.system.level || item.parent?.system.details.level
   return {
@@ -887,8 +900,7 @@ const createEffectFromRechargeRoll = (message) => {
   const createHidden = game.user.isGM
   const descriptionText = `${message.flavor} -- rolled ${message.content}`
   const effectName = localize('.addedPrefixToEffectName') + message.flavor
-  const storedDescriptionText = localize('.addedPrefixToEffectDescription') +
-    descriptionText
+  const storedDescriptionText = addPrefixAndOriginToDescription(descriptionText, null)
   return {
     type: 'effect',
     name: effectName,
@@ -912,6 +924,10 @@ const createEffectFromRechargeRoll = (message) => {
   }
 }
 
+/**
+ * This should ideally never be called;  if the button is available, the item should always be found, otherwise it
+ * needs to fit one of the other options (recharge roll, pure text).
+ */
 const createEffectFromItemlessMessage = (message) => {
   const ctrlOrAltPressed = isCtrlHeld() || isAltHeld()
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
@@ -928,7 +944,7 @@ const createEffectFromItemlessMessage = (message) => {
     $content.find('.action').text() + ' ' + $content.find('.degree-of-success span:first-child').text()
   ) || message.speaker.alias
   const effectName = localize('.addedPrefixToEffectName') + (maybeItemName || `??? (${extraInfo})`)
-  const effectDescription = localize('.addedPrefixToEffectDescription') + descriptionText
+  const effectDescription = addPrefixAndOriginToDescription(descriptionText, null)
   const effectImage = (maybeItemImage && !isImageBoring(maybeItemImage))
     ? maybeItemImage
     : randomImage(message.timestamp)
@@ -1022,7 +1038,7 @@ const createEmptyEffect = () => {
 
 const createEffectFromPureTextMessage = (message) => {
   const improvisedName = message.content.length < 20 ? message.content : message.content.substring(0, 20) + '...'
-  const descriptionText = localize('.addedPrefixToEffectDescription') + message.content
+  const descriptionText = addPrefixAndOriginToDescription(message.content, null)
   const ctrlOrAltPressed = isCtrlHeld() || isAltHeld()
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
   const image = randomImage(message.timestamp)
