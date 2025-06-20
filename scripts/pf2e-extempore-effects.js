@@ -852,7 +852,6 @@ const createEffect = async (item) => {
         value: descriptionText,
       },
       unidentified: createHidden,
-      traits: item.system.traits,
       level: effectLevel,
       source: item.system.source,
       slug: `temporary-effect-${item.system.slug}`,
@@ -919,10 +918,7 @@ const createEffectFromItemlessMessage = (message) => {
   const maybeItemImage = $header.find('img').attr('src')
   const rollOptions = message.flags.pf2e?.origin?.rollOptions
   const maybeItemLevelStr = rollOptions?.find(rollOpt => rollOpt.startsWith('origin:item:level:'))?.split(':').pop()
-  const maybeItemTraitsList = rollOptions?.filter(rollOpt => rollOpt.startsWith('origin:item:trait:')).
-    map(rollOpt => rollOpt.split(':').pop()) // e.g. [alchemical, consumable, incapacitation, injury, poison, sleep]
   const maybeItemSlug = rollOptions?.find(rollOpt => rollOpt.startsWith('origin:item:slug:'))?.split(':').pop()
-  const maybeItemRarity = rollOptions?.find(rollOpt => rollOpt.startsWith('origin:item:rarity:'))?.split(':').pop()
 
   const extraInfo = (
     $content.find('.action').text() + ' ' + $content.find('.degree-of-success span:first-child').text()
@@ -976,11 +972,6 @@ const createEffectFromItemlessMessage = (message) => {
       },
       description: { value: effectDescription },
       unidentified: createHidden,
-      traits: {
-        otherTags: [],
-        value: maybeItemTraitsList ?? [],
-        rarity: maybeItemRarity ?? 'common',
-      },
       level: { value: effectLevel },
       source: { value: 'itemless effect created by ' + MODULE_NAME },
       slug: effectSlug,
@@ -1012,11 +1003,6 @@ const createEmptyEffect = () => {
         value: localize('.descriptionOfQuickUntitledEffect'),
       },
       unidentified: createHidden,
-      traits: {
-        custom: '',
-        rarity: 'common',
-        value: [],
-      },
       level: {
         value: 0,
       },
@@ -1052,11 +1038,6 @@ const createEffectFromPureTextMessage = (message) => {
         value: descriptionText,
       },
       unidentified: createHidden,
-      traits: {
-        otherTags: [],
-        value: [],
-        rarity: 'common',
-      },
       level: {
         value: 0,
       },
