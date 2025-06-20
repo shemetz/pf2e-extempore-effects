@@ -73,7 +73,7 @@ Hooks.on('init', () => {
     config: true,
     type: String,
     default: '',
-    filePicker: true
+    filePicker: true,
   })
   game.settings.register(MODULE_ID, 'notifications-pause-for-expired-effects', {
     name: localize('.settings.notifications-pause-for-expired-effects.name'),
@@ -81,7 +81,7 @@ Hooks.on('init', () => {
     scope: 'world',
     config: true,
     type: Boolean,
-    default: false
+    default: false,
   })
   game.settings.register(MODULE_ID, 'short-stage-badge', {
     name: 'Shorten "Stage 2" to e.g. "[2/6]" in effect badges',
@@ -219,7 +219,7 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
   // if (!game.user.isGM) return wrapped(...args) // We have to move this check further down so player clocks stay in sync with GM clocks
 
   const effectsWithDurations = game.pf2e.effectTracker.effects
-  if (!effectsWithDurations.length) return wrapped(...args);
+  if (!effectsWithDurations.length) return wrapped(...args)
 
   const oldWorldTime = game.time.worldTime
   const willExpirationDeleteEffects = game.settings.get('pf2e', 'automation.removeExpiredEffects')
@@ -236,23 +236,24 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
 
   // We don't want to go further in time than the next effect expiration or the requested time, which ever comes first
   // Lets iterate through the effects and find the first one that will expire before the requested time, respecting the notification settings
-  if (game.settings.get(MODULE_ID, 'notifications-pause-for-expired-effects') && effectNotificationSetting !== 'disabled') {
-    let firstExpiringEffect = null;
+  if (game.settings.get(MODULE_ID, 'notifications-pause-for-expired-effects') && effectNotificationSetting !==
+    'disabled') {
+    let firstExpiringEffect = null
     for (const effect of effectsWithDurations) {
-      if (effect.isExpired) continue;
-      const isSecretEffect = effect.system.unidentified;
-      if (effectNotificationSetting === 'only_unidentified' && !isSecretEffect) continue;
-      if (effect.remainingDuration.remaining <= 0) continue;
+      if (effect.isExpired) continue
+      const isSecretEffect = effect.system.unidentified
+      if (effectNotificationSetting === 'only_unidentified' && !isSecretEffect) continue
+      if (effect.remainingDuration.remaining <= 0) continue
 
       if ((oldWorldTime + effect.remainingDuration.remaining) <= requestedNewWorldTime) {
-        firstExpiringEffect = effect;
-        break;
+        firstExpiringEffect = effect
+        break
       }
     }
 
     // We found an effect that will expire before the requested time, lets adjust the requested time to that
     if (firstExpiringEffect) {
-      newWorldTime = oldWorldTime + firstExpiringEffect.remainingDuration.remaining;
+      newWorldTime = oldWorldTime + firstExpiringEffect.remainingDuration.remaining
     }
   }
 
@@ -268,8 +269,8 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
   const oldWorldTimeLux = game.pf2e.worldClock.worldTime
   const newWorldTimeLux = oldWorldTimeLux.plus({ seconds: timeDeltaS })
 
-  let effectsExpired = []; // lets store effects that expired for notification purposes
-  let lastExpiryTime; // let's store the last expiry time (nicely formated) for the prompt notification
+  let effectsExpired = [] // lets store effects that expired for notification purposes
+  let lastExpiryTime // let's store the last expiry time (nicely formated) for the prompt notification
 
   for (const effect of effectsWithDurations) {
     if (effectNotificationSetting === 'disabled') break
@@ -282,13 +283,13 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
     const isEffectGonnaExpireNow = effectExpiryTimeLux.startOf('second') <= newWorldTimeLux.startOf('second')
 
     if (isEffectGonnaExpireNow) {
-      effectsExpired.push(effect);
-      expireEffectMessageShown = true;
+      effectsExpired.push(effect)
+      expireEffectMessageShown = true
 
       // convert to Golarion time
       // TODO rely on system calendar in foundry v13
       const golS = effectExpiryTimeLux.plus({ years: 2700 }).toFormat('yyyy-LL-dd HH:mm:ss')
-      lastExpiryTime = golS;
+      lastExpiryTime = golS
 
       const durS = `${effect.system.duration.value} ${effect.system.duration.unit}`
       console.log(`${MODULE_NAME} | ${effect.name} expired now!  ID = ${effect.id}`)
@@ -334,82 +335,85 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
   // If there was an expired effect notification, and the user requested to advance time beyond the expiry time,
   // let's prompt the user if they want to continue to requested time or stop at the expiry time.
   if (expireEffectMessageShown && newWorldTime < requestedNewWorldTime) {
-    const dialogTitle = `${localize('.dialog.expiredEffects.title')} ${lastExpiryTime}`;
-    let dialogContent = `<span><b>${localize('.dialog.expiredEffects.content.header')}</b><ul>`;
+    const dialogTitle = `${localize('.dialog.expiredEffects.title')} ${lastExpiryTime}`
+    let dialogContent = `<span><b>${localize('.dialog.expiredEffects.content.header')}</b><ul>`
 
-    for (const effect of effectsExpired) dialogContent += `<li>${effect.name} (${effect.actor.name})</li>`;
+    for (const effect of effectsExpired) dialogContent += `<li>${effect.name} (${effect.actor.name})</li>`
 
-    dialogContent += `</ul>${localize('.dialog.expiredEffects.content.message-time')} ${formatTime(newWorldTime - oldWorldTime)}.</span><span>${localize('.dialog.expiredEffects.content.message-continue')}<br>${formatTime(requestedNewWorldTime - newWorldTime)}?</span>`
+    dialogContent += `</ul>${localize('.dialog.expiredEffects.content.message-time')} ${formatTime(
+      newWorldTime - oldWorldTime)}.</span><span>${localize(
+      '.dialog.expiredEffects.content.message-continue')}<br>${formatTime(
+      requestedNewWorldTime - newWorldTime)}?</span>`
 
-    promptUserToContinue(requestedNewWorldTime, newWorldTime, oldWorldTime, dialogTitle, dialogContent);
+    promptUserToContinue(requestedNewWorldTime, newWorldTime, oldWorldTime, dialogTitle, dialogContent)
   }
 
   // Play the notification sound if a chat notification was made
   const effectNotificationSoundSetting = game.settings.get(MODULE_ID, 'notifications-sound-for-expired-effects')
   if (expireEffectMessageShown && effectNotificationSoundSetting.trim() !== '') {
-    foundry.audio.AudioHelper.play({src: effectNotificationSoundSetting});
+    foundry.audio.AudioHelper.play({ src: effectNotificationSoundSetting })
   }
 
-  wrapped(...args);
+  wrapped(...args)
 }
 
 const promptUserToContinue = async (requestedNewWorldTime, newWorldTime, oldWorldTime, dialogTitle, dialogContent) => {
   return foundry.applications.api.DialogV2.wait({
     window: {
       title: dialogTitle,
-      icon: 'fa-regular fa-alarm-exclamation'
+      icon: 'fa-regular fa-alarm-exclamation',
     },
     content: dialogContent,
-    buttons: [{
-      action: "revertBack",
-      label: localize('.dialog.expiredEffects.buttons.revertBack'),
-      icon: 'fas fa-backward-fast',
-      callback: async () => {
-        await game.time.advance(0) // stupid hack, without this the time doesn't advance properly?
-        await game.time.advance((oldWorldTime - newWorldTime));
-      },
-    }, {
-      action: "stopHere",
-      label: localize('.dialog.expiredEffects.buttons.stopHere'),
-      icon: 'fas fa-pause',
-    }, {
-      default: true,
-      action: "continueForward",
-      label: localize('.dialog.expiredEffects.buttons.continueForward'),
-      icon: 'fas fa-forward',
-      callback: async () => {
-        await game.time.advance(0) // stupid hack, without this the time doesn't advance properly?
-        await game.time.advance((requestedNewWorldTime - newWorldTime));
-      },
-    },]
+    buttons: [
+      {
+        action: 'revertBack',
+        label: localize('.dialog.expiredEffects.buttons.revertBack'),
+        icon: 'fas fa-backward-fast',
+        callback: async () => {
+          await game.time.advance(0) // stupid hack, without this the time doesn't advance properly?
+          await game.time.advance((oldWorldTime - newWorldTime))
+        },
+      }, {
+        action: 'stopHere',
+        label: localize('.dialog.expiredEffects.buttons.stopHere'),
+        icon: 'fas fa-pause',
+      }, {
+        default: true,
+        action: 'continueForward',
+        label: localize('.dialog.expiredEffects.buttons.continueForward'),
+        icon: 'fas fa-forward',
+        callback: async () => {
+          await game.time.advance(0) // stupid hack, without this the time doesn't advance properly?
+          await game.time.advance((requestedNewWorldTime - newWorldTime))
+        },
+      }],
   }).catch(async () => {
     // on dialog dismiss, keep moving forward because the user probably missed this prompt and just wants to keep going
     await game.time.advance(0) // stupid hack, without this the time doesn't advance properly?
-    await game.time.advance((requestedNewWorldTime - newWorldTime));
+    await game.time.advance((requestedNewWorldTime - newWorldTime))
   })
 }
 
+function formatTime (seconds) {
+  const weeks = Math.floor(seconds / (7 * 24 * 60 * 60))
+  seconds %= 7 * 24 * 60 * 60
+  const days = Math.floor(seconds / (24 * 60 * 60))
+  seconds %= 24 * 60 * 60
+  const hours = Math.floor(seconds / (60 * 60))
+  seconds %= 60 * 60
+  const minutes = Math.floor(seconds / 60)
+  seconds %= 60
 
-function formatTime(seconds) {
-  const weeks = Math.floor(seconds / (7 * 24 * 60 * 60));
-  seconds %= 7 * 24 * 60 * 60;
-  const days = Math.floor(seconds / (24 * 60 * 60));
-  seconds %= 24 * 60 * 60;
-  const hours = Math.floor(seconds / (60 * 60));
-  seconds %= 60 * 60;
-  const minutes = Math.floor(seconds / 60);
-  seconds %= 60;
+  const parts = []
+  if (weeks > 0) parts.push(`${weeks} ${localize(weeks > 1 ? '.time.weeks' : '.time.week')}`)
+  if (days > 0) parts.push(`${days} ${localize(days > 1 ? '.time.days' : '.time.day')}`)
+  if (hours > 0) parts.push(`${hours} ${localize(hours > 1 ? '.time.hours' : '.time.hour')}`)
+  if (minutes > 0) parts.push(`${minutes} ${localize(minutes > 1 ? '.time.minutes' : '.time.minute')}`)
+  if (seconds > 0) parts.push(`${seconds} ${localize(seconds > 1 ? '.time.seconds' : '.time.second')}`)
 
-  const parts = [];
-  if (weeks > 0) parts.push(`${weeks} ${localize(weeks > 1 ? '.time.weeks' : '.time.week')}`);
-  if (days > 0) parts.push(`${days} ${localize(days > 1 ? '.time.days' : '.time.day')}`);
-  if (hours > 0) parts.push(`${hours} ${localize(hours > 1 ? '.time.hours' : '.time.hour')}`);
-  if (minutes > 0) parts.push(`${minutes} ${localize(minutes > 1 ? '.time.minutes' : '.time.minute')}`);
-  if (seconds > 0) parts.push(`${seconds} ${localize(seconds > 1 ? '.time.seconds' : '.time.second')}`);
+  const allParts = parts.join(', ')
 
-  const allParts = parts.join(', ');
-
-  return ` <em>${allParts}</em>`;
+  return ` <em>${allParts}</em>`
 }
 
 const quickAddEmptyEffect = async () => {
