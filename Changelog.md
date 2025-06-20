@@ -1,3 +1,9 @@
+## 1.10.2 - 2025-06-20
+- Added embedded origin links to description (actor and item)
+- Added other recharge units, thanks @a.turowskiy!
+- Reduced warnings by fixing several small code bugs
+- Maybe fixed a real bug, maybe not
+
 ## 1.10.0 - 2025-05-11
 - Updated to V13+ core Foundry compatibility
 - Fixed ctrl/shift effect opening shortcut (it always used either, ignored setting)
