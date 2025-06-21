@@ -1,3 +1,6 @@
+## 1.10.3 - 2025-06-21
+- Improved handling of consumed consumables that come from equipment-srd (#46)
+
 ## 1.10.2 - 2025-06-20
 - Added embedded origin links to description (actor and item)
 - Added other recharge units, thanks @a.turowskiy!
