@@ -459,9 +459,9 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
           return ui.notifications.error(localize('.errorNoTokensSelected'))
         const message = game.messages.get(li.dataset['messageId'])
         const messageOriginUuid = messageGetOriginUuid(message)
-        let item = message.item ?? null;
+        let item = message.item ?? null
         if (messageOriginUuid)
-          item = await fromUuid(messageOriginUuid);
+          item = await fromUuid(messageOriginUuid)
 
         let effect
         if (item !== null) {
@@ -471,13 +471,33 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         } else if (isNormalTextMessage(message)) {
           effect = createEffectFromPureTextMessage(message)
         } else {
-          if (message.flags?.pf2e?.origin?.type === "consumable") {
+          if (message.flags?.pf2e?.origin?.type === 'consumable') {
             // consumable was used, so fromUuid returned null (item has been removed from its actor)
-            console.log(`${MODULE_NAME} | creating effect from used consumable, so item automation isn't so good`)
+            // but we can try to use the compendium item instead!
+            // e.g. "Actor.o4zcDbHha6glH9IP.Item.hDLbR56Id2OtU318"
+            // let's convert to e.g. "Compendium.pf2e.equipment-srd.Item.hDLbR56Id2OtU318"
+            const uuidSplit = message.getFlag('pf2e', 'origin').
+              uuid.replace(message.getFlag('pf2e', 'origin').actor + '.', '').
+              split('.')
+            if (uuidSplit.length === 2 && uuidSplit[0] === 'Item') {
+              const itemUuidInEquipmentSrd = `Compendium.pf2e.equipment-srd.Item.${uuidSplit[1]}`
+              item = await fromUuid(itemUuidInEquipmentSrd)
+            }
+            if (item === null) {
+              console.log(`${MODULE_NAME} | creating effect from used consumable, so item automation isn't so good`)
+              effect = createEffectFromItemlessMessage(message)
+            } else {
+              // nice, we're back in business
+              effect = await createEffect(item)
+            }
+          } else if (message.flags?.pf2e?.origin?.type === 'spell') {
+            // similar situation, but spell scroll consumed, and uuid is useless
+            console.log(`${MODULE_NAME} | creating effect from consumed spell, so item automation isn't so good`)
+            effect = createEffectFromItemlessMessage(message)
           } else {
             ui.notifications.warn(localize('.errorItemNotFound'))
+            effect = createEffectFromItemlessMessage(message)
           }
-          effect = createEffectFromItemlessMessage(message)
         }
         const openEffectSheetShortcut = game.settings.get(MODULE_ID, 'open-effect-sheet-shortcut')
         let isModifierKeyPressed
@@ -945,7 +965,7 @@ const createEffectFromItemlessMessage = (message) => {
   const $content = $('<div>' + (message.content.length > 2 ? message.content : message.flavor) + '</div>')
   const descriptionText = $content.find('.card-content').html() || $content.text()
   const $header = $content.find('header.card-header')
-  const maybeItemName = $header.find('h3').text()
+  const maybeItemName = $header.find('h3')[0]?.innerHTML.replace(/<span class="action-glyph">\d<\/span>/, '').trim()
   const maybeItemImage = $header.find('img').attr('src')
   const rollOptions = message.flags.pf2e?.origin?.rollOptions
   const maybeItemLevelStr = rollOptions?.find(rollOpt => rollOpt.startsWith('origin:item:level:'))?.split(':').pop()
@@ -954,7 +974,7 @@ const createEffectFromItemlessMessage = (message) => {
   const extraInfo = (
     $content.find('.action').text() + ' ' + $content.find('.degree-of-success span:first-child').text()
   ) || message.speaker.alias
-  const effectName = localize('.addedPrefixToEffectName') + (maybeItemName || `??? (${extraInfo})`)
+  const effectName = localize('.addedPrefixToEffectName') + (maybeItemName ?? `??? (${extraInfo})`)
   const effectDescription = addPrefixAndOriginToDescription(descriptionText, null)
   const effectImage = (maybeItemImage && !isImageBoring(maybeItemImage))
     ? maybeItemImage
