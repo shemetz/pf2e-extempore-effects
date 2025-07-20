@@ -674,8 +674,9 @@ const defineDurationFromText = (durationText, descriptionText) => {
     durationValue = 10
     durationUnit = 'minutes'
     durationSustained = true
-  } else if (itemDuration.toLowerCase().includes('sustained')) {
+  } else if (itemDuration.toLowerCase().includes('sustained up to')) {
     // "Sustained up to 1 minute"
+    // "Sustained up to 10 minutes"
     durationValue = parseInt(itemDuration.split(' ')[3])
     durationUnit = itemDuration.split(' ')[4]
     if (!durationUnit.endsWith('s')) durationUnit += 's'  // e.g. "minutes"
@@ -691,13 +692,13 @@ const defineDurationFromText = (durationText, descriptionText) => {
     durationUnit = 'unlimited'
     durationSustained = false
   } else if (itemDuration.toLowerCase() === 'until encounter ends') {
-    durationValue = -1
+    durationValue = 1
     durationUnit = 'encounter'
     durationSustained = false
   } else if (itemDuration.includes(' or more')) {
     // "1 or more rounds"
-    durationValue = 3
-    durationUnit = 'unlimited'
+    durationValue = 1
+    durationUnit = 'encounter'
     durationSustained = false
   } else if (itemDuration.includes('daily preparation')) {
     // "until the next time you make your daily preparations"
