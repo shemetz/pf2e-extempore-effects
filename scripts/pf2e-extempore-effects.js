@@ -856,7 +856,10 @@ const addPrefixAndOriginToDescription = (description, item) => {
 const createEffect = async (item) => {
   const ctrlOrAltPressed = isCtrlHeld() || isAltHeld()
   const createHidden = game.user.isGM && (ctrlOrAltPressed !== game.settings.get(MODULE_ID, 'hidden-by-default'))
-  const durationText = item.system.duration ? item.system.duration.value : ''
+  let durationText = item.system.duration?.value ?? ''
+  if (durationText === '' && item.system.duration?.sustained) {
+    durationText = 'sustained' // this happens with some spells, e.g. Laughing Fit
+  }
   const { enrichedContent } = await item.sheet.getData()
   const originalDescription = enrichedContent.description
   let durationValue, durationUnit, durationSustained, turnStartOrTurnEnd
