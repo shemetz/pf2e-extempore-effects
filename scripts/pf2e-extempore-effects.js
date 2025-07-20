@@ -713,7 +713,7 @@ const defineDurationFromText = (durationText, descriptionText) => {
   } else if (itemDuration === '') {
     if (descriptionText.includes('for 1 round') && !descriptionText.includes(' rounds')) {
       durationValue = 1
-      durationUnit = 'round'
+      durationUnit = 'rounds'
     } else {
       durationValue = 1
       durationUnit = 'unlimited'
