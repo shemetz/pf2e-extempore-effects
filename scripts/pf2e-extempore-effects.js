@@ -634,14 +634,16 @@ function defineDurationFromFrequency (frequency) {
 const defineDurationFromTextOfAffliction = (itemDescriptionText) => {
   // an affliction effect's duration is the duration of its first stage!
   // example: '<p><strong>Stage 1</strong> carrier with no ill effect (1 minute)</p>'
+  // example: '<p><strong>Stage 1</strong> carrier with no ill effect (<a class="inline-roll gmroll" data-mode="gmroll" data-flavor="hours" data-formula="1d4" data-tooltip-text="1d4 #hours" data-tooltip="1d4" data-damage-roll=""><i class="fa-solid fa-dice-d4" inert=""></i>1d4 hours</a>)</p>'
   const stageNRegex = new RegExp(`<p>\\s*<strong>\\s*${localize('.stageN').replace('{n}', '\\d+')}<\/strong> .+? \\((.+)\\)\\s*<\/p>`,
     'i')
-  const firstStageDurationMatch = itemDescriptionText.match(stageNRegex)
-  const maximumDurationMatch = itemDescriptionText
-    // example: '<p><strong>Maximum Duration</strong> 6 rounds</p>'
-    .match(/<p>\s*<strong>\s*Maximum Duration<\/strong> (\d+ rounds?)\s*<\/p>/)
-  // defaults to maximum duration
-  const chosenDurationText = maximumDurationMatch?.[1] ?? firstStageDurationMatch?.[1] ?? ''
+  const firstStageMatch = itemDescriptionText.match(stageNRegex)
+  // example: '<p><strong>Maximum Duration</strong> 6 rounds</p>'
+  const maxDurationRegex = new RegExp(`<p>\\s*<strong>\\s*Maximum Duration<\\/strong> (\\d+ (rounds?|minutes?|hours?|days?|weeks?|months?|years?))\\s*<\\/p>`,
+    'i')
+  const maximumDurationMatch = itemDescriptionText.match(maxDurationRegex)
+  // defaults to maximum duration, otherwise first stage duration, otherwise none
+  const chosenDurationText = maximumDurationMatch?.[1] ?? firstStageMatch?.[1] ?? ''
   const durationObj = defineDurationFromText(chosenDurationText, itemDescriptionText)
   return {
     ...durationObj,
@@ -650,9 +652,23 @@ const defineDurationFromTextOfAffliction = (itemDescriptionText) => {
   }
 }
 
+/** example inputs:
+ * - 6 rounds
+ * - 1 minute
+ * - 1 day
+ * - <a class="inline-roll gmroll" data-mode="gmroll" data-flavor="hours" data-formula="1d4" data-tooltip-text="1d4 #hours" data-tooltip="1d4" data-damage-roll=""><i class="fa-solid fa-dice-d4" inert=""></i>1d4 hours</a>
+ */
 const defineDurationFromText = (durationText, descriptionText) => {
-  const itemDuration = durationText || ''
+  let itemDuration = durationText ?? ''
   let durationValue, durationUnit, durationSustained
+  if (itemDuration.startsWith('<')) {
+    // simplify html
+    itemDuration = itemDuration.replace(/<[^>]*>/g, '').trim()
+  }
+  if (itemDuration.match('\d+d\d+')) {
+    // simplify dice rolls
+    itemDuration = itemDuration.replace(/(\d+)d(\d+)/g, '1') // e.g. "1d4 hours" -> "1 hour"
+  }
   if (itemDuration.toLowerCase() === 'sustained') {
     // "Sustained"
     durationValue = 10
@@ -689,7 +705,7 @@ const defineDurationFromText = (durationText, descriptionText) => {
     durationUnit = 'days'
     durationSustained = false
   } else if (itemDuration.includes(' ')) {
-    // "10 minutes", or possibly something weird
+    // "10 minutes", or possibly something weird like 1d4 hours (which we'll simplify to 1)
     durationValue = parseInt(itemDuration.split(' ')[0])
     durationUnit = itemDuration.split(' ')[1]
     if (!durationUnit.endsWith('s')) durationUnit += 's'  // e.g. "minutes"
