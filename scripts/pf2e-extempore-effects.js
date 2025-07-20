@@ -705,6 +705,11 @@ const defineDurationFromText = (durationText, descriptionText) => {
     durationValue = 1
     durationUnit = 'days'
     durationSustained = false
+  } else if (itemDuration.includes('until') && itemDuration.includes('next turn')) {
+    // "until the end of the target's next turn"
+    durationValue = 2
+    durationUnit = 'rounds'
+    durationSustained = false
   } else if (itemDuration.includes(' ')) {
     // "10 minutes", or possibly something weird like 1d4 hours (which we'll simplify to 1)
     durationValue = parseInt(itemDuration.split(' ')[0])
