@@ -463,8 +463,43 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         if (messageOriginUuid)
           item = await fromUuid(messageOriginUuid)
 
+        // simple enemy attack with "additional attack effects" and no description, e.g. Stinger.
+        // we will create an Effect from the additional thing rather than from the attack item itself.
+        if (
+          item &&
+          //(item.type === "melee" || item.type === "ranged") &&
+          //message.flags.pf2e.context.notes.length > 0 &&
+          item.description === '' &&
+          item.system.attackEffects?.value?.length > 0
+        ) {
+          // we'll go with the first attackEffect but filter some boring ones out
+          let selectedSlug = item.system.attackEffects.value.filter(
+            aes => !['grab', 'knockdown', 'pull', 'push', 'rend'].includes(aes))[0]
+          if (selectedSlug) {
+            item = item.actor.items.find(it => it.slug === selectedSlug) ?? item
+          }
+        }
+
+        // similar thing for special item notes on PCs... usually they matter more than the weapon description.
+        // (this seems very rarely useful, so if it goes buggy, just remove it)
+        if (
+          item &&
+          item.actor &&
+          message.flags?.pf2e?.context?.notes?.length > 0
+        ) {
+          // we'll go with the first note that works
+          for (const note of message.flags.pf2e.context.notes) {
+            const { selector, text } = note
+            const itemInNote = item.actor?.synthetics?.rollNotes?.[selector]?.find(x => x.text === text)?.rule.item
+            if (itemInNote) {
+              item = itemInNote
+              break;
+            }
+          }
+        }
+
         let effect
-        if (item !== null) {
+        if (item !== null && item !== undefined) {
           effect = await createEffect(item)
         } else if (isRechargeRoll(message)) {
           effect = createEffectFromRechargeRoll(message)
