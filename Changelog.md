@@ -1,9 +1,12 @@
+## 1.11.0 - 2025-07-23
+- Added support for "additional effects" embedded as notes inside attacks (e.g. Scorpion Venom when you right-click a Stinger attack)
+
 ## 1.10.4 - 2025-07-20
-- Fix #54, handle "sustained" durations with no other text
-- Fix #54, handle "until the end of the target's next turn" durations (2 rounds)
-- Fix #55, handle durations that include dice rolls
-- Fix #55, handle 1-round durations
-- Update chinese localization
+- Fixed #54, handle "sustained" durations with no other text
+- Fixed #54, handle "until the end of the target's next turn" durations (2 rounds)
+- Fixed #55, handle durations that include dice rolls
+- Fixed #55, handle 1-round durations
+- Updated chinese localization
 
 ## 1.10.3 - 2025-06-21
 - Improved handling of consumed consumables that come from equipment-srd (#46)
