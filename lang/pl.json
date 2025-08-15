@@ -1,46 +1,82 @@
 {
   "pf2e-extempore-effects": {
-    "hiddenFromPlayerText": "Ukryty przed graczem?",
-    "openSheetInstructionShift": "[Shift + kliknięcie lewym przyciskiem myszy] Otwórz kartę",
-    "openSheetInstructionCtrl": "[Ctrl + kliknięcie lewym przyciskiem myszy] Otwórz kartę",
+    "hiddenFromPlayerText": "Ukryte przed graczem?",
+    "openSheetInstructionShift": "[Shift + lewy przycisk myszy] Otwórz kartę",
+    "openSheetInstructionCtrl": "[Ctrl + lewy przycisk myszy] Otwórz kartę",
+    "contextMenuExtemporeEffect": "Efekt improwizacyjny",
     "contextMenuApplyEffect": "Zastosuj efekt",
-    "addedPrefixToExpendedEffectName": "Wykorzystano: ",
+    "addedPrefixToExpendedEffectName": "Wydano:",
     "addedPrefixToEffectName": "Efekt: ",
-    "addedPrefixToEffectDescription": "<h2>(Efekt wygenerowany)</h2>\n",
-    "nameOfQuickUntitledEffect": "Szybki_efekt_bez_tytułu",
-    "descriptionOfQuickUntitledEffect": "<h2>(Wygenerowany efekt)</h2>\nWpisz tutaj, co tylko chcesz!",
+    "addedPrefixToEffectDescription": "<h2>(Wygenerowany efekt)</h2>\n",
+    "addedPrefixWithOriginToEffectDescription": "<h2>(Efekt wygenerowany z {ORIGIN})</h2>\n",
+    "nameOfQuickUntitledEffect": "Quick_untitled_effect",
+    "stageN": "Etap {n}",
+    "descriptionOfQuickUntitledEffect": "<h2>(Wygenerowany efekt)</h2>\nNapisz tutaj, co tylko chcesz!",
     "settings": {
       "randomize-image-if-default": {
-        "name": "Preferuj losowe obrazy zamiast domyślnych",
-        "hint": "Domyślnie true.  Podczas tworzenia efektu z wiadomości, która ma element, ale nie ma aktora (lub ma aktora z domyślną grafiką).\n    , a ten element ma domyślną grafikę, zamiast niej wybierany jest losowy kolorowy obrazek efektu."
+        "name": "Preferuj losowe obrazy zamiast domyślnych obrazów",
+        "hint": "Domyślnie true. Podczas tworzenia efektu na podstawie wiadomości, która zawiera element, ale nie zawiera aktora (lub zawiera aktora z domyślną grafiką), a element ten ma domyślną grafikę, wybierz losowy kolorowy obraz efektu."
       },
       "hidden-by-default": {
-        "name": "Twórz domyślnie niezidentyfikowane efekty",
-        "hint": "Domyślnie false.  Podczas tworzenia efektu z modułem jako GM nie będzie on domyślnie \"niezidentyfikowany\" (tajny).\n     Przytrzymanie klawiszy Ctrl/Alt podczas tworzenia efektu spowoduje odwrócenie tego ustawienia (domyślne utajnienie efektu)."
+        "name": "Domyślnie twórz niezidentyfikowane efekty",
+        "hint": "Domyślnie false. Podczas tworzenia efektu z modułem jako MG nie będzie on domyślnie ustawiony jako „niezidentyfikowany” (tajny). Przytrzymanie przycisku Ctrl/Alt podczas tworzenia efektu spowoduje odwrócenie tego ustawienia (efekt będzie domyślnie tajny)."
       },
       "quick-add-empty-effect": {
-        "name": "Szybkie dodawanie pustego efektu",
-        "hint": "Utwórz nowy efekt niestandardowy z losową ikoną, zastosowany do aktualnie wybranego tokena"
+        "name": "Szybkie dodanie pustego efektu",
+        "hint": "Utwórz nowy efekt niestandardowy z losową ikoną, zastosowany do aktualnie wybranego tokenu."
       },
       "open-effect-sheet-shortcut": {
-        "name": "Skrót klawiszowy Otwórz kartę efektów",
-        "hint": "Jeśli opcja ta nie jest wyłączona, można jej użyć do otwarcia arkusza efektu podczas tworzenia efektu Extempore i korzystania z panelu efektów.",
-        "choice_shift_left_click": "Shift + kliknięcie lewym przyciskiem myszy",
-        "choice_ctrl_left_click": "Control + kliknięcie lewym przyciskiem myszy",
-        "choice_disabled": "Wyłączony"
+        "name": "Skrót do karty efektów",
+        "hint": "Jeśli opcja nie jest wyłączona, można jej użyć do otwarcia karty efektu podczas tworzenia efektu improwizowanego oraz podczas korzystania z panelu efektów.",
+        "choice_shift_left_click": "Shift + lewy przycisk myszy",
+        "choice_ctrl_left_click": "Ctrl + lewy przycisk myszy",
+        "choice_disabled": "Wyłączone"
       },
       "notifications-for-expired-effects": {
-        "name": "Powiadomienia o wygasłych zdarzeniach",
-        "hint": "Efekty o długim czasie trwania, które wygasną, wyślą powiadomienie i wiadomość na czacie jako przypomnienie",
+        "name": "Powiadomienia o wygasłych wydarzeniach",
+        "hint": "Efekty, które wygasają, będą wysyłać powiadomienie i wiadomość na czacie jako przypomnienie.",
         "choice_all_effects": "Wszystkie efekty",
         "choice_only_unidentified": "Tylko tajne (niezidentyfikowane) efekty",
-        "choice_disabled": "Wyłączony"
+        "choice_disabled": "Wyłączone"
+      },
+      "notifications-sound-for-expired-effects": {
+        "name": "Dźwięk powiadomienia o wygasłych wydarzeniach",
+        "hint": "Odtwórz dźwięk, gdy efekt wygaśnie, a powiadomienia są włączone."
+      },
+      "notifications-pause-for-expired-effects": {
+        "name": "Wstrzymaj upływ czasu do pierwszego wygasłego efektu",
+        "hint": "Ustaw zegar tylko do pierwszego powiadomienia o wygaśnięciu efektu i wyświetl okno dialogowe, aby kontynuować lub anulować ustawianie zegara."
       }
     },
-    "contextMenuExtemporeEffect": "Extempore Effect",
     "errorMultipleTokensCustomEffect": "Aby zastosować nowy efekt niestandardowy, należy wybrać jeden token.",
     "errorNoTokensSelected": "Aby zastosować efekt, należy wybrać token(y).",
-    "errorItemNotFound": "Nie znaleziono elementu w wiadomości PF2e.",
-    "stageN": "Etap {n}"
+    "errorItemNotFound": "Nie znaleziono przedmiotu w komunikacie PF2e.",
+    "dialog": {
+      "expiredEffects": {
+        "title": "Czas częściowo przesunięty do",
+        "content": {
+          "header": "Czas częściowo upłynął i zatrzymał się, gdy efekty te wygasły:",
+          "message-time": "Zegar przesunął się tylko o",
+          "message-continue": "Czy chcesz kontynuować przesuwanie czasu dla pozostałych"
+        },
+        "buttons": {
+          "revertBack": "Powrót do poprzedniego czasu",
+          "stopHere": "Zatrzymaj tutaj",
+          "continueForward": "Kontynuuj dalej"
+        }
+      }
+    },
+    "time": {
+      "second": "sekunda",
+      "seconds": "sekund",
+      "minute": "minuta",
+      "minutes": "minut",
+      "hour": "godzina",
+      "hours": "godzin",
+      "day": "dzień",
+      "days": "dni",
+      "week": "tydzień",
+      "weeks": "tygodni"
+    }
   }
 }
