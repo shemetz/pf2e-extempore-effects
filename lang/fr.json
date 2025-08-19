@@ -8,6 +8,7 @@
     "addedPrefixToExpendedEffectName": "Dépensé : ",
     "addedPrefixToEffectName": "Effet : ",
     "addedPrefixToEffectDescription": "<h2>(Effet généré)</h2>\n",
+    "addedPrefixWithOriginToEffectDescription": "<h2>(Effet généré par {ORIGIN})</h2>\n",
     "nameOfQuickUntitledEffect": "Effet rapide non titré",
     "stageN": "Stade {n}",
     "descriptionOfQuickUntitledEffect": "<h2>(Effet généré)</h2>\nÉcrivez ce que vous voulez ici !",
@@ -27,7 +28,7 @@
       "open-effect-sheet-shortcut": {
         "name": "Ouvrir le raccourci de la feuille d'effet",
         "hint": "S'il n'est pas activé, vous pouvez utiliser ceci pour ouvrir la feuille d'effets lorsque vous créez un 'extempore effect' et lorsque vous utilisez le panneau des effets.",
-        "choice_shift_left_click": "Shift + Clic gauche",
+        "choice_shift_left_click": "Maj + Clic gauche",
         "choice_ctrl_left_click": "Ctrl + clic gauche",
         "choice_disabled": "Désactivé"
       },
@@ -37,10 +38,45 @@
         "choice_all_effects": "Tous les effets",
         "choice_only_unidentified": "Seulement les effets secrets (non identifiés)",
         "choice_disabled": "Désactivé"
+      },
+      "notifications-sound-for-expired-effects": {
+        "name": "Son de notification pour les évènements expirés",
+        "hint": "Joue un son lorsqu'un effet expire et que les notifications sont activées."
+      },
+      "notifications-pause-for-expired-effects": {
+        "name": "Mettre sur pause l'horloge lors du premier effet expiré",
+        "hint": "Ne faire avancer l'horloge que jusqu'à la première notification de l'expiration d'un effet et montrer un dialogue pour poursuivre ou annuler l'avancement de l'horloge."
       }
     },
     "errorMultipleTokensCustomEffect": "Vous avez besoin d'avoir un objet sélectionné pour appliquer un nouvel effet personnalisé.",
     "errorNoTokensSelected": "Vous avez besoin d'avoir un jeton (ou plusieurs) selectionnés pour appliquer l'effet.",
-    "errorItemNotFound": "Objet non trouvé dans le message PF2e."
+    "errorItemNotFound": "Objet non trouvé dans le message PF2e.",
+    "dialog": {
+      "expiredEffects": {
+        "title": "Temps partiellement avancé jusqu'à",
+        "content": {
+          "header": "Le temps a partiellement avancé et s’est arrêté lorsque ces effets ont expiré :",
+          "message-time": "L'horloge n'a avancé que de",
+          "message-continue": "Souhaitez-vous continuer à avancer le temps jusqu'au bout"
+        },
+        "buttons": {
+          "revertBack": "Revenir à l'heure antérieure",
+          "stopHere": "Arrêter maintenant",
+          "continueForward": "Continuer d'avancer"
+        }
+      }
+    },
+    "time": {
+      "second": "seconde",
+      "seconds": "secondes",
+      "minute": "minute",
+      "minutes": "minutes",
+      "hour": "heure",
+      "hours": "heures",
+      "day": "jour",
+      "days": "jours",
+      "week": "semaine",
+      "weeks": "semaines"
+    }
   }
 }
