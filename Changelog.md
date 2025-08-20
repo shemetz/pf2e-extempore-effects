@@ -1,3 +1,6 @@
+## 1.11.3 - 2025-08-22
+- Improved localization
+
 ## 1.11.0 - 2025-07-23
 - Added support for "additional effects" embedded as notes inside attacks (e.g. Scorpion Venom when you right-click a Stinger attack)
 
