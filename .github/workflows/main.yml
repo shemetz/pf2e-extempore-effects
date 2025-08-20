@@ -1,4 +1,4 @@
-# Shemetz's FoundryVTT Package Release Workflow -- last updated 2025-01-03
+# Shemetz's FoundryVTT Package Release Workflow -- last updated 2025-08-09
 #
 # To set this up, copy this workflow and set up the PACKAGE_TOKEN action secret in your repository secrets settings.
 #
@@ -44,7 +44,7 @@ jobs:
           download: https://github.com/${{ github.repository }}/releases/download/${{ steps.get-version.outputs.version-without-v }}/module.zip
 
       - name: Create zip with all important module stuff (skipping unwanted files/folders, warning about missing ones)
-        run: zip -r9 ./module.zip assets/ packs/ lang/ scripts/ styles/ Readme.md License.txt Changelog.md module.json
+        run: zip -r9 ./module.zip assets/ packs/ lang/ scripts/ styles/ templates/ Readme.md License.txt Changelog.md module.json
 
       - name: Create/Update GitHub release with json and zip files
         id: create_version_release
