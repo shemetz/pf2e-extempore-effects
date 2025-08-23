@@ -84,7 +84,7 @@ Hooks.on('init', () => {
     default: false,
   })
   game.settings.register(MODULE_ID, 'short-stage-badge', {
-    name: 'Shorten "Stage 2" to e.g. "[2/6]" in effect badges',
+    name: localize('.settings.short-stage-badge.name'),
     scope: 'world',
     config: true,
     type: Boolean,

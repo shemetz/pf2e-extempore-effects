@@ -46,6 +46,9 @@
       "notifications-pause-for-expired-effects": {
         "name": "Mettre sur pause l'horloge lors du premier effet expiré",
         "hint": "Ne faire avancer l'horloge que jusqu'à la première notification de l'expiration d'un effet et montrer un dialogue pour poursuivre ou annuler l'avancement de l'horloge."
+      },
+      "short-stage-badge": {
+        "name": "Raccourcir \"Stade 2\" à ex : \"2/6\" dans le badge de l'effet"
       }
     },
     "errorMultipleTokensCustomEffect": "Vous avez besoin d'avoir un objet sélectionné pour appliquer un nouvel effet personnalisé.",

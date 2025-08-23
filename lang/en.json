@@ -46,6 +46,9 @@
       "notifications-pause-for-expired-effects": {
         "name": "Pause clock advancement to first expired effect",
         "hint": "Only advance the clock to the first expired effect notification and display a dialog to continue or cancel the advancement of the clock."
+      },
+      "short-stage-badge": {
+        "name": "Shorten \"Stage 2\" to e.g. \"[2/6]\" in effect badges"
       }
     },
     "errorMultipleTokensCustomEffect": "You need to have one token selected to apply a custom new effect.",
