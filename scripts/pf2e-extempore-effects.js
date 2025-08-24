@@ -730,6 +730,10 @@ const defineDurationFromText = (durationText, descriptionText) => {
     durationValue = 1
     durationUnit = 'encounter'
     durationSustained = false
+  } else if (itemDuration.toLowerCase() === "until the start of your next turn") {
+    durationValue = 1
+    durationUnit = 'rounds'
+    durationSustained = false
   } else if (itemDuration.includes(' or more')) {
     // "1 or more rounds"
     durationValue = 1
@@ -740,13 +744,14 @@ const defineDurationFromText = (durationText, descriptionText) => {
     durationValue = 1
     durationUnit = 'days'
     durationSustained = false
-  } else if (itemDuration.includes('until') && itemDuration.includes('next turn')) {
+  } else if (itemDuration.includes('next turn')) {
     // "until the end of the target's next turn"
     durationValue = 2
     durationUnit = 'rounds'
     durationSustained = false
   } else if (itemDuration.includes(' ')) {
     // "10 minutes", or possibly something weird like 1d4 hours (which we'll simplify to 1)
+    // note:  translations may lead to this, too
     durationValue = parseInt(itemDuration.split(' ')[0])
     durationUnit = itemDuration.split(' ')[1]
     if (!durationUnit.endsWith('s')) durationUnit += 's'  // e.g. "minutes"
@@ -762,6 +767,19 @@ const defineDurationFromText = (durationText, descriptionText) => {
     durationSustained = false
   } else {
     console.warn(`Unexpected duration format - ${itemDuration}`)
+    durationValue = 1
+    durationUnit = 'unlimited'
+    durationSustained = false
+  }
+  if (![
+    'rounds',
+    'minutes',
+    'hours',
+    'days',
+    'unlimited',
+    'encounter',
+  ].includes(durationUnit)) {
+    console.warn(`Unexpected duration format - ${itemDuration} - led to unexpected duration unit - ${durationUnit}`)
     durationValue = 1
     durationUnit = 'unlimited'
     durationSustained = false
