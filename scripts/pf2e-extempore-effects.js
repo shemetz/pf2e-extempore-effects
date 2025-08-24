@@ -767,6 +767,21 @@ const defineDurationFromText = (durationText, descriptionText) => {
         // simplify dice rolls
         itemDuration = itemDuration.replace(/(\d+)d(\d+)/g, '1') // e.g. "1d4 hours" -> "1 hour"
       }
+      for (const unit of [
+        'second',
+        'seconds',
+        'minute',
+        'minutes',
+        'hour',
+        'hours',
+        'day',
+        'days',
+        'week',
+        'weeks',
+      ]) {
+        // de-localize
+        itemDuration = itemDuration.replace(localize(`.time.${unit}`), unit)
+      }
       durationValue = parseInt(itemDuration.split(' ')[0])
       durationUnit = itemDuration.split(' ')[1]
       if (!durationUnit.endsWith('s')) durationUnit += 's'  // e.g. "minutes"
