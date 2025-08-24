@@ -675,8 +675,12 @@ const defineDurationFromTextOfAffliction = (itemDescriptionText) => {
   const maxDurationRegex = new RegExp(`<p>\\s*<strong>\\s*Maximum Duration<\\/strong> (\\d+ (rounds?|minutes?|hours?|days?|weeks?|months?|years?))\\s*<\\/p>`,
     'i')
   const maximumDurationMatch = itemDescriptionText.match(maxDurationRegex)
-  // defaults to maximum duration, otherwise first stage duration, otherwise none
-  const chosenDurationText = maximumDurationMatch?.[1] ?? firstStageMatch?.[1] ?? ''
+  // example: '<p><strong>Onset</strong> 10 days</p>'
+  const onsetRegex = new RegExp(`<p>\\s*<strong>\\s*Onset<\\/strong> (\\d+ (rounds?|minutes?|hours?|days?|weeks?|months?|years?))\\s*<\\/p>`,
+    'i')
+  const onsetMatch = itemDescriptionText.match(onsetRegex)
+  // defaults to maximum duration, otherwise onset, otherwise first stage duration, otherwise none
+  const chosenDurationText = maximumDurationMatch?.[1] ?? onsetMatch?.[1] ?? firstStageMatch?.[1] ?? ''
   const durationObj = defineDurationFromText(chosenDurationText, itemDescriptionText)
   return {
     ...durationObj,
