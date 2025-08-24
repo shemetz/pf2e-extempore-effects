@@ -46,6 +46,9 @@
       "notifications-pause-for-expired-effects": {
         "name": "Wstrzymaj upływ czasu do pierwszego wygasłego efektu",
         "hint": "Ustaw zegar tylko do pierwszego powiadomienia o wygaśnięciu efektu i wyświetl okno dialogowe, aby kontynuować lub anulować ustawianie zegara."
+      },
+      "short-stage-badge": {
+        "name": "Skróć „Etap 2” do np. „[2/6]” w znacznikach stanu"
       }
     },
     "errorMultipleTokensCustomEffect": "Aby zastosować nowy efekt niestandardowy, należy wybrać jeden token.",
