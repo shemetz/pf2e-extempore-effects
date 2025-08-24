@@ -493,7 +493,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
             const itemInNote = item.actor?.synthetics?.rollNotes?.[selector]?.find(x => x.text === text)?.rule.item
             if (itemInNote) {
               item = itemInNote
-              break;
+              break
             }
           }
         }
@@ -511,9 +511,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
             // but we can try to use the compendium item instead!
             // e.g. "Actor.o4zcDbHha6glH9IP.Item.hDLbR56Id2OtU318"
             // let's convert to e.g. "Compendium.pf2e.equipment-srd.Item.hDLbR56Id2OtU318"
-            const uuidSplit = message.getFlag('pf2e', 'origin').
-              uuid.replace(message.getFlag('pf2e', 'origin').actor + '.', '').
-              split('.')
+            const uuidSplit = message.getFlag('pf2e', 'origin').uuid.replace(message.getFlag('pf2e', 'origin').actor + '.', '').split('.')
             if (uuidSplit.length === 2 && uuidSplit[0] === 'Item') {
               const itemUuidInEquipmentSrd = `Compendium.pf2e.equipment-srd.Item.${uuidSplit[1]}`
               item = await fromUuid(itemUuidInEquipmentSrd)
@@ -700,76 +698,96 @@ const defineDurationFromText = (durationText, descriptionText) => {
     // simplify html
     itemDuration = itemDuration.replace(/<[^>]*>/g, '').trim()
   }
-  if (itemDuration.match('\d+d\d+')) {
-    // simplify dice rolls
-    itemDuration = itemDuration.replace(/(\d+)d(\d+)/g, '1') // e.g. "1d4 hours" -> "1 hour"
-  }
-  if (itemDuration.toLowerCase() === 'sustained') {
-    // "Sustained"
-    durationValue = 10
-    durationUnit = 'minutes'
-    durationSustained = true
-  } else if (itemDuration.toLowerCase().includes('sustained up to')) {
-    // "Sustained up to 1 minute"
-    // "Sustained up to 10 minutes"
-    durationValue = parseInt(itemDuration.split(' ')[3])
-    durationUnit = itemDuration.split(' ')[4]
-    if (!durationUnit.endsWith('s')) durationUnit += 's'  // e.g. "minutes"
-    durationSustained = true
-  } else if (itemDuration.toLowerCase() === 'unlimited') {
-    // "Unlimited"
-    durationValue = 1
-    durationUnit = 'unlimited'
-    durationSustained = false
-  } else if (itemDuration.toLowerCase() === 'varies') {
-    // "Varies"
-    durationValue = 2
-    durationUnit = 'unlimited'
-    durationSustained = false
-  } else if (itemDuration.toLowerCase() === 'until encounter ends') {
-    durationValue = 1
-    durationUnit = 'encounter'
-    durationSustained = false
-  } else if (itemDuration.toLowerCase() === "until the start of your next turn") {
-    durationValue = 1
-    durationUnit = 'rounds'
-    durationSustained = false
-  } else if (itemDuration.includes(' or more')) {
-    // "1 or more rounds"
-    durationValue = 1
-    durationUnit = 'encounter'
-    durationSustained = false
-  } else if (itemDuration.includes('daily preparation')) {
-    // "until the next time you make your daily preparations"
-    durationValue = 1
-    durationUnit = 'days'
-    durationSustained = false
-  } else if (itemDuration.includes('next turn')) {
-    // "until the end of the target's next turn"
-    durationValue = 2
-    durationUnit = 'rounds'
-    durationSustained = false
-  } else if (itemDuration.includes(' ')) {
-    // "10 minutes", or possibly something weird like 1d4 hours (which we'll simplify to 1)
-    // note:  translations may lead to this, too
-    durationValue = parseInt(itemDuration.split(' ')[0])
-    durationUnit = itemDuration.split(' ')[1]
-    if (!durationUnit.endsWith('s')) durationUnit += 's'  // e.g. "minutes"
-    durationSustained = false
-  } else if (itemDuration === '') {
-    if (descriptionText.includes('for 1 round') && !descriptionText.includes(' rounds')) {
-      durationValue = 1
-      durationUnit = 'rounds'
-    } else {
+  const localizeDurPattern = (str) => localize(`durationTextPatterns.${str}`).toLowerCase()
+  const durLow = itemDuration.toLowerCase()
+  switch (true) {
+    case durLow === 'sustained':
+    case durLow === localizeDurPattern('sustained_ifExact'):
+      // "Sustained"
+      durationValue = 10
+      durationUnit = 'minutes'
+      durationSustained = true
+      break
+    case durLow.includes('sustained up to'):
+      // "Sustained up to 1 minute"
+      // "Sustained up to 10 minutes"
+      durationValue = parseInt(itemDuration.split(' ')[3])
+      durationUnit = itemDuration.split(' ')[4]
+      if (!durationUnit.endsWith('s')) durationUnit += 's'  // e.g. "minutes"
+      durationSustained = true
+      break
+    case durLow === 'unlimited':
+    case durLow === localizeDurPattern('unlimited_ifExact'):
+      // "Unlimited"
       durationValue = 1
       durationUnit = 'unlimited'
-    }
-    durationSustained = false
-  } else {
-    console.warn(`Unexpected duration format - ${itemDuration}`)
-    durationValue = 1
-    durationUnit = 'unlimited'
-    durationSustained = false
+      durationSustained = false
+      break
+    case durLow === 'varies':
+    case durLow === localizeDurPattern('unlimited2_ifExact'):
+      // "Varies"
+      durationValue = 2
+      durationUnit = 'unlimited'
+      durationSustained = false
+      break
+    case durLow === 'until encounter ends':
+    case durLow === localizeDurPattern('encounter_ifExact'):
+    case durLow.includes(' or more'):
+    case durLow.includes(localizeDurPattern('encounter_ifIncludes')):
+      // "until encounter ends"
+      // "1 or more rounds"
+      durationValue = 1
+      durationUnit = 'encounter'
+      durationSustained = false
+      break
+    case durLow === 'until the start of your next turn':
+    case durLow === localizeDurPattern('1round_ifExact'):
+      durationValue = 1
+      durationUnit = 'rounds'
+      durationSustained = false
+      break
+    case durLow.includes('next turn'):
+    case durLow.includes(localizeDurPattern('2rounds_ifIncludes')):
+      // "until the end of the target's next turn"
+      durationValue = 2
+      durationUnit = 'rounds'
+      durationSustained = false
+      break
+    case durLow.includes('daily preparation'):
+    case durLow.includes(localizeDurPattern('1day_ifIncludes')):
+      // "until the next time you make your daily preparations"
+      durationValue = 1
+      durationUnit = 'days'
+      durationSustained = false
+      break
+    case durLow.includes(' '):
+      // "10 minutes", or possibly something weird like 1d4 hours (which we'll simplify to 1)
+      // note:  translations may lead to this, too
+      if (itemDuration.match('\d+d\d+')) {
+        // simplify dice rolls
+        itemDuration = itemDuration.replace(/(\d+)d(\d+)/g, '1') // e.g. "1d4 hours" -> "1 hour"
+      }
+      durationValue = parseInt(itemDuration.split(' ')[0])
+      durationUnit = itemDuration.split(' ')[1]
+      if (!durationUnit.endsWith('s')) durationUnit += 's'  // e.g. "minutes"
+      durationSustained = false
+      break
+    case itemDuration === '':
+      if (descriptionText.includes('for 1 round') && !descriptionText.includes(' rounds')) {
+        durationValue = 1
+        durationUnit = 'rounds'
+      } else {
+        durationValue = 1
+        durationUnit = 'unlimited'
+      }
+      durationSustained = false
+      break
+    default:
+      console.warn(`Unexpected duration format - ${itemDuration}`)
+      durationValue = 1
+      durationUnit = 'unlimited'
+      durationSustained = false
+      break
   }
   if (![
     'rounds',
@@ -812,8 +830,7 @@ const isNormalTextMessage = (message) => {
 
 const calcHighestStageOfAffliction = (itemDescriptionText) => {
   const stageNRegex = new RegExp(localize(`.stageN`).replace('{n}', '(\\d+)'), 'gi')
-  const stageNumbers = [...itemDescriptionText.matchAll(stageNRegex)].map(m => m[1]).
-    map(numStr => parseInt(numStr))
+  const stageNumbers = [...itemDescriptionText.matchAll(stageNRegex)].map(m => m[1]).map(numStr => parseInt(numStr))
   return Math.max(...stageNumbers)
 }
 

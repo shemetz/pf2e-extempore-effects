@@ -80,6 +80,17 @@
       "days": "days",
       "week": "week",
       "weeks": "weeks"
+    },
+    "durationTextPatterns": {
+      "sustained_ifExact": "sustained",
+      "unlimited_ifExact": "unlimited",
+      "unlimited2_ifExact": "varies",
+      "encounter_ifExact": "until encounter ends",
+      "encounter_ifIncludes": " or more",
+      "1round_ifExact": "until the start of your next turn",
+      "1round_ifIncludes": "for 1 round",
+      "2rounds_ifIncludes": "next turn",
+      "1day_ifIncludes": "daily preparation"
     }
   }
 }
