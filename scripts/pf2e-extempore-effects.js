@@ -698,7 +698,7 @@ const defineDurationFromText = (durationText, descriptionText) => {
     // simplify html
     itemDuration = itemDuration.replace(/<[^>]*>/g, '').trim()
   }
-  const localizeDurPattern = (str) => localize(`durationTextPatterns.${str}`).toLowerCase()
+  const localizeDurPattern = (str) => localize(`.durationTextPatterns.${str}`).toLowerCase()
   const durLow = itemDuration.toLowerCase()
   switch (true) {
     case durLow === 'sustained':
