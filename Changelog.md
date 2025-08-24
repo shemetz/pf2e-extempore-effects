@@ -1,3 +1,6 @@
+## 1.12.0 - 2025-08-24
+- Fixed complete failures to create an effect when duration was parsed incorrectly (fixes #59 and fixes #63)
+
 ## 1.11.3 - 2025-08-22
 - Improved localization
 
