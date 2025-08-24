@@ -785,6 +785,11 @@ const defineDurationFromText = (durationText, descriptionText) => {
       durationValue = parseInt(itemDuration.split(' ')[0])
       durationUnit = itemDuration.split(' ')[1]
       if (!durationUnit.endsWith('s')) durationUnit += 's'  // e.g. "minutes"
+      // replace weeks with multiples of 7 days
+      if (durationUnit === 'weeks') {
+        durationUnit = 'days'
+        durationValue *= 7
+      }
       durationSustained = false
       break
     case itemDuration === '':
