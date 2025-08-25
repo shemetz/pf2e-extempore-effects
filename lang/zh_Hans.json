@@ -46,6 +46,9 @@
             "notifications-sound-for-expired-effects": {
                 "name": "效果过期提示音",
                 "hint": "当效果过期且启用通知时播放声音。"
+            },
+            "short-stage-badge": {
+                "name": "在效果徽标处缩写苦难阶段，如“阶段2”略写为“[2/6]”"
             }
         },
         "errorMultipleTokensCustomEffect": "你需要在应用新效果时选中一个指示物。",
@@ -77,6 +80,17 @@
                     "revertBack": "恢复到上次的时间"
                 }
             }
+        },
+        "durationTextPatterns": {
+            "unlimited_ifExact": "无限",
+            "unlimited2_ifExact": "可变",
+            "sustained_ifExact": "维持",
+            "encounter_ifExact": "直到遭遇结束",
+            "encounter_ifIncludes": " 或更长",
+            "1round_ifExact": "直到你的下一回合开始",
+            "1round_ifIncludes": "1轮",
+            "2rounds_ifIncludes": "下一回合",
+            "1day_ifIncludes": "每日准备"
         }
     }
 }
