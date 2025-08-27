@@ -80,6 +80,17 @@
       "days": "jours",
       "week": "semaine",
       "weeks": "semaines"
+    },
+    "durationTextPatterns": {
+      "sustained_ifExact": "maintenue",
+      "unlimited_ifExact": "illimitée",
+      "unlimited2_ifExact": "variable",
+      "encounter_ifExact": "Jusqu'à la fin de la rencontre",
+      "encounter_ifIncludes": "ou plus",
+      "1round_ifExact": "jusqu'au début de votre prochain tour",
+      "1round_ifIncludes": "pendant 1 round",
+      "2rounds_ifIncludes": "prochain tour",
+      "1day_ifIncludes": "préparatifs quotidiens"
     }
   }
 }
