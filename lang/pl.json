@@ -80,6 +80,17 @@
       "days": "dni",
       "week": "tydzień",
       "weeks": "tygodni"
+    },
+    "durationTextPatterns": {
+      "sustained_ifExact": "podtrzymywany",
+      "unlimited_ifExact": "bez ograniczeń",
+      "unlimited2_ifExact": "różnie",
+      "encounter_ifExact": "do końca starcia",
+      "encounter_ifIncludes": " lub dłużej",
+      "1round_ifExact": "do początku twojej następnej tury",
+      "1round_ifIncludes": "na 1 rundę",
+      "2rounds_ifIncludes": "następna tura",
+      "1day_ifIncludes": "codzienne przygotowania"
     }
   }
 }
