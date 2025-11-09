@@ -1,3 +1,6 @@
+## 1.12.2 - 2025-11-09
+- Disable help text showing the Shift+Click shortcut for opening Effect sheets, because it doesn't work anymore (resolves #67)
+
 ## 1.12.0 - 2025-08-24
 - Fixed complete failures to create an effect when duration was parsed incorrectly (fixes #59 and fixes #63)
 
