@@ -175,22 +175,22 @@ const isAltHeld = () => game.keyboard.isModifierActive(
  * show effect sheets on shift-click (configurable: ctrl+click)
  */
 Hooks.on('renderEffectsPanel', (_panel, panelEl, context, _options) => {
-  const openEffectSheetShortcut = game.settings.get(MODULE_ID, 'open-effect-sheet-shortcut')
-  let instructionStr
-  if (openEffectSheetShortcut === 'shift_left_click') {
-    instructionStr = localize('.openSheetInstructionShift')
-  } else if (openEffectSheetShortcut === 'ctrl_left_click') {
-    instructionStr = localize('.openSheetInstructionCtrl')
-  } else {
-    instructionStr = null
-  }
-  if (!instructionStr) {
-    return  // not adding hotkey
-  }
-  const instructions = `<p>${instructionStr}</p>`
-  // FIXME -- this is broken now, because the tooltip aside with the instructions does not render until the user hovers over it, and when it does there's no hook/even to use
-  // so the following line of code will be useless :(
-  document.querySelector('aside.pf2e.effect-info > .content > .instructions')?.append(instructions)
+  //const openEffectSheetShortcut = game.settings.get(MODULE_ID, 'open-effect-sheet-shortcut')
+  //let instructionStr
+  //if (openEffectSheetShortcut === 'shift_left_click') {
+  //  instructionStr = localize('.openSheetInstructionShift')
+  //} else if (openEffectSheetShortcut === 'ctrl_left_click') {
+  //  instructionStr = localize('.openSheetInstructionCtrl')
+  //} else {
+  //  instructionStr = null
+  //}
+  //if (!instructionStr) {
+  //  return  // not adding hotkey
+  //}
+  //const instructions = `<p>${instructionStr}</p>`
+  //// FIXME -- this is broken now, because the tooltip aside with the instructions does not render until the user hovers over it, and when it does there's no hook/even to use
+  //// so the following line of code will be useless :(
+  //document.querySelector('aside.pf2e.effect-info > .content > .instructions')?.append(instructions)
 
   panelEl.querySelectorAll('.effect-item[data-item-id] .icon').forEach((iconEl) => {
     iconEl.addEventListener('click', (event) => {
