@@ -98,3 +98,7 @@ particular CSS themes that have less space for text in them (in the top right ef
 # Demo gif
 
 ![](metadata/ee_demo_3.gif)
+
+## Discussion
+
+You can discuss this module in its [dedicated thread in the Pathfinder on Foundry discord server](https://discord.com/channels/880968862240239708/1384807088575742104), or open a github issue here if it's a bug or a feature request.
