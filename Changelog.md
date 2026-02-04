@@ -1,3 +1,6 @@
+## 1.12.3 - 2026-02-04
+- Fixed Recharge roll detection
+
 ## 1.12.2 - 2025-11-09
 - Disable help text showing the Shift+Click shortcut for opening Effect sheets, because it doesn't work anymore (resolves #67)
 
