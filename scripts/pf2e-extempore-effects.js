@@ -844,7 +844,14 @@ const isAffliction = (itemDescriptionText) => {
 }
 
 const isRechargeRoll = (message) => {
-  return !isNaN(parseInt(message.content)) && message.flavor?.includes('charge')
+  return !isNaN(parseInt(message.content)) && (
+    message.flavor?.includes('charge')
+    || message.flavor === 'rounds'
+    || message.flavor === 'minutes'
+    || message.flavor === 'hours'
+    || message.flavor === 'days'
+    || message.flavor === ''
+  )
 }
 
 const isNormalTextMessage = (message) => {
@@ -1046,7 +1053,7 @@ const createEffectFromRechargeRoll = (message) => {
   const rechargeUnit = defineRechargeUnit(message.flavor)
   const createHidden = game.user.isGM
   const descriptionText = `${message.flavor} -- rolled ${message.content}`
-  const effectName = localize('.addedPrefixToEffectName') + message.flavor
+  const effectName = localize('.effectForRecharge')
   const storedDescriptionText = addPrefixAndOriginToDescription(descriptionText, null)
   return {
     type: 'effect',
