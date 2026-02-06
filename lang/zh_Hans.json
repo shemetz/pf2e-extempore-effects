@@ -48,7 +48,7 @@
                 "hint": "当效果过期且启用通知时播放声音。"
             },
             "short-stage-badge": {
-                "name": "在效果徽标处缩写苦难阶段，如“阶段2”略写为“[2/6]”"
+                "name": "缩短效果徽标的“阶段”，如“阶段2”简化为“[2/6]”"
             }
         },
         "errorMultipleTokensCustomEffect": "你需要在应用新效果时选中一个指示物。",
@@ -91,6 +91,7 @@
             "1round_ifIncludes": "1轮",
             "2rounds_ifIncludes": "下一回合",
             "1day_ifIncludes": "每日准备"
-        }
+        },
+        "effectForRecharge": "再充能"
     }
 }
