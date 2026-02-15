@@ -9,6 +9,7 @@
     "addedPrefixToEffectName": "Effet : ",
     "addedPrefixToEffectDescription": "<h2>(Effet généré)</h2>\n",
     "addedPrefixWithOriginToEffectDescription": "<h2>(Effet généré par {ORIGIN})</h2>\n",
+    "effectForRecharge": "Recharger",
     "nameOfQuickUntitledEffect": "Effet rapide non titré",
     "stageN": "Stade {n}",
     "descriptionOfQuickUntitledEffect": "<h2>(Effet généré)</h2>\nÉcrivez ce que vous voulez ici !",
