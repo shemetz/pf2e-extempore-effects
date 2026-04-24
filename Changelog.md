@@ -1,3 +1,6 @@
+## 1.13.0 - 2026-04-24
+- Added Starfinder 2e (sf2e) compatibility
+
 ## 1.12.3 - 2026-02-04
 - Fixed Recharge roll detection
 
