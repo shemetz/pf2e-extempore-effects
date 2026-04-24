@@ -62,6 +62,14 @@
           "minimum": "7.0.0",
           "verified": "7.2.3"
         }
+      },
+      {
+        "id": "sf2e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "0.0.11",
+          "verified": "0.0.11"
+        }
       }
     ],
     "requires": [

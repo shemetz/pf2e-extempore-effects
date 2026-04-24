@@ -222,7 +222,7 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
   if (!effectsWithDurations.length) return wrapped(...args)
 
   const oldWorldTime = game.time.worldTime
-  const willExpirationDeleteEffects = game.settings.get('pf2e', 'automation.removeExpiredEffects')
+  const willExpirationDeleteEffects = game.settings.get(game.system.id, 'automation.removeExpiredEffects')
   const effectNotificationSetting = game.settings.get(MODULE_ID, 'notifications-for-expired-effects')
   const requestedNewWorldTime = args[0]
   const requestedTimeDeltaS = requestedNewWorldTime - oldWorldTime
@@ -442,7 +442,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
       icon: '<i class="fas fa-star"></i>',
       condition: li => {
         const message = game.messages.get(li.dataset['messageId'])
-        if (isEffectOrCondition(message.item) || isEffectOrCondition(message.getFlag('pf2e', 'origin'))) {
+        if (isEffectOrCondition(message.item) || isEffectOrCondition(message.getFlag(game.system.id, 'origin'))) {
           return false
         }
         if (isRechargeRoll(message)) {
@@ -485,10 +485,10 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         if (
           item &&
           item.actor &&
-          message.flags?.pf2e?.context?.notes?.length > 0
+          message.flags?.[game.system.id]?.context?.notes?.length > 0
         ) {
           // we'll go with the first note that works
-          for (const note of message.flags.pf2e.context.notes) {
+          for (const note of message.flags[game.system.id].context.notes) {
             const { selector, text } = note
             const itemInNote = item.actor?.synthetics?.rollNotes?.[selector]?.find(x => x.text === text)?.rule.item
             if (itemInNote) {
@@ -506,14 +506,16 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         } else if (isNormalTextMessage(message)) {
           effect = createEffectFromPureTextMessage(message)
         } else {
-          if (message.flags?.pf2e?.origin?.type === 'consumable') {
+          if (message.flags?.[game.system.id]?.origin?.type === 'consumable') {
             // consumable was used, so fromUuid returned null (item has been removed from its actor)
             // but we can try to use the compendium item instead!
             // e.g. "Actor.o4zcDbHha6glH9IP.Item.hDLbR56Id2OtU318"
             // let's convert to e.g. "Compendium.pf2e.equipment-srd.Item.hDLbR56Id2OtU318"
-            const uuidSplit = message.getFlag('pf2e', 'origin').uuid.replace(message.getFlag('pf2e', 'origin').actor + '.', '').split('.')
+            const uuidSplit = message.getFlag(game.system.id, 'origin').uuid.replace(message.getFlag(game.system.id, 'origin').actor + '.', '').split('.')
             if (uuidSplit.length === 2 && uuidSplit[0] === 'Item') {
-              const itemUuidInEquipmentSrd = `Compendium.pf2e.equipment-srd.Item.${uuidSplit[1]}`
+              const itemUuidInEquipmentSrd = game.system.id === "pf2e"
+                ? `Compendium.pf2e.equipment-srd.Item.${uuidSplit[1]}`
+                : `Compendium.sf2e.equipment.Item.${uuidSplit[1]}`
               item = await fromUuid(itemUuidInEquipmentSrd)
             }
             if (item === null) {
@@ -523,7 +525,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
               // nice, we're back in business
               effect = await createEffect(item)
             }
-          } else if (message.flags?.pf2e?.origin?.type === 'spell') {
+          } else if (message.flags?.[game.system.id]?.origin?.type === 'spell') {
             // similar situation, but spell scroll consumed, and uuid is useless
             console.log(`${MODULE_NAME} | creating effect from consumed spell, so item automation isn't so good`)
             effect = createEffectFromItemlessMessage(message)
@@ -565,7 +567,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
       condition: li => {
         const message = game.messages.get(li.dataset['messageId'])
         if (isEffectOrCondition(message.item)) return true
-        if (isEffectOrCondition(message.getFlag('pf2e', 'origin'))) {
+        if (isEffectOrCondition(message.getFlag(game.system.id, 'origin'))) {
           const item = fromUuidNonAsync(messageGetOriginUuid(message))
           return !!item
         }
@@ -595,7 +597,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
 }
 
 function messageGetOriginUuid (message) {
-  let uuid = message.getFlag('pf2e', 'origin')?.uuid
+  let uuid = message.getFlag(game.system.id, 'origin')?.uuid
   if (!uuid) {
     return null
   }
@@ -866,9 +868,13 @@ const calcHighestStageOfAffliction = (itemDescriptionText) => {
 }
 
 const isImageBoring = (image) => {
-  return !image || image.startsWith('systems/pf2e/icons/actions')
+  return !image
+    || image.startsWith('systems/pf2e/icons/actions')
+    || image.startsWith('systems/sf2e/icons/actions')
     || image.startsWith('systems/pf2e/icons/default-icons')
+    || image.startsWith('systems/sf2e/icons/default-icons')
     || image === 'systems/pf2e/icons/features/feats/feats.webp'
+    || image === 'systems/sf2e/icons/features/feats/feats.webp'
 }
 
 const randomImage = (rawSeed) => {
@@ -1093,7 +1099,7 @@ const createEffectFromItemlessMessage = (message) => {
   const $header = $content.find('header.card-header')
   const maybeItemName = $header.find('h3')[0]?.innerHTML.replace(/<span class="action-glyph">\d<\/span>/, '').trim()
   const maybeItemImage = $header.find('img').attr('src')
-  const rollOptions = message.flags.pf2e?.origin?.rollOptions
+  const rollOptions = message.flags[game.system.id]?.origin?.rollOptions
   const maybeItemLevelStr = rollOptions?.find(rollOpt => rollOpt.startsWith('origin:item:level:'))?.split(':').pop()
   const maybeItemSlug = rollOptions?.find(rollOpt => rollOpt.startsWith('origin:item:slug:'))?.split(':').pop()
 
