@@ -440,7 +440,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
     {
       name: localize('.contextMenuExtemporeEffect'),
       icon: '<i class="fas fa-star"></i>',
-      condition: li => {
+      visible: li => {
         const message = game.messages.get(li.dataset['messageId'])
         if (isEffectOrCondition(message.item) || isEffectOrCondition(message.getFlag(game.system.id, 'origin'))) {
           return false
@@ -453,7 +453,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         }
         return !!message.item || !!messageGetOriginUuid(message)
       },
-      callback: async li => {
+      onClick: async (_event, li) => {
         const tokens = canvas.tokens.controlled
         if (tokens.length === 0)
           return ui.notifications.error(localize('.errorNoTokensSelected'))
@@ -564,7 +564,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
     {
       name: localize('.contextMenuApplyEffect'),
       icon: '<i class="fas fa-star"></i>',
-      condition: li => {
+      visible: li => {
         const message = game.messages.get(li.dataset['messageId'])
         if (isEffectOrCondition(message.item)) return true
         if (isEffectOrCondition(message.getFlag(game.system.id, 'origin'))) {
@@ -573,7 +573,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
         }
         return false
       },
-      callback: async li => {
+      onClick: async (_event, li) => {
         const tokens = canvas.tokens.controlled
         if (tokens.length === 0)
           return ui.notifications.error(localize('.errorNoTokensSelected'))

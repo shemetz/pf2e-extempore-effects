@@ -4,8 +4,8 @@
   "description": "Allows creating temporary Effects from chat messages, to easily mark tokens as affected by a spell/action/item that doesn't normally have embedded effects.",
   "version": "1.13.0",
   "compatibility": {
-    "minimum": "13",
-    "verified": "13"
+    "minimum": "14",
+    "verified": "14"
   },
   "esmodules": [
     "scripts/pf2e-extempore-effects.js"
@@ -59,8 +59,8 @@
         "type": "system",
         "manifest": "https://github.com/foundryvtt/pf2e/releases/download/latest/system.json",
         "compatibility": {
-          "minimum": "7.0.0",
-          "verified": "7.2.3"
+          "minimum": "8.0.0",
+          "verified": "8.1.0"
         }
       },
       {
