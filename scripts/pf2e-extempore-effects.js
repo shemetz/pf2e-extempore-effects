@@ -298,26 +298,21 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
       const stashedEffectJSON = effect.toJSON()
       ui.notifications.info(`${isSecretEffect ? 'Secret effect' : 'Effect'} expired, see chat!    (${effect.name})`)
       // post effect description again (it's usually helpful)
-      const effTypeName = isSecretEffect ? 'Secret effect' : 'Effect'
+      const effTypeName = isSecretEffect ? 'Secret effect' : effect.name.startsWith('Effect:') ? '' : 'Effect'
       const badge = effect.system.badge
       effect.toMessage(undefined, { rollMode: isSecretEffect ? 'gmroll' : undefined }).then(() => {
         // post special message explaining what just happened and adding a button to undo it if the effect was removed
         ChatMessage.create({
           user: game.user.id,
-          speaker: { alias: 'Extempore Effects' },
+          speaker: { alias: '(Extempore Effects)' },
           content: `
-<h3>${effTypeName} expired!</h3>
-<div><b>Name:</b> ${effect.name}</div>
-<div><b>Actor:</b> ${actor.name}</div>
-<div><b>Expired:</b> ${golS}</div>
-<div><b>After duration:</b> ${durS}</div>
-` + (badge ? `
-<div><b>Badge:</b> ${badge.label ? badge.label : badge.value}</div>
-` : ``) + `
+<div>${effTypeName} "${effect.name}" on ${actor.name} has <b>expired</b>, `
+            + (requestedTimeDeltaS > 60 ? `at ${golS}, ` : ``)
+            + (badge > 60 ? `with badge "${badge.label ? badge.label : badge.value}", ` : ``)
+            + `after ${durS}.</div>
 ` + (willExpirationDeleteEffects ? `
 <br/>
-<button id="extempore-reapply">${localize('automation.reapplyEffect')} <i class="fa-solid fa-rotate-left"></i></button>
-<div>(This button will stop working after a refresh)</div>
+<button id="extempore-reapply">Reapply effect? <i class="fa-solid fa-rotate-left"></i></button>
 ` : ``),
           flags: { core: { canPopout: true } },
           whisper: isSecretEffect ? ChatMessage.getWhisperRecipients('GM') : [],
@@ -514,7 +509,7 @@ const _getEntryContextOptions_Wrapper = (wrapped) => {
             // let's convert to e.g. "Compendium.pf2e.equipment-srd.Item.hDLbR56Id2OtU318"
             const uuidSplit = message.getFlag(game.system.id, 'origin').uuid.replace(message.getFlag(game.system.id, 'origin').actor + '.', '').split('.')
             if (uuidSplit.length === 2 && uuidSplit[0] === 'Item') {
-              const itemUuidInEquipmentSrd = game.system.id === "pf2e"
+              const itemUuidInEquipmentSrd = game.system.id === 'pf2e'
                 ? `Compendium.pf2e.equipment-srd.Item.${uuidSplit[1]}`
                 : `Compendium.sf2e.equipment.Item.${uuidSplit[1]}`
               item = await fromUuid(itemUuidInEquipmentSrd)
