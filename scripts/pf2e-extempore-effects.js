@@ -277,6 +277,8 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
 
     const isSecretEffect = effect.system.unidentified
     if (!isSecretEffect && effectNotificationSetting === 'only_unidentified') continue
+    // skip short-lived effects in combat
+    if (!isSecretEffect && isInCombat && effect.system.duration.value === 1 && effect.system.duration.unit === "rounds") continue
 
     const effectExpiryTimeLux = oldWorldTimeLux.plus({ seconds: effect.remainingDuration.remaining })
     const isEffectGonnaExpireNow = effectExpiryTimeLux.startOf('second') <= newWorldTimeLux.startOf('second')
