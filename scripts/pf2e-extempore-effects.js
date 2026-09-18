@@ -61,6 +61,7 @@ Hooks.on('init', () => {
     type: String,
     default: 'all_effects',
     choices: {
+      'all_effects_even_in_combat': localize('.settings.notifications-for-expired-effects.choice_all_effects_even_in_combat'),
       'all_effects': localize('.settings.notifications-for-expired-effects.choice_all_effects'),
       'only_unidentified': localize('.settings.notifications-for-expired-effects.choice_only_unidentified'),
       'disabled': localize('.settings.notifications-for-expired-effects.choice_disabled'),
@@ -224,20 +225,18 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
   const oldWorldTime = game.time.worldTime
   const willExpirationDeleteEffects = game.settings.get(game.system.id, 'automation.removeExpiredEffects')
   const effectNotificationSetting = game.settings.get(MODULE_ID, 'notifications-for-expired-effects')
+  const shouldPauseOnExpire = game.settings.get(MODULE_ID, 'notifications-pause-for-expired-effects')
   const requestedNewWorldTime = args[0]
   const requestedTimeDeltaS = requestedNewWorldTime - oldWorldTime
-  // ignore time updates of 1 round (6 seconds);  because tracking expiration between rounds is very hard and usually doesn't require reminders
-  if (requestedTimeDeltaS <= 6) {
-    return wrapped(...args)
-  }
+  // in combat, we won't pause when an effect expires (it can ruin the turn tracking)
+  const isInCombat = requestedTimeDeltaS <= 6
 
   let newWorldTime = requestedNewWorldTime
   let expireEffectMessageShown = false
 
   // We don't want to go further in time than the next effect expiration or the requested time, which ever comes first
   // Lets iterate through the effects and find the first one that will expire before the requested time, respecting the notification settings
-  if (game.settings.get(MODULE_ID, 'notifications-pause-for-expired-effects') && effectNotificationSetting !==
-    'disabled') {
+  if (shouldPauseOnExpire && !isInCombat && effectNotificationSetting !== 'disabled') {
     let firstExpiringEffect = null
     for (const effect of effectsWithDurations) {
       if (effect.isExpired) continue
@@ -315,7 +314,7 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
 ` : ``) + `
 ` + (willExpirationDeleteEffects ? `
 <br/>
-<button id="extempore-reapply">Reapply ${effect.name} to ${actor.name}?</button>
+<button id="extempore-reapply">${localize('automation.reapplyEffect')} <i class="fa-solid fa-rotate-left"></i></button>
 <div>(This button will stop working after a refresh)</div>
 ` : ``),
           flags: { core: { canPopout: true } },
