@@ -1,3 +1,8 @@
+## 1.14.0 - 2026-11-09
+- Skip short-lived effects in combat
+- Allow mid-combat expiring effects to create a notification (#73)
+- Condense expiration chat message
+
 ## 1.13.0 - 2026-04-24
 - Added Starfinder 2e (sf2e) compatibility
 
