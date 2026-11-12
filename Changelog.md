@@ -1,3 +1,6 @@
+## 1.14.1 - 2026-11-12
+- Skip short-lived effects in combat... but there's a setting that enables them
+
 ## 1.14.0 - 2026-11-09
 - Skip short-lived effects in combat
 - Allow mid-combat expiring effects to create a notification (#73)
