@@ -40,13 +40,17 @@
         "choice_only_unidentified": "Only secret (unidentified) effects",
         "choice_disabled": "Disabled"
       },
+      "notifications-for-expired-effects-1-round": {
+        "name": "Notify even for 1-round-duration effects",
+        "hint": "If the above notifications are enabled, trigger even for brief 1-round effects. (may be spammy)"
+      },
       "notifications-sound-for-expired-effects": {
         "name": "Notification sound for expired events",
-        "hint": "Play a sound when an effect expires and notifications are enabled."
+        "hint": "If the above notifications are enabled, play a sound when an effect expires."
       },
       "notifications-pause-for-expired-effects": {
         "name": "Pause clock advancement to first expired effect",
-        "hint": "Only advance the clock to the first expired effect notification and display a dialog to continue or cancel the advancement of the clock."
+        "hint": "If the above notifications are enabled, only advance the clock up to the first expired effect and display a dialog to continue or cancel the advancement of the clock. Does not apply in combat."
       },
       "short-stage-badge": {
         "name": "Shorten \"Stage 2\" to e.g. \"[2/6]\" in effect badges"

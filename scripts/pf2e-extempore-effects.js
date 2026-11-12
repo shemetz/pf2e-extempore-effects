@@ -67,6 +67,14 @@ Hooks.on('init', () => {
       'disabled': localize('.settings.notifications-for-expired-effects.choice_disabled'),
     },
   })
+  game.settings.register(MODULE_ID, 'notifications-for-expired-effects-1-round', {
+    name: localize('.settings.notifications-for-expired-effects-1-round.name'),
+    hint: localize('.settings.notifications-for-expired-effects-1-round.hint'),
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
+  })
   game.settings.register(MODULE_ID, 'notifications-sound-for-expired-effects', {
     name: localize('.settings.notifications-sound-for-expired-effects.name'),
     hint: localize('.settings.notifications-sound-for-expired-effects.hint'),
@@ -225,6 +233,7 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
   const oldWorldTime = game.time.worldTime
   const willExpirationDeleteEffects = game.settings.get(game.system.id, 'automation.removeExpiredEffects')
   const effectNotificationSetting = game.settings.get(MODULE_ID, 'notifications-for-expired-effects')
+  const include1RoundEffectsSetting = game.settings.get(MODULE_ID, 'notifications-for-expired-effects-1-round')
   const shouldPauseOnExpire = game.settings.get(MODULE_ID, 'notifications-pause-for-expired-effects')
   const requestedNewWorldTime = args[0]
   const requestedTimeDeltaS = requestedNewWorldTime - oldWorldTime
@@ -277,8 +286,8 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
 
     const isSecretEffect = effect.system.unidentified
     if (!isSecretEffect && effectNotificationSetting === 'only_unidentified') continue
-    // skip short-lived effects in combat
-    if (!isSecretEffect && isInCombat && effect.system.duration.value === 1 && effect.system.duration.unit === "rounds") continue
+    // maybe skip short-lived effects in combat
+    if (!isSecretEffect && isInCombat && effect.system.duration.value === 1 && effect.system.duration.unit === "rounds" && include1RoundEffectsSetting) continue
     // skip these things that behave weirdly with initiative
     if (!isSecretEffect && isInCombat && effect.system.duration.expiry === "turn-end") continue
 
