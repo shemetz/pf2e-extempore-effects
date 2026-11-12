@@ -287,7 +287,7 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
     const isSecretEffect = effect.system.unidentified
     if (!isSecretEffect && effectNotificationSetting === 'only_unidentified') continue
     // maybe skip short-lived effects in combat
-    if (!isSecretEffect && isInCombat && effect.system.duration.value === 1 && effect.system.duration.unit === "rounds" && include1RoundEffectsSetting) continue
+    if (!isSecretEffect && isInCombat && effect.system.duration.value === 1 && effect.system.duration.unit === "rounds" && !include1RoundEffectsSetting) continue
     // skip these things that behave weirdly with initiative
     if (!isSecretEffect && isInCombat && effect.system.duration.expiry === "turn-end") continue
 
