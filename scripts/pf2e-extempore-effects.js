@@ -311,7 +311,7 @@ const onUpdateWorldTime_Wrapper = (wrapped, ...args) => {
       // post effect description again (it's usually helpful)
       const effTypeName = isSecretEffect ? 'Secret effect' : effect.name.startsWith('Effect:') ? '' : 'Effect'
       const badge = effect.system.badge
-      effect.toMessage(undefined, { rollMode: isSecretEffect ? 'gmroll' : undefined }).then(() => {
+      effect.toMessage(undefined, { messageMode: Roll._mapLegacyRollMode(isSecretEffect ? 'gmroll' : undefined) }).then(() => {
         // post special message explaining what just happened and adding a button to undo it if the effect was removed
         ChatMessage.create({
           user: game.user.id,
